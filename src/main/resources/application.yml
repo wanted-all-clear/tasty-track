@@ -33,6 +33,10 @@ spring:
           new_generator_mappings: true
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
+# jwt Secret Key
+jwt:
+  secretkey: ${JWT_SECRET_KEY}
+
 # 2. 로컬용 프로파일 (보통 배포 전 초기 개발 단계에 사용)
 ---
 spring:
