@@ -16,7 +16,7 @@ body:
     id: branchName
     attributes:
       label: '브랜치 이름 (이슈 요약)'
-      description: '영문 소문자로 브랜치 이름을 지어주세요. (ex: feat/#TT-[스토리번호]-[도메인명]-[기능])'
+      description: '영문 소문자로 브랜치 이름을 지어주세요. (ex: [스토리번호]-[도메인명]-[기능])'
     validations:
       required: true
 

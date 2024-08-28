@@ -1,14 +1,12 @@
 name: Create Jira issue
-
 on:
   issues:
-    types: [opened]
-
+    types:
+      - opened
 jobs:
   create-issue:
     name: Create Jira issue
     runs-on: ubuntu-latest
-
     steps:
       - name: Login
         uses: atlassian/gajira-login@v3
