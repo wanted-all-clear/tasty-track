@@ -1,5 +1,6 @@
 package com.allclear.tastytrack.domain.user.entity;
 
+import com.allclear.tastytrack.domain.user.dto.UserInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,16 @@ public class User {
         this.lon = initUser.getLon();
         this.lat = initUser.getLat();
         this.lunchRecommendYn = initUser.lunchRecommendYn;
+    }
+
+    public UserInfo fromEntity(String username) {
+
+        return UserInfo.builder()
+                .username(username)
+                .lon(lon)
+                .lat(lat)
+                .lunchRecommendYn(lunchRecommendYn)
+                .build();
     }
 
 

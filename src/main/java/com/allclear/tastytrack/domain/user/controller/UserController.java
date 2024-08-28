@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -48,6 +47,10 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUserInfo(userDetails.getUsername(), userUpdateRequest));
     }
 
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<UserInfo> getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
+        return ResponseEntity.ok(userService.getUserInfo(userDetails.getUsername()));
+    }
 
 }

@@ -10,6 +10,9 @@ public interface UserService {
     void signup(UserCreateRequest userCreateRequest);
 
     HttpHeaders signin(UserCreateRequest userCreateRequest);
+
     UserInfo updateUserInfo(String username, UserUpdateRequest userUpdateRequest);
+
+    UserInfo getUserInfo(String username);
 
 }

@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void signup(UserCreateRequest userCreateRequest) {
+
         usernameDuplicateCheck(userCreateRequest.getUsername());
         User user = User.builder()
                 .username(userCreateRequest.getUsername())
@@ -77,6 +78,20 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 회원정보 조회
+     * 장성자 : 오예령
+     *
+     * @param username 게정명
+     * @return 비밀번호를 제외한 회원정보 반환
+     */
+    @Override
+    public UserInfo getUserInfo(String username) {
+
+        User user = userCheck(username);
+        return user.fromEntity(username);
+    }
+
+    /**
      * 계정명 중복체크
      * 작성자 : 오예령
      *
@@ -84,6 +99,7 @@ public class UserServiceImpl implements UserService {
      */
 
     private void usernameDuplicateCheck(String username) {
+
         if (userRepository.findByUsername(username).isPresent())
             throw new CustomException(ErrorCode.USERNAME_DUPLICATION);
     }
