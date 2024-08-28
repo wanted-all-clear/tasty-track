@@ -8,6 +8,7 @@ import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserAuth userAuth;
 
     /**
      * 회원가입
@@ -40,6 +42,21 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 로그인
+     * 작성자 : 오예령
+     *
+     * @param userCreateRequest 계정명, 비밀번호
+     * @return 헤더에 토큰을 담아 반환
+     */
+    @Override
+    @Transactional
+    public HttpHeaders signin(UserCreateRequest userCreateRequest) {
+
+        User user = userCheck(userCreateRequest.getUsername());
+        return userAuth.generateHeaderTokens(user);
+    }
+
+    /**
      * 계정명 중복체크
      * 작성자 : 오예령
      *
@@ -51,5 +68,18 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ErrorCode.USERNAME_DUPLICATION);
     }
 
+    /**
+     * 회원 검증
+     * 작성자 : 오예령
+     *
+     * @param username 계정명
+     * @return 회원 객체 반환
+     */
+    private User userCheck(String username) {
+
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new CustomException(ErrorCode.USER_NOT_EXIST)
+        );
+    }
 
 }
