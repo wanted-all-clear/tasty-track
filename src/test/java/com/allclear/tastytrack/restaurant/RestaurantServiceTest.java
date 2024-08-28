@@ -60,7 +60,7 @@ public class RestaurantServiceTest {
 
 		//then
 		verify(restaurantRepository, times(1)).findById(any());
-		verify(reviewRepository, times(1)).findAllByRestaurantId(any());
+		verify(reviewRepository, times(1)).findAllByRestaurantIdOrderByCreatedAtDesc(any());
 		verify(addressRepository, times(1)).findById(any());
 	}
 

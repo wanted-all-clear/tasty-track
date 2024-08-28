@@ -27,10 +27,12 @@ public class Address {
 	private String sgg;
 
 	@Column(nullable = false)
-	private Double x;
+	// 경도
+	private Double lon;
 
 	@Column(nullable = false)
-	private Double y;
+	// 위도
+	private Double lat;
 
 	@Column(nullable = false)
 	private String zipCode;
