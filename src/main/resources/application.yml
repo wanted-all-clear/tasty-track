@@ -1,2 +1,31 @@
 spring:
-  application.name: tastytrack
+  application:
+    name: tastytrack
+
+  profiles:
+    default: local
+
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      naming:
+        use-new-id-generator-mappings: false
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: none
+        id:
+          new_generator_mappings: true
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+
+
