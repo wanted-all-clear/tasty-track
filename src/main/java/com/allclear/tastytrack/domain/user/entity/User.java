@@ -32,5 +32,13 @@ public class User {
     @Column
     private boolean lunchRecommendYn;
 
+    public void update(User initUser) {
+
+        this.username = initUser.getUsername();
+        this.lon = initUser.getLon();
+        this.lat = initUser.getLat();
+        this.lunchRecommendYn = initUser.lunchRecommendYn;
+    }
+
 
 }
