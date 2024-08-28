@@ -4,12 +4,16 @@ import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 import com.allclear.tastytrack.global.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import static com.allclear.tastytrack.global.exception.ErrorCode.NOT_VALID_PROPERTY;
 
 @RestControllerAdvice
 @Slf4j
@@ -90,4 +94,15 @@ public class RestApiExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
+    @ExceptionHandler(value = {PropertyValueException.class})
+    protected ResponseEntity<ErrorResponse> handlePropertyValueException(PropertyValueException ex) {
+
+        log.error("handlePropertyValueException : {}", ex.getMessage());
+
+        ErrorResponse response = ErrorResponse.create()
+                .message(new CustomException(NOT_VALID_PROPERTY).getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity.badRequest().body(response);
+    }
 }
