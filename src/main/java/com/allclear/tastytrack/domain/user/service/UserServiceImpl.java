@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
      * 로그인
      * 작성자 : 오예령
      *
-     * @param userCreateRequest 계정명, 비밀번호
+     * @param  userCreateRequest 계정명, 비밀번호
      * @return 헤더에 토큰을 담아 반환
      */
     @Override
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
      *
      * @param username          계정명
      * @param userUpdateRequest 위도, 경도
-     * @return 수정된 회원정보 반환
+     * @return                  수정된 회원정보 반환
      */
     @Override
     @Transactional
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
      * 회원정보 조회
      * 장성자 : 오예령
      *
-     * @param username 게정명
+     * @param  username 게정명
      * @return 비밀번호를 제외한 회원정보 반환
      */
     @Override
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
      * 회원 검증
      * 작성자 : 오예령
      *
-     * @param username 계정명
+     * @param  username 계정명
      * @return 회원 객체 반환
      */
     private User userCheck(String username) {

@@ -7,39 +7,39 @@ import lombok.Getter;
 public class RawRestaurantResponse { // JSON 응답 데이터를 파싱할 클래스 4
 
     @JsonProperty("MGTNO")
-    private String MGTNO;
+    private String mgtno;
 
     @JsonProperty("DTLSTATEGBN")
-    private String DTLSTATEGBN;
+    private String dtlstategbn;
 
     @JsonProperty("BPLCNM")
-    private String BPLCNM;
+    private String bplcnm;
 
     @JsonProperty("UPTAENM")
-    private String UPTAENM;
+    private String uptaenm;
 
     @JsonProperty("DCBYMD")
-    private String DCBYMD;
+    private String dcbymd;
 
     @JsonProperty("SITEPOSTNO")
-    private String SITEPOSTNO;
+    private String sitepostno;
 
     @JsonProperty("SITEWHLADDR")
-    private String SITEWHLADDR;
+    private String sitewhladdr;
 
     @JsonProperty("RDNWHLADDR")
-    private String RDNWHLADDR;
+    private String rdnwhladdr;
 
     @JsonProperty("RDNPOSTNO")
-    private String RDNPOSTNO;
+    private String rdnpostno;
 
     @JsonProperty("LASTMODTS")
-    private String LASTMODTS;
+    private String lastmodts;
 
     @JsonProperty("X")
-    private String X;
+    private String lon; // 경도
 
     @JsonProperty("Y")
-    private String Y;
+    private String lat; // 위도
 
 }
