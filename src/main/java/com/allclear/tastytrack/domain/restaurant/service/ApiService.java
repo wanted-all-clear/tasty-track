@@ -1,9 +1,9 @@
-package com.allclear.tastytrack.domain.restraunt.service;
+package com.allclear.tastytrack.domain.restaurant.service;
 
-import com.allclear.tastytrack.domain.restraunt.dto.LocalDataResponse;
-import com.allclear.tastytrack.domain.restraunt.dto.RawRestaurantResponse;
-import com.allclear.tastytrack.domain.restraunt.entity.RawRestaurant;
-import com.allclear.tastytrack.domain.restraunt.repository.RawRestaurantRepository;
+import com.allclear.tastytrack.domain.restaurant.dto.LocalDataResponse;
+import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
+import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
+import com.allclear.tastytrack.domain.restaurant.repository.RawRestaurantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

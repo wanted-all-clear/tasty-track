@@ -1,6 +1,6 @@
-package com.allclear.tastytrack.domain.restraunt.controller;
+package com.allclear.tastytrack.domain.restaurant.controller;
 
-import com.allclear.tastytrack.domain.restraunt.service.ApiService;
+import com.allclear.tastytrack.domain.restaurant.service.ApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

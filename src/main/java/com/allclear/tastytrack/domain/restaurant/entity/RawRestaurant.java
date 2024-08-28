@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.domain.restraunt.entity;
+package com.allclear.tastytrack.domain.restaurant.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
