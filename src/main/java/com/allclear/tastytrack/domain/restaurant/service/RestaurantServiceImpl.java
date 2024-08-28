@@ -36,6 +36,6 @@ public class RestaurantServiceImpl implements RestaurantService{
 
 	@Override
 	public List<Review> getAllReviews(Long restaurantId) {
-		return reviewRepository.findAllByRestaurantId(restaurantId);
+		return reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
 	}
 }

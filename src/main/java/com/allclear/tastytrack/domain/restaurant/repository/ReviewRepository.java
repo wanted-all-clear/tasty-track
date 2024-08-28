@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.allclear.tastytrack.domain.restaurant.entity.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-	List<Review> findAllByRestaurantId(Long restaurantId);
+	List<Review> findAllByRestaurantIdOrderByCreatedAtDesc(Long restaurantId);
 }
