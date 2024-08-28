@@ -1,12 +1,16 @@
 package com.allclear.tastytrack.domain.user.controller;
 
+import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
+import com.allclear.tastytrack.domain.user.dto.UserInfo;
+import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
 import com.allclear.tastytrack.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +39,13 @@ public class UserController {
         HttpHeaders httpHeaders = userService.signin(userCreateRequest);
 
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(null);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity<UserInfo> updateUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                   @Validated @RequestBody UserUpdateRequest userUpdateRequest) {
+
+        return ResponseEntity.ok(userService.updateUserInfo(userDetails.getUsername(), userUpdateRequest));
     }
 
 

@@ -2,6 +2,8 @@ package com.allclear.tastytrack.domain.user.service;
 
 import com.allclear.tastytrack.domain.auth.UserAuth;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
+import com.allclear.tastytrack.domain.user.dto.UserInfo;
+import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
 import com.allclear.tastytrack.domain.user.entity.User;
 import com.allclear.tastytrack.domain.user.repository.UserRepository;
 import com.allclear.tastytrack.global.exception.CustomException;
@@ -54,6 +56,24 @@ public class UserServiceImpl implements UserService {
 
         User user = userCheck(userCreateRequest.getUsername());
         return userAuth.generateHeaderTokens(user);
+    }
+
+    /**
+     * 회원정보 수정
+     * 작성자 : 오예령
+     *
+     * @param username          계정명
+     * @param userUpdateRequest 위도, 경도
+     * @return 수정된 회원정보 반환
+     */
+    @Override
+    @Transactional
+    public UserInfo updateUserInfo(String username, UserUpdateRequest userUpdateRequest) {
+
+        User user = userCheck(username);
+        User initUser = userUpdateRequest.toUpdateEntity(user);
+        user.update(initUser);
+        return new UserInfo(user);
     }
 
     /**
