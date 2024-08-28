@@ -1,3 +1,8 @@
+# 공공데이터 API Key
+api:
+  key: ${API_KEY}
+
+# 1. 기본값 프로파일
 spring:
   application:
     name: tastytrack
@@ -7,9 +12,7 @@ spring:
 
   config:
     import: optional:file:.env[.properties]
-
-  datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,5 +30,39 @@ spring:
           new_generator_mappings: true
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
+# 2. 로컬용 프로파일 (보통 배포 전 초기 개발 단계에 사용)
+---
+spring:
+  config:
+    activate:
+      on-profile: local # 프로파일명
 
+  jpa:
+    hibernate:
+      ddl-auto: create # 서버 실행 시 DB의 모든 테이블 삭제 후 재생성
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true # (2.5~) Hibernate 초기화 이후 data.sql 실행
 
+# 3. 테스트 실행 전용 프로파일
+---
+spring:
+  config:
+    activate:
+      on-profile: test # 프로파일명 (@ActiveProfiles("test") 어노테이션을 부착한 테스트 클래스만 테스트 환경으로 실행)
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}_test
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create # 테스트 실행 시 DB의 모든 테이블 삭제 후 재생성
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
