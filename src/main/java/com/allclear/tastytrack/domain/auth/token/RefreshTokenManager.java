@@ -2,6 +2,7 @@ package com.allclear.tastytrack.domain.auth.token;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
@@ -24,14 +25,14 @@ public class RefreshTokenManager {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
 
-    public String saveRefreshToken(final String userEmail) {
+    public String saveRefreshToken(final String username) {
 
         String refreshToken = refreshTokenGenerator();
         log.info("generated RefreshToken = {} ", refreshToken);
-        if (refreshTokenRepository.findByEmail(refreshToken).isPresent()) {
-            saveRefreshToken(userEmail);
+        if (refreshTokenRepository.findByUsername(refreshToken).isPresent()) {
+            saveRefreshToken(username);
         } else {
-            refreshTokenRepository.save(new RefreshToken(refreshToken, userEmail));
+            refreshTokenRepository.save(new RefreshToken(refreshToken, username));
         }
         return refreshToken;
     }
