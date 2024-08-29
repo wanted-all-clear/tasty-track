@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
      * 회원정보 조회
      * 장성자 : 오예령
      *
-     * @param  username 게정명
+     * @param  username 계정명
      * @return 비밀번호를 제외한 회원정보 반환
      */
     @Override
