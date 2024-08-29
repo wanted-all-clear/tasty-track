@@ -19,6 +19,7 @@ import com.allclear.tastytrack.domain.review.service.ReviewServiceImpl;
 
 @ExtendWith({MockitoExtension.class})
 public class ReviewServiceImplTest {
+
 	@Mock
 	private ReviewRepository reviewRepository;
 	@InjectMocks
@@ -37,4 +38,5 @@ public class ReviewServiceImplTest {
 		// then
 		verify(reviewRepository, times(1)).findAllByRestaurantIdOrderByCreatedAtDesc(anyInt());
 	}
+
 }
