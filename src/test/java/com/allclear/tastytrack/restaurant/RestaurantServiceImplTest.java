@@ -24,11 +24,6 @@ public class RestaurantServiceImplTest {
 	@InjectMocks
 	private RestaurantServiceImpl restaurantServiceImpl;
 
-	@BeforeEach
-	public void setUp() {
-
-	}
-
 	@DisplayName("맛집 조회의 해피 테스트 입니다.")
 	@Test
 	public void getRestaurantDetailSuccessTest() {
