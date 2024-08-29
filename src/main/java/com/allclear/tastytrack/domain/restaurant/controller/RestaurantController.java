@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,11 +30,20 @@ public class RestaurantController {
 	public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
 			@RequestBody int id) {
 
+
 		Restaurant restaurant = restaurantService.getRestaurant(id);
 		List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
 		List<ReviewResponse> reviewResponses = new ArrayList<>();
 		if (!reviews.isEmpty()) {
-			List<CompletableFuture<ReviewResponse>> completableFutures = reviewService.createReviewResponse(reviews);
+
+			List<CompletableFuture<ReviewResponse>> listCompletableFuture =
+					reviewService.createReviewResponse(reviews);
+
+			CompletableFuture<List<ReviewResponse>> completableFuture =
+					reviewService.combineToListFuture(listCompletableFuture);
+
+			reviewResponses = completableFuture.join();
+
 		}
 		RestaurantDetail restaurantDetail = RestaurantDetail.builder()
 				.name(restaurant.getName())

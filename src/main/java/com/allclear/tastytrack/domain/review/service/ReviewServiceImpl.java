@@ -3,12 +3,14 @@ package com.allclear.tastytrack.domain.review.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
 import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
+import com.allclear.tastytrack.domain.user.entity.User;
 import com.allclear.tastytrack.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -31,9 +33,23 @@ public class ReviewServiceImpl implements ReviewService {
 
 		List<CompletableFuture<ReviewResponse>> reviewResponses = new ArrayList<>();
 		for (Review review : reviews) {
-			reviewResponses.add(asyncCreateReviewResponse(review));
+			reviewResponses.add(CompletableFuture.supplyAsync(() -> asyncCreateReviewResponse(review)));
 		}
 		return reviewResponses;
+	}
+
+	@Override
+	public CompletableFuture<List<ReviewResponse>> combineToListFuture(
+			List<CompletableFuture<ReviewResponse>> listCompletableFuture) {
+
+		CompletableFuture<?>[] completableFutureArray =
+				listCompletableFuture.toArray(new CompletableFuture<?>[0]);
+
+		return CompletableFuture.allOf(completableFutureArray)
+				.thenApplyAsync(
+						i -> listCompletableFuture.stream()
+								.map(CompletableFuture::join)
+								.collect(Collectors.toList()));
 	}
 
 	/**
@@ -43,11 +59,18 @@ public class ReviewServiceImpl implements ReviewService {
 	 * @param review
 	 * @return
 	 */
-	private CompletableFuture<ReviewResponse> asyncCreateReviewResponse(Review review) {
+	private ReviewResponse asyncCreateReviewResponse(Review review) {
+
 		User user = userRepository.findById(review.getUserId()).get();
 
 		return ReviewResponse.builder()
-				.username(review.get)
+				.username(user.getUsername())
+				.score(review.getScore())
+				.content(review.getContent())
+				.createdAt(review.getCreatedAt())
+				.build();
+
 	}
+
 
 }

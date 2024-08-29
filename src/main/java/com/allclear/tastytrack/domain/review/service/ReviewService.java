@@ -12,4 +12,7 @@ public interface ReviewService {
 
 	List<CompletableFuture<ReviewResponse>> createReviewResponse(List<Review> reviews);
 
+	CompletableFuture<List<ReviewResponse>> combineToListFuture(
+			List<CompletableFuture<ReviewResponse>> listCompletableFuture);
+
 }
