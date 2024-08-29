@@ -31,7 +31,7 @@ public class ApiService {
      * 작성자 : 유리빛나
      *
      * @param startIndex 요청 시작 위치
-     * @param endIndex 요청 종료 위치
+     * @param endIndex   요청 종료 위치
      */
     public void getRawRestaurants(String startIndex, String endIndex) {
 
@@ -60,20 +60,7 @@ public class ApiService {
             List<RawRestaurantResponse> rows = localDataResponse.getLocalData().getRawRestaurantResponses();
 
             for (RawRestaurantResponse raw : rows) {
-                RawRestaurant restaurant = RawRestaurant.builder()
-                        .mgtno(raw.getMgtno())
-                        .dtlstategbn(raw.getDtlstategbn())
-                        .bplcnm(raw.getBplcnm())
-                        .uptaenm(raw.getUptaenm())
-                        .dcbymd(raw.getDcbymd())
-                        .sitepostno(raw.getSitepostno())
-                        .sitewhladdr(raw.getSitewhladdr())
-                        .rdnwhladdr(raw.getRdnwhladdr())
-                        .rdnpostno(raw.getRdnpostno())
-                        .lastmodts(raw.getLastmodts())
-                        .lon(raw.getLon())
-                        .lat(raw.getLat())
-                        .build();
+                RawRestaurant restaurant = getRawRestaurantBuilder(raw);
 
                 rawRestaurantRepository.save(restaurant);
             }
@@ -81,6 +68,29 @@ public class ApiService {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * 공공데이터의 맛집 응답 데이터를 원본 맛집 DB Entity에 저장하기 위해 Builder 패턴으로 객체를 생성하는 메서드
+     * 작성자 : 유리빛나
+     *
+     * @param raw 공공데이터의 맛집 응답 데이터
+     * @return 맛집 응답 데이터가 저장된 원본 맛집 Entity 객체
+     */
+    private static RawRestaurant getRawRestaurantBuilder(RawRestaurantResponse raw) {
+
+        return RawRestaurant.builder()
+                .mgtno(raw.getMgtno())
+                .bplcnm(raw.getBplcnm())
+                .uptaenm(raw.getUptaenm())
+                .dtlstategbn(raw.getDtlstategbn())
+                .sitewhladdr(raw.getSitewhladdr())
+                .rdnwhladdr(raw.getRdnwhladdr())
+                .lon(raw.getLon())
+                .lat(raw.getLat())
+                .lastmodts(raw.getLastmodts())
+                .dcbymd(raw.getDcbymd())
+                .build();
     }
 
 }
