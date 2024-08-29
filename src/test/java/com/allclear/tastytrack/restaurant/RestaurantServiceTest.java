@@ -13,11 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.allclear.tastytrack.domain.address.repository.AddressRepository;
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
-import com.allclear.tastytrack.domain.restaurant.repository.ReviewRepository;
+import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,8 +25,6 @@ public class RestaurantServiceTest {
 	private RestaurantRepository restaurantRepository;
 	@Mock
 	private ReviewRepository reviewRepository;
-	@Mock
-	private AddressRepository addressRepository;
 
 	@InjectMocks
 	private RestaurantServiceImpl restaurantServiceImpl;
@@ -61,7 +57,6 @@ public class RestaurantServiceTest {
 		//then
 		verify(restaurantRepository, times(1)).findById(any());
 		verify(reviewRepository, times(1)).findAllByRestaurantIdOrderByCreatedAtDesc(any());
-		verify(addressRepository, times(1)).findById(any());
 	}
 
 	/**

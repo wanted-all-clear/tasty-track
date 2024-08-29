@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.domain.restaurant.entity;
+package com.allclear.tastytrack.domain.review.entity;
 
 import java.time.LocalDateTime;
 
