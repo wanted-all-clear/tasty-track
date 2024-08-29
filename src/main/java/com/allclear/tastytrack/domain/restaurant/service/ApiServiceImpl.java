@@ -92,17 +92,7 @@ public class ApiServiceImpl implements ApiService {
         for (RawRestaurant rawRestaurant : rawRestaurantList) {
 
             // 원본 데이터를 가공하여 새로운 엔티티 생성
-            Restaurant restaurant = Restaurant.builder()
-                    .code(rawRestaurant.getMgtno())
-                    .name(rawRestaurant.getBplcnm())
-                    .type(rawRestaurant.getUptaenm())
-                    .status(rawRestaurant.getDtlstategbn())
-                    .oldAddress(rawRestaurant.getSitewhladdr())
-                    .newAddress(rawRestaurant.getRdnwhladdr())
-                    .lon(rawRestaurant.getLon())
-                    .lat(rawRestaurant.getLat())
-                    .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
-                    .build();
+            Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
 
             // 가공된 데이터 저장
             restaurantRepository.save(restaurant);
@@ -110,7 +100,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     /**
-     * 공공데이터의 맛집 응답 데이터를 원본 맛집 DB Entity에 저장하기 위해 Builder 패턴으로 객체를 생성하는 메서드
+     * 공공데이터의 맛집 응답 데이터를 원본 맛집 Entity에 저장하기 위해 Builder 패턴으로 RawRestaurant 객체를 생성하는 메서드
      * 작성자 : 유리빛나
      *
      * @param raw 공공데이터의 맛집 응답 데이터
@@ -133,7 +123,7 @@ public class ApiServiceImpl implements ApiService {
     }
 
     /**
-     * 원본 맛집 객체의 최종 수정일자를 문자열에서 LocalDateTime 타입으로 파싱합니다.
+     * 원본 맛집 객체의 최종 수정일자를 문자열에서 LocalDateTime 타입으로 파싱하기 위한 메서드
      * 작성자 : 유리빛나
      *
      * @param lastmodts 원본 맛집 객체의 최종 수정일자를 나타내는 문자열
@@ -144,6 +134,28 @@ public class ApiServiceImpl implements ApiService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         return LocalDateTime.parse(lastmodts, formatter);
+    }
+
+    /**
+     * 원본 맛집 데이터를 가공 맛집 Entity에 저장하기 위해 Builder 패턴으로 Restaurant 객체를 생성하는 메서드
+     * 작성자 : 유리빛나
+     *
+     * @param rawRestaurant 원본 맛집 데이터
+     * @return 원본 맛집 데이터가 저장된 가공 맛집 Entity 객체
+     */
+    private Restaurant getRestaurantBuilder(RawRestaurant rawRestaurant) {
+
+        return Restaurant.builder()
+                .code(rawRestaurant.getMgtno())
+                .name(rawRestaurant.getBplcnm())
+                .type(rawRestaurant.getUptaenm())
+                .status(rawRestaurant.getDtlstategbn())
+                .oldAddress(rawRestaurant.getSitewhladdr())
+                .newAddress(rawRestaurant.getRdnwhladdr())
+                .lon(rawRestaurant.getLon())
+                .lat(rawRestaurant.getLat())
+                .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
+                .build();
     }
 
 }
