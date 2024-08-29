@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 public class Restaurant {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
