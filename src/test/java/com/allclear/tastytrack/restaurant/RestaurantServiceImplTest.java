@@ -54,6 +54,7 @@ public class RestaurantServiceImplTest {
 		Throwable ex = assertThrows(RuntimeException.class, () -> restaurantServiceImpl.getRestaurant(anyInt()));
 
 		// then
-		assertThat(ex.getMessage()).isEqualTo("조회된 레스토랑이 없습니다.");
+		assertThat(ex.getMessage()).isEqualTo("조회된 음식점이 존재하지 않습니다.");
 	}
+
 }
