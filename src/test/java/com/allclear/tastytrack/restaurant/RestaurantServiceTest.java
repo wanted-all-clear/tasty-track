@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.*;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,10 +35,7 @@ public class RestaurantServiceTest {
 
 	}
 
-	/**
-	 * 맛집 조회의 해피 테스트 입니다.
-	 * 작성자 : 김은정
-	 */
+	@DisplayName("맛집 조회의 해피 테스트 입니다.")
 	@Test
 	public void getRestaurantDetailSuccessTest() {
 		//given
@@ -59,11 +57,7 @@ public class RestaurantServiceTest {
 		verify(reviewRepository, times(1)).findAllByRestaurantIdOrderByCreatedAtDesc(any());
 	}
 
-	/**
-	 * 맛집 조회의 실패 테스트 입니다.
-	 * - 맛집을 조회하지 못 하는 경우
-	 * 작성자 : 김은정
-	 */
+	@DisplayName("맛집 조회의 실패 테스트 입니다.")
 	@Test
 	public void getRestaurantDetailFailTest() {
 		// when
