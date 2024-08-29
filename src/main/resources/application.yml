@@ -58,6 +58,10 @@ spring:
         format_sql: true
     defer-datasource-initialization: true # (2.5~) Hibernate 초기화 이후 data.sql 실행
 
+  sql:
+    init:
+      mode: always # 서버 실행 시 data.sql 파일 항상 실행
+
 # 3. 테스트 실행 전용 프로파일
 ---
 spring:
@@ -78,3 +82,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  sql:
+    init:
+      mode: never # 테스트 실행 시 data.sql 실행하지 않음

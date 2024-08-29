@@ -25,7 +25,7 @@ public class RawRestaurant {
     private String rdnwhladdr;  // 도로명주소
     private String lon;         // 경도
     private String lat;         // 위도
-    private String dcbymd;      // 폐업일자
     private String lastmodts;   // 최종 수정일자
+    private String dcbymd;      // 폐업일자
 
 }
