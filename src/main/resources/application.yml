@@ -32,6 +32,11 @@ spring:
         id:
           new_generator_mappings: true
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${REDIS_PASSWORD}
 
 # jwt Secret Key
 jwt:
