@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 public class Restaurant {
 
 	@Id
+	//  todo
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
@@ -35,7 +36,7 @@ public class Restaurant {
 	private String name;
 
 	@Column(nullable = false)
-	private String code;
+	private String restaurantNo;
 
 	@Column(nullable = false)
 	private String type;
@@ -62,6 +63,6 @@ public class Restaurant {
 	@JsonFormat(pattern = "yyyy-MM-DD HH:mm:ss")
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	private LocalDateTime lastModts;
+	private LocalDateTime lastUpdateAt;
 
 }

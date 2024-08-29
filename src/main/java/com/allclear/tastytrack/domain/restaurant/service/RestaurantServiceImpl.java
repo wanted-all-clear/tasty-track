@@ -1,12 +1,9 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
-import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.global.exception.CustomException;
