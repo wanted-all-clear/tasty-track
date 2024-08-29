@@ -27,7 +27,7 @@ public class ApiService {
     private String apiKey; // API 인증키
 
     /**
-     * 맛집 데이터를 수집합니다.
+     * 서울 맛집 데이터를 수집하여 DB 맛집 원본 테이블에 저장합니다.
      * 작성자 : 유리빛나
      *
      * @param startIndex 요청 시작 위치
@@ -61,18 +61,18 @@ public class ApiService {
 
             for (RawRestaurantResponse raw : rows) {
                 RawRestaurant restaurant = RawRestaurant.builder()
-                        .MGTNO(raw.getMGTNO())
-                        .DTLSTATEGBN(raw.getDTLSTATEGBN())
-                        .BPLCNM(raw.getBPLCNM())
-                        .UPTAENM(raw.getUPTAENM())
-                        .DCBYMD(raw.getDCBYMD())
-                        .SITEPOSTNO(raw.getSITEPOSTNO())
-                        .SITEWHLADDR(raw.getSITEWHLADDR())
-                        .RDNWHLADDR(raw.getRDNWHLADDR())
-                        .RDNPOSTNO(raw.getRDNPOSTNO())
-                        .LASTMODTS(raw.getLASTMODTS())
-                        .X(raw.getX())
-                        .Y(raw.getY())
+                        .mgtno(raw.getMgtno())
+                        .dtlstategbn(raw.getDtlstategbn())
+                        .bplcnm(raw.getBplcnm())
+                        .uptaenm(raw.getUptaenm())
+                        .dcbymd(raw.getDcbymd())
+                        .sitepostno(raw.getSitepostno())
+                        .sitewhladdr(raw.getSitewhladdr())
+                        .rdnwhladdr(raw.getRdnwhladdr())
+                        .rdnpostno(raw.getRdnpostno())
+                        .lastmodts(raw.getLastmodts())
+                        .lon(raw.getLon())
+                        .lat(raw.getLat())
                         .build();
 
                 rawRestaurantRepository.save(restaurant);
