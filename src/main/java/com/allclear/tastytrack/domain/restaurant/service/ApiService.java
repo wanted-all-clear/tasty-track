@@ -31,7 +31,7 @@ public class ApiService {
      * 작성자 : 유리빛나
      *
      * @param startIndex 요청 시작 위치
-     * @param endIndex 요청 종료 위치
+     * @param endIndex   요청 종료 위치
      */
     public void getRawRestaurants(String startIndex, String endIndex) {
 
@@ -66,10 +66,8 @@ public class ApiService {
                         .bplcnm(raw.getBplcnm())
                         .uptaenm(raw.getUptaenm())
                         .dcbymd(raw.getDcbymd())
-                        .sitepostno(raw.getSitepostno())
                         .sitewhladdr(raw.getSitewhladdr())
                         .rdnwhladdr(raw.getRdnwhladdr())
-                        .rdnpostno(raw.getRdnpostno())
                         .lastmodts(raw.getLastmodts())
                         .lon(raw.getLon())
                         .lat(raw.getLat())
