@@ -4,8 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,17 +14,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
-import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class RestaurantServiceTest {
+public class RestaurantServiceImplTest {
 
 	@Mock
 	private RestaurantRepository restaurantRepository;
-	@Mock
-	private ReviewRepository reviewRepository;
-
 	@InjectMocks
 	private RestaurantServiceImpl restaurantServiceImpl;
 
@@ -41,27 +35,29 @@ public class RestaurantServiceTest {
 		//given
 		Restaurant restaurant = Restaurant.builder()
 			.name("맥도날드")
-			.addressId(101L)
 			.code("1234-8945")
 			.type("패스트푸드")
 			.status("영업")
 			.rateScore(4.2)
+			.oldAddress("old address")
+			.newAddress("new address")
+			.lon("위도")
+			.lat("경도")
 			.build();
-		given(restaurantRepository.findById(101L)).willReturn(Optional.ofNullable(restaurant));
+		given(restaurantRepository.findById(anyInt())).willReturn(restaurant);
 
 		// when
-		restaurantServiceImpl.getRestaurant(any());
+		restaurantServiceImpl.getRestaurant(anyInt());
 
 		//then
-		verify(restaurantRepository, times(1)).findById(any());
-		verify(reviewRepository, times(1)).findAllByRestaurantIdOrderByCreatedAtDesc(any());
+		verify(restaurantRepository, times(1)).findById(anyInt());
 	}
 
 	@DisplayName("맛집 조회의 실패 테스트 입니다.")
 	@Test
 	public void getRestaurantDetailFailTest() {
 		// when
-		Throwable ex = assertThrows(RuntimeException.class, () -> restaurantServiceImpl.getRestaurant(any()));
+		Throwable ex = assertThrows(RuntimeException.class, () -> restaurantServiceImpl.getRestaurant(anyInt()));
 
 		// then
 		assertThat(ex.getMessage()).isEqualTo("조회된 레스토랑이 없습니다.");

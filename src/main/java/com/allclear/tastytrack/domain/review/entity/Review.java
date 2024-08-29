@@ -26,13 +26,13 @@ import lombok.NoArgsConstructor;
 public class Review {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 
 	@Column(nullable = false)
-	private Long userId;
+	private int userId;
 
 	@Column(nullable = false)
-	private Long restaurantId;
+	private int restaurantId;
 
 	@Column(nullable = false)
 	private int score;

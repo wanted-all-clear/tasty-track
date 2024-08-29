@@ -6,6 +6,5 @@ import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.review.entity.Review;
 
 public interface RestaurantService {
-	public Restaurant getRestaurant(Long id);
-	public List<Review> getAllReviews(Long restaurantId);
+	public Restaurant getRestaurant(int id);
 }

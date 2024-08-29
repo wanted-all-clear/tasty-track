@@ -19,17 +19,12 @@ public class RestaurantServiceImpl implements RestaurantService{
 	private ReviewRepository reviewRepository;
 
 	@Override
-	public Restaurant getRestaurant(Long id) {
-		Optional<Restaurant> restaurantOpt = restaurantRepository.findById(id);
-		if(restaurantOpt.isEmpty()) {
+	public Restaurant getRestaurant(int id) {
+		Restaurant restaurant = restaurantRepository.findById(id);
+		if(restaurant == null) {
 			throw new RuntimeException("조회된 레스토랑이 없습니다.");
 		}
 
-		return restaurantOpt.get();
-	}
-
-	@Override
-	public List<Review> getAllReviews(Long restaurantId) {
-		return reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
+		return restaurant;
 	}
 }
