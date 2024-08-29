@@ -23,16 +23,16 @@ public class RefreshTokenRepository {
     }
 
 
-    public Optional<RefreshToken> findByEmail(final String refreshToken) {
+    public Optional<RefreshToken> findByUsername(final String refreshToken) {
 
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String userEmail = valueOperations.get(refreshToken);
+        String username = valueOperations.get(refreshToken);
 
-        if (Objects.isNull(userEmail)) {
+        if (Objects.isNull(username)) {
             return Optional.empty();
         }
 
-        return Optional.of(new RefreshToken(refreshToken, userEmail));
+        return Optional.of(new RefreshToken(refreshToken, username));
     }
 
 }
