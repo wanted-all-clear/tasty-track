@@ -6,12 +6,14 @@ import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RawRestaurantRepository;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -33,7 +35,7 @@ public class ApiServiceImpl implements ApiService {
     private String apiKey; // API 인증키
 
     /**
-     * 1. 서울 맛집 데이터를 수집하여 DB 맛집 원본 테이블에 저장합니다.
+     * 1. 서울 맛집 데이터를 수집하여 DB 맛집 원본 테이블에 저장한 후, 전처리 작업을 거쳐 가공 맛집 테이블에 데이터를 저장합니다.
      * 작성자 : 유리빛나
      *
      * @param startIndex 요청 시작 위치
@@ -55,9 +57,16 @@ public class ApiServiceImpl implements ApiService {
 
         // RestTemplate을 사용하여 GET 요청 전송
         RestTemplate template = new RestTemplate();
+        String jsonResponse;
 
-        String jsonResponse = template.getForObject(uri, String.class);
-        log.info("JSON 응답:" + jsonResponse);
+        try {
+            jsonResponse = template.getForObject(uri, String.class);
+            log.info("JSON 응답:" + jsonResponse);
+        } catch (RestClientException e) {
+            // HTTP 요청 관련 예외 처리
+            log.error("API 요청 실패: {}", uri, e);
+            return; // 요청 실패 시 메서드 종료
+        }
 
         // JSON 응답 데이터를 파싱하여 엔티티로 변환
         try {
@@ -71,8 +80,9 @@ public class ApiServiceImpl implements ApiService {
 
                 rawRestaurantRepository.save(restaurant);
             }
-        } catch (Exception e) {
-            log.error("데이터 파싱 중 오류 발생", e);
+        } catch (JsonProcessingException e) {
+            // JSON 파싱 관련 예외 처리
+            log.error("JSON 파싱 실패: {}", jsonResponse, e);
         }
 
         // 전처리 후 가공된 데이터를 가공 맛집 테이블에 저장
