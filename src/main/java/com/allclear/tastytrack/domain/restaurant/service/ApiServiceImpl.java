@@ -100,6 +100,10 @@ public class ApiServiceImpl implements ApiService {
         List<RawRestaurant> rawRestaurantList = rawRestaurantRepository.findAll();
 
         for (RawRestaurant rawRestaurant : rawRestaurantList) {
+            // 폐업일자가 있는 데이터는 저장 제외
+            if (!rawRestaurant.getDcbymd().isEmpty()) {
+                continue;
+            }
 
             // 원본 데이터를 가공하여 새로운 엔티티 생성
             Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
