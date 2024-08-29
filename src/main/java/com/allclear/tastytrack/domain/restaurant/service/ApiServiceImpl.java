@@ -42,7 +42,7 @@ public class ApiServiceImpl implements ApiService {
     @Transactional
     public void getRawRestaurants(String startIndex, String endIndex) {
 
-        // 요청 URL 구성
+        // 공공데이터 요청을 위한 URL 구성
         String apiUrl = "http://openapi.seoul.go.kr:8088"; // URL
         String responseType = "json";                      // 요청파일 타입
         String serviceName = "LOCALDATA_072404";           // 서비스명
@@ -53,29 +53,29 @@ public class ApiServiceImpl implements ApiService {
                 .encode()
                 .toUri();
 
-        // RestTemplate 사용하여 GET 요청 보내기
+        // RestTemplate을 사용하여 GET 요청 전송
         RestTemplate template = new RestTemplate();
 
         String jsonResponse = template.getForObject(uri, String.class);
         log.info("JSON 응답:" + jsonResponse);
 
-        // JSON 데이터를 파싱하여 엔티티로 변환
-        // ObjectMapper를 사용하여 역직렬화 (JSON 문자열을 Java 객체로 변환)
+        // JSON 응답 데이터를 파싱하여 엔티티로 변환
         try {
             LocalDataResponse localDataResponse = objectMapper.readValue(jsonResponse, LocalDataResponse.class);
 
             List<RawRestaurantResponse> rows = localDataResponse.getLocalData().getRawRestaurantResponses();
 
+            // 각 데이터를 원본 맛집 테이블에 저장
             for (RawRestaurantResponse raw : rows) {
                 RawRestaurant restaurant = getRawRestaurantBuilder(raw);
 
                 rawRestaurantRepository.save(restaurant);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("데이터 파싱 중 오류 발생", e);
         }
 
-        // 원본 맛집 데이터 전처리 후 가공된 데이터를 가공 맛집 테이블에 저장
+        // 전처리 후 가공된 데이터를 가공 맛집 테이블에 저장
         preprocessing();
 
     }
@@ -86,10 +86,12 @@ public class ApiServiceImpl implements ApiService {
      */
     public void preprocessing() {
 
+        // 원본 맛집 테이블 모든 데이터 조회
         List<RawRestaurant> rawRestaurantList = rawRestaurantRepository.findAll();
 
         for (RawRestaurant rawRestaurant : rawRestaurantList) {
 
+            // 원본 데이터를 가공하여 새로운 엔티티 생성
             Restaurant restaurant = Restaurant.builder()
                     .code(rawRestaurant.getMgtno())
                     .name(rawRestaurant.getBplcnm())
@@ -102,6 +104,7 @@ public class ApiServiceImpl implements ApiService {
                     .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
                     .build();
 
+            // 가공된 데이터 저장
             restaurantRepository.save(restaurant);
         }
     }
