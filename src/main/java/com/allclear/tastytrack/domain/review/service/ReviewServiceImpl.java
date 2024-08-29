@@ -17,7 +17,7 @@ public class ReviewServiceImpl implements ReviewService{
 	private ReviewRepository reviewRepository;
 
 	@Override
-	public List<Review> getAllReviews(int restaurantId) {
+	public List<Review> getAllReviewsByRestaurantId(int restaurantId) {
 		return reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
 	}
 }
