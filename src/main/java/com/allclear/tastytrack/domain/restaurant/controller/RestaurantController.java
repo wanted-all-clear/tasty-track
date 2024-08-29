@@ -6,7 +6,9 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
@@ -18,18 +20,22 @@ import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api/restaurants")
 public class RestaurantController {
 
 	private final RestaurantService restaurantService;
 	private final ReviewService reviewService;
 
+	@PostMapping("")
 	public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
 			@RequestBody int id) {
 
-
+		log.info("음식점 id = {}", id);
 		Restaurant restaurant = restaurantService.getRestaurant(id);
 		List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
 		List<ReviewResponse> reviewResponses = new ArrayList<>();
@@ -53,7 +59,7 @@ public class RestaurantController {
 				.newAddress(restaurant.getNewAddress())
 				.lon(restaurant.getLon())
 				.lat(restaurant.getLat())
-				.lastUpdateAt(restaurant.getLastUpdateAt())
+				.lastUpdateAt(restaurant.getLastUpdatedAt())
 				.reviewResponses(reviewResponses)
 				.build();
 

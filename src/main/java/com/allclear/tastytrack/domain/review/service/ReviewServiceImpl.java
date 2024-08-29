@@ -19,13 +19,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-	private ReviewRepository reviewRepository;
-	private UserRepository userRepository;
+	private final ReviewRepository reviewRepository;
+	private final UserRepository userRepository;
 
 	@Override
 	public List<Review> getAllReviewsByRestaurantId(int restaurantId) {
 
-		return reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
+		return reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId).get();
 	}
 
 	@Override
@@ -67,7 +67,6 @@ public class ReviewServiceImpl implements ReviewService {
 				.username(user.getUsername())
 				.score(review.getScore())
 				.content(review.getContent())
-				.createdAt(review.getCreatedAt())
 				.build();
 
 	}
