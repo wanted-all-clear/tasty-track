@@ -2,6 +2,8 @@ package com.allclear.tastytrack.domain.user.service;
 
 import com.allclear.tastytrack.domain.user.dto.LoginRequest;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
+import com.allclear.tastytrack.domain.user.dto.UserInfo;
+import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
 import com.allclear.tastytrack.domain.user.entity.User;
 import com.allclear.tastytrack.domain.user.repository.UserRepository;
 import com.allclear.tastytrack.global.exception.CustomException;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +42,7 @@ class UserServiceImplTest {
                 .password("testPassword")
                 .lon(127.345)
                 .lat(35.492)
+                .lunchRecommendYn(false)
                 .build();
 
         userRepository.save(user);
@@ -90,15 +95,24 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("회원정보를 수정합니다.")
     void updateUserInfo() {
+        // given
+        UserUpdateRequest userUpdateRequest = UserUpdateRequest.builder()
+                .lon(122.34)
+                .lat(26.42)
+                .lunchRecommendYn(true)
+                .build();
 
+        // when
+        UserInfo user = userService.updateUserInfo("testUser", userUpdateRequest);
+
+        User testUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
+                () -> new CustomException(ErrorCode.USER_NOT_EXIST)
+        );
+
+        // then
+        assertEquals(true, testUser.isLunchRecommendYn());
     }
-
-    @Test
-    void getUserInfo() {
-
-    }
-
-
 
 }

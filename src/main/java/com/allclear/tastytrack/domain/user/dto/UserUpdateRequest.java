@@ -3,9 +3,11 @@ package com.allclear.tastytrack.domain.user.dto;
 import com.allclear.tastytrack.domain.user.entity.User;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class UserUpdateRequest {
 
