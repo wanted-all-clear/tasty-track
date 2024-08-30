@@ -35,8 +35,17 @@ public class ApiServiceImpl implements ApiService {
 
     private final CoordinateService coordinateService;
 
-    @Value("${api.key}")
+    @Value("${API_URL}")
+    private String apiUrl; // API URL
+
+    @Value("${API_KEY}")
     private String apiKey; // API 인증키
+
+    @Value("${API_RESPONSE_TYPE}")
+    private String responseType; // 요청파일 타입
+
+    @Value("${API_SERVICE_NAME}")
+    private String serviceName; // 요청파일 타입
 
     /**
      * 1. 서울 맛집 데이터를 수집하여 DB 맛집 원본 테이블에 저장한 후, 전처리 작업을 거쳐 가공 맛집 테이블에 데이터를 저장합니다.
@@ -46,13 +55,9 @@ public class ApiServiceImpl implements ApiService {
      * @param endIndex   요청 종료 위치
      */
     @Transactional
-    public void getRawRestaurants(String startIndex, String endIndex) throws Exception {
+    public void fetchRawRestaurants(String startIndex, String endIndex) throws Exception {
 
         // 공공데이터 요청을 위한 URL 구성
-        String apiUrl = "http://openapi.seoul.go.kr:8088"; // URL
-        String responseType = "json";                      // 요청파일 타입
-        String serviceName = "LOCALDATA_072404";           // 서비스명
-
         URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .pathSegment(apiKey, responseType, serviceName, startIndex, endIndex)
                 .build()
@@ -174,8 +179,8 @@ public class ApiServiceImpl implements ApiService {
                 .status(rawRestaurant.getDtlstategbn())
                 .oldAddress(rawRestaurant.getSitewhladdr())
                 .newAddress(rawRestaurant.getRdnwhladdr())
-                .lon(rawRestaurant.getLon())
-                .lat(rawRestaurant.getLat())
+                .lon(Double.valueOf(rawRestaurant.getLon()))
+                .lat(Double.valueOf(rawRestaurant.getLat()))
                 .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
                 .build();
     }

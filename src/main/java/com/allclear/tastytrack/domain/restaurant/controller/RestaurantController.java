@@ -28,42 +28,42 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/restaurants")
 public class RestaurantController {
 
-	private final RestaurantService restaurantService;
-	private final ReviewService reviewService;
+    private final RestaurantService restaurantService;
+    private final ReviewService reviewService;
 
-	@PostMapping("")
-	public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
-			@RequestBody int id) {
+    @PostMapping("")
+    public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                          @RequestBody int id) {
 
-		log.info("음식점 id = {}", id);
-		Restaurant restaurant = restaurantService.getRestaurant(id);
-		List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
-		List<ReviewResponse> reviewResponses = new ArrayList<>();
-		if (!reviews.isEmpty()) {
+        log.info("음식점 id = {}", id);
+        Restaurant restaurant = restaurantService.getRestaurant(id);
+        List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
+        List<ReviewResponse> reviewResponses = new ArrayList<>();
+        if (!reviews.isEmpty()) {
 
-			List<CompletableFuture<ReviewResponse>> listCompletableFuture =
-					reviewService.createReviewResponse(reviews);
+            List<CompletableFuture<ReviewResponse>> listCompletableFuture =
+                    reviewService.createReviewResponse(reviews);
 
-			CompletableFuture<List<ReviewResponse>> completableFuture =
-					reviewService.combineToListFuture(listCompletableFuture);
+            CompletableFuture<List<ReviewResponse>> completableFuture =
+                    reviewService.combineToListFuture(listCompletableFuture);
 
-			reviewResponses = completableFuture.join();
+            reviewResponses = completableFuture.join();
 
-		}
-		RestaurantDetail restaurantDetail = RestaurantDetail.builder()
-				.name(restaurant.getName())
-				.type(restaurant.getType())
-				.status(restaurant.getStatus())
-				.rateScore(restaurant.getRateScore())
-				.oldAddress(restaurant.getOldAddress())
-				.newAddress(restaurant.getNewAddress())
-				.lon(restaurant.getLon())
-				.lat(restaurant.getLat())
-				.lastUpdateAt(restaurant.getLastUpdatedAt())
-				.reviewResponses(reviewResponses)
-				.build();
+        }
+        RestaurantDetail restaurantDetail = RestaurantDetail.builder()
+                .name(restaurant.getName())
+                .type(restaurant.getType())
+                .status(restaurant.getStatus())
+                .rateScore(restaurant.getRateScore())
+                .oldAddress(restaurant.getOldAddress())
+                .newAddress(restaurant.getNewAddress())
+                .lon(String.valueOf(restaurant.getLon()))
+                .lat(String.valueOf(restaurant.getLat()))
+                .lastUpdateAt(restaurant.getLastUpdatedAt())
+                .reviewResponses(reviewResponses)
+                .build();
 
-		return ResponseEntity.ok(restaurantDetail);
-	}
+        return ResponseEntity.ok(restaurantDetail);
+    }
 
 }
