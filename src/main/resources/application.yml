@@ -1,6 +1,10 @@
-# 공공데이터 API Key
+# 공공데이터 API 관련 설정
 api:
+  url: ${API_URL}
   key: ${API_KEY}
+  response-type: ${API_RESPONSE_TYPE}
+  service-name: ${API_SERVICE_NAME}
+
 
 # 1. 기본값 프로파일
 spring:
@@ -60,8 +64,10 @@ spring:
 
   sql:
     init:
-      mode: always # 서버 실행 시 data.sql 파일 항상 실행
-      data-locations: classpath:db/data.sql, classpath:db/region.sql
+      mode: never # 서버 실행 시 data.sql 파일 항상 실행
+      data-locations:
+        - classpath:db/data.sql
+        - classpath:db/region.sql
 
 # 3. 테스트 실행 전용 프로파일
 ---
@@ -87,3 +93,4 @@ spring:
   sql:
     init:
       mode: never # 테스트 실행 시 data.sql 실행하지 않음
+

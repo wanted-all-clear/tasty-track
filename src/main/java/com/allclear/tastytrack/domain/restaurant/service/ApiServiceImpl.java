@@ -1,17 +1,7 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
-import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
+import com.allclear.tastytrack.domain.restaurant.coordinate.dto.Coordinate;
+import com.allclear.tastytrack.domain.restaurant.coordinate.service.CoordinateService;
 import com.allclear.tastytrack.domain.restaurant.dto.LocalDataResponse;
 import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
 import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
@@ -23,6 +13,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -33,8 +34,19 @@ public class ApiServiceImpl implements ApiService {
     private final RestaurantRepository restaurantRepository;
     private final ObjectMapper objectMapper;
 
-    @Value("${api.key}")
+    private final CoordinateService coordinateService;
+
+    @Value("${API_URL}")
+    private String apiUrl; // API URL
+
+    @Value("${API_KEY}")
     private String apiKey; // API 인증키
+
+    @Value("${API_RESPONSE_TYPE}")
+    private String responseType; // 요청파일 타입
+
+    @Value("${API_SERVICE_NAME}")
+    private String serviceName; // 요청파일 타입
 
     /**
      * 1. 서울 맛집 데이터를 수집하여 DB 맛집 원본 테이블에 저장한 후, 전처리 작업을 거쳐 가공 맛집 테이블에 데이터를 저장합니다.
@@ -44,13 +56,9 @@ public class ApiServiceImpl implements ApiService {
      * @param endIndex   요청 종료 위치
      */
     @Transactional
-    public void getRawRestaurants(String startIndex, String endIndex) {
+    public void fetchRawRestaurants(String startIndex, String endIndex) throws Exception {
 
         // 공공데이터 요청을 위한 URL 구성
-        String apiUrl = "http://openapi.seoul.go.kr:8088"; // URL
-        String responseType = "json";                      // 요청파일 타입
-        String serviceName = "LOCALDATA_072404";           // 서비스명
-
         URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .pathSegment(apiKey, responseType, serviceName, startIndex, endIndex)
                 .build()
@@ -63,7 +71,6 @@ public class ApiServiceImpl implements ApiService {
 
         try {
             jsonResponse = template.getForObject(uri, String.class);
-            log.info("JSON 응답:" + jsonResponse);
         } catch (RestClientException e) {
             // HTTP 요청 관련 예외 처리
             log.error("API 요청 실패: {}", uri, e);
@@ -96,7 +103,7 @@ public class ApiServiceImpl implements ApiService {
      * 2. 원본 맛집 데이터 전처리 후 가공된 데이터를 가공 맛집 테이블에 저장합니다.
      * 작성자 : 유리빛나
      */
-    public void preprocessing() {
+    public void preprocessing() throws Exception {
 
         // 원본 맛집 테이블 모든 데이터 조회
         List<RawRestaurant> rawRestaurantList = rawRestaurantRepository.findAll();
@@ -106,7 +113,12 @@ public class ApiServiceImpl implements ApiService {
             if (!rawRestaurant.getDcbymd().isEmpty()) {
                 continue;
             }
-
+            // 위도, 경도 값이 누락된 데이터 주입
+            if (rawRestaurant.getLon().isEmpty()) {
+                Coordinate coordinate = coordinateService.getCoordinate(rawRestaurant.getRdnwhladdr());
+                rawRestaurant.setLon(coordinate.getLon());
+                rawRestaurant.setLat(coordinate.getLat());
+            }
             // 원본 데이터를 가공하여 새로운 엔티티 생성
             Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
 
