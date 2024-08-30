@@ -1,5 +1,6 @@
 package com.allclear.tastytrack.domain.restaurant.entity;
 
+
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -59,6 +60,7 @@ public class Restaurant {
     private String lat;                  // 위도
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime lastUpdatedAt; // 최종 수정일자
