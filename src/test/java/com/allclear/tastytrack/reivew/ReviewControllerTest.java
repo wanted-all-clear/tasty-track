@@ -1,9 +1,8 @@
-package com.allclear.tastytrack.restaurant;
+package com.allclear.tastytrack.reivew;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,25 +16,24 @@ import org.springframework.http.ResponseEntity;
 
 import com.allclear.tastytrack.domain.auth.token.JwtTokenUtils;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
+import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RestaurantControllerTest {
+public class ReviewControllerTest {
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
-
+    public TestRestTemplate testRestTemplate;
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
 
     private HttpHeaders httpHeaders;
+    private UserCreateRequest userCreateRequest;
 
     @BeforeEach
     public void setUp() {
 
-        UserCreateRequest userCreateRequest = UserCreateRequest.builder()
+        userCreateRequest = UserCreateRequest.builder()
                 .username("username")
                 .password("qlalfqjsgh23")
                 .lat(14128052.4047183)
@@ -50,18 +48,25 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    @DisplayName("맛집 상세 정보 조회 통합 테스트 입니다.")
-    public void 맛집_상세정보_조회_테스트() throws JsonProcessingException {
+    public void 평가_생성_테스트() {
 
-        HttpEntity<String> entity = new HttpEntity<>("4", httpHeaders);
-        String url = "/api/restaurants";
+        ReviewRequest request = ReviewRequest.builder()
+                .userid(1)
+                .restaurantId(4)
+                .score(4)
+                .content("맛있어요")
+                .build();
 
-        ResponseEntity<RestaurantDetail> responseEntity = testRestTemplate.exchange(url, HttpMethod.POST, entity,
+        HttpEntity<ReviewRequest> entity = new HttpEntity<>(request, httpHeaders);
+
+        ResponseEntity<RestaurantDetail> response = testRestTemplate.exchange("/api/reviews", HttpMethod.POST, entity,
                 RestaurantDetail.class);
+        RestaurantDetail result = response.getBody();
 
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody().getName()).isEqualTo("오고보");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getReviewResponses().get(0).getUsername()).isEqualTo(userCreateRequest.getUsername());
 
     }
+
 
 }
