@@ -1,5 +1,17 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.allclear.tastytrack.domain.restaurant.dto.LocalDataResponse;
 import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
 import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
@@ -8,19 +20,9 @@ import com.allclear.tastytrack.domain.restaurant.repository.RawRestaurantReposit
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Slf4j
 @Service
