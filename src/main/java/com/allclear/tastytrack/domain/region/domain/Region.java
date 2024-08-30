@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.domain.region.entity;
+package com.allclear.tastytrack.domain.region.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,5 +28,6 @@ public class Region {
 
     @Column(nullable = false)
     private Double lon;
+
 
 }
