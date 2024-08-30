@@ -1,17 +1,19 @@
 package com.allclear.tastytrack.domain.user.service;
 
-import com.allclear.tastytrack.domain.auth.UserAuth;
+import com.allclear.tastytrack.domain.auth.token.RefreshToken;
+import com.allclear.tastytrack.domain.auth.token.RefreshTokenRepository;
 import com.allclear.tastytrack.domain.user.dto.LoginRequest;
 import com.allclear.tastytrack.domain.user.entity.User;
 import com.allclear.tastytrack.domain.user.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class TokenVerifyTest {
@@ -21,6 +23,9 @@ public class TokenVerifyTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Test
     @DisplayName("로그인 시 토큰을 발급합니다.")
@@ -51,6 +56,25 @@ public class TokenVerifyTest {
 
         String refreshToken = headers.getFirst("RefreshToken");
         assertNotNull(refreshToken);
+    }
+
+
+    @Test
+    @DisplayName("RefreshToken을 Redis에 저장합니다.")
+    void saveRefreshTokenToRedis() {
+        // given
+        String key = "testKey";
+        String username = "testUser";
+        RefreshToken initRefreshToken = new RefreshToken(key, username);
+
+        // when
+        refreshTokenRepository.save(initRefreshToken);
+
+        // then
+        RefreshToken refreshToken = refreshTokenRepository.findByUsername(key).orElseThrow(
+                () -> new NullPointerException("해당 값이 존재하지 않습니다.")
+        );
+        assertThat(refreshToken.getUsername()).isEqualTo("testUser");
     }
 
 }
