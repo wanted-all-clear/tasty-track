@@ -67,4 +67,16 @@ public class Restaurant {
     @Column(nullable = false)
     private boolean deletedYn;           // 삭제여부
 
+    public void updateWithNewData(Restaurant newRestaurant) {
+
+        this.name = newRestaurant.getName();
+        this.type = newRestaurant.getType();
+        this.status = newRestaurant.getStatus();
+        this.oldAddress = newRestaurant.getOldAddress();
+        this.newAddress = newRestaurant.getNewAddress();
+        this.lon = newRestaurant.getLon();
+        this.lat = newRestaurant.getLat();
+        this.lastUpdatedAt = newRestaurant.getLastUpdatedAt();
+    }
+
 }
