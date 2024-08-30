@@ -116,4 +116,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
 
+    @Override
+    public int getBeforeReviewTotalScore(int restaurantId) {
+
+
+        return 0;
+    }
+
 }

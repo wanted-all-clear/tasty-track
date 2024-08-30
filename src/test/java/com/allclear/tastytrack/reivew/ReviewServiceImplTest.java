@@ -72,4 +72,15 @@ public class ReviewServiceImplTest {
         assertThat(ex.getMessage()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY.getMessage());
     }
 
+    @DisplayName("기존 리뷰 개수를 조회하는 테스트입니다.")
+    @Test
+    public void getBeforeReviewTotalScore() {
+
+        // when
+        reviewServiceImpl.getBeforeReviewTotalScore(anyInt());
+
+        // then
+        verify(reviewRepository, times(1)).countByRestaurantId(anyInt());
+    }
+
 }

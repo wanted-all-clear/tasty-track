@@ -18,4 +18,6 @@ public interface ReviewService {
 
     public Review createReview(ReviewRequest request);
 
+    int getBeforeReviewTotalScore(int restaurantId);
+
 }

@@ -38,7 +38,7 @@ public class RestaurantServiceImplTest {
                 .lon("위도")
                 .lat("경도")
                 .build();
-        given(restaurantRepository.findRestaurantById(anyInt())).willReturn(restaurant);
+        given(restaurantRepository.findRestaurantByIdAndDeletedYn(anyInt(), anyBoolean())).willReturn(restaurant);
 
         // when
         restaurantServiceImpl.getRestaurant(anyInt());
@@ -55,14 +55,6 @@ public class RestaurantServiceImplTest {
 
         // then
         assertThat(ex.getMessage()).isEqualTo("조회된 음식점이 존재하지 않습니다.");
-    }
-
-    @DisplayName("기존 리뷰 개수를 조회하는 테스트입니다.")
-    @Test
-    public void getBeforeReviewTotalScore() {
-        // given
-        int beforeReviewTotal = mock(Integer.class);
-        // given()
     }
 
 }

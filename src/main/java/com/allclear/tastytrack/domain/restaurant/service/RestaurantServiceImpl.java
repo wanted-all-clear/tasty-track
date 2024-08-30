@@ -15,18 +15,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService {
 
-	private final RestaurantRepository restaurantRepository;
-	private final ReviewRepository reviewRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final ReviewRepository reviewRepository;
 
-	@Override
-	public Restaurant getRestaurant(int id) {
+    @Override
+    public Restaurant getRestaurant(int id) {
 
-		Restaurant restaurant = restaurantRepository.findRestaurantById(id);
-		if (restaurant == null) {
-			throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
-		}
+        Restaurant restaurant = restaurantRepository.findRestaurantByIdAndDeletedYn(id, false);
+        if (restaurant == null) {
+            throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
+        }
 
-		return restaurant;
-	}
+        return restaurant;
+    }
 
 }
