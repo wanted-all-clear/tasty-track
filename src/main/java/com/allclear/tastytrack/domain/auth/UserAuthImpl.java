@@ -29,7 +29,7 @@ public class UserAuthImpl implements UserAuth{
         String accessToken = getToken(user);
         String refreshToken = saveRefreshTokenToRedis(user);
         headers.set(HttpHeaders.AUTHORIZATION,"Bearer " + accessToken);
-        headers.set("RefreshToken",refreshToken);
+        headers.set("RefreshToken", refreshToken);
         return headers;
     }
 
