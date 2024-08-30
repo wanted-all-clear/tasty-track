@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
@@ -28,8 +27,6 @@ public class ReviewServiceImplTest {
 
     @Mock
     private ReviewRepository reviewRepository;
-    @Mock
-    private RestaurantServiceImpl restaurantServiceImpl;
     @InjectMocks
     private ReviewServiceImpl reviewServiceImpl;
 

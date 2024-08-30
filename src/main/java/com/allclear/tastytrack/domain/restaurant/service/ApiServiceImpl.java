@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.allclear.tastytrack.domain.restaurant.dto.LocalDataResponse;
 import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
 import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
+import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RawRestaurantRepository;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -107,10 +108,10 @@ public class ApiServiceImpl implements ApiService {
             }
 
             // 원본 데이터를 가공하여 새로운 엔티티 생성
-            // Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
+            Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
 
             // 가공된 데이터 저장
-            // restaurantRepository.save(restaurant);
+            restaurantRepository.save(restaurant);
         }
     }
 
@@ -158,19 +159,20 @@ public class ApiServiceImpl implements ApiService {
      * @param rawRestaurant 원본 맛집 데이터
      * @return 원본 맛집 데이터가 저장된 가공 맛집 Entity 객체
      */
-    // private Restaurant getRestaurantBuilder(RawRestaurant rawRestaurant) {
-    //
-    //     return Restaurant.builder()
-    //             .code(rawRestaurant.getMgtno())
-    //             .name(rawRestaurant.getBplcnm())
-    //             .type(rawRestaurant.getUptaenm())
-    //             .status(rawRestaurant.getDtlstategbn())
-    //             .oldAddress(rawRestaurant.getSitewhladdr())
-    //             .newAddress(rawRestaurant.getRdnwhladdr())
-    //             .lon(rawRestaurant.getLon())
-    //             .lat(rawRestaurant.getLat())
-    //             .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
-    //             .build();
-    // }
+    private Restaurant getRestaurantBuilder(RawRestaurant rawRestaurant) {
+
+        return Restaurant.builder()
+                .code(rawRestaurant.getMgtno())
+                .name(rawRestaurant.getBplcnm())
+                .type(rawRestaurant.getUptaenm())
+                .status(rawRestaurant.getDtlstategbn())
+                .oldAddress(rawRestaurant.getSitewhladdr())
+                .newAddress(rawRestaurant.getRdnwhladdr())
+                .lon(Double.valueOf(rawRestaurant.getLon()))
+                .lat(Double.valueOf(rawRestaurant.getLat()))
+                .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
+                .build();
+
+    }
 
 }

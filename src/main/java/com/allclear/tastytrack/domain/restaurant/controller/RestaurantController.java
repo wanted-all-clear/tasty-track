@@ -37,7 +37,7 @@ public class RestaurantController {
             @RequestBody int id) {
 
         log.info("음식점 id = {}", id);
-        Restaurant restaurant = restaurantService.getRestaurant(id, false);
+        Restaurant restaurant = restaurantService.getRestaurant(id);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
         List<ReviewResponse> reviewResponses = new ArrayList<>();
         if (!reviews.isEmpty()) {

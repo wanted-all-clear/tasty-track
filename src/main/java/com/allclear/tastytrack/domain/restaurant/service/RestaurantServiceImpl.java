@@ -19,25 +19,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public Restaurant getRestaurant(int id, boolean deletedYn) {
+    public Restaurant getRestaurant(int id) {
 
-        Restaurant restaurant = restaurantRepository.findRestaurantByIdAndDeletedYn(id, deletedYn);
+        Restaurant restaurant = restaurantRepository.findRestaurantByIdAndDeletedYn(id, false);
         if (restaurant == null) {
             throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
         }
 
-        if (restaurant.isDeletedYn()) {
-            throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
-        }
-
         return restaurant;
     }
-
-    @Override
-    public Double updateRestaurantScore(double beforeScore, int beforeReviewCount, int score) {
-
-        return ((beforeScore * beforeReviewCount) + score) / (beforeReviewCount + 1);
-    }
-
 
 }
