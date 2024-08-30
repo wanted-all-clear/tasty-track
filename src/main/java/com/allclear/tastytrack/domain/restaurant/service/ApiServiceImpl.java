@@ -179,8 +179,8 @@ public class ApiServiceImpl implements ApiService {
                 .status(rawRestaurant.getDtlstategbn())
                 .oldAddress(rawRestaurant.getSitewhladdr())
                 .newAddress(rawRestaurant.getRdnwhladdr())
-                .lon(rawRestaurant.getLon())
-                .lat(rawRestaurant.getLat())
+                .lon(Double.valueOf(rawRestaurant.getLon()))
+                .lat(Double.valueOf(rawRestaurant.getLat()))
                 .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
                 .build();
     }
