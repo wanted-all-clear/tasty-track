@@ -64,7 +64,7 @@ public class Restaurant {
 
     @Column(nullable = false)
     @ColumnDefault("0.0")
-    private Double rateScore;            // 평점
+    private double rateScore;            // 평점
 
     @Column(nullable = false)
     private boolean deletedYn;           // 삭제여부

@@ -111,7 +111,7 @@ public class ApiServiceImpl implements ApiService {
             Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
 
             // 가공된 데이터 저장
-            // restaurantRepository.save(restaurant);
+            restaurantRepository.save(restaurant);
         }
     }
 

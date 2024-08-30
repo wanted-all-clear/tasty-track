@@ -1,11 +1,10 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
+import java.util.List;
+
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
+import com.allclear.tastytrack.domain.review.entity.Review;
 
 public interface RestaurantService {
-
-    Restaurant getRestaurant(int id, boolean deletedYn);
-
-    Double updateRestaurantScore(double beforeScore, int beforeReviewCount, int score);
-
+	public Restaurant getRestaurant(int id);
 }
