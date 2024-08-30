@@ -1,6 +1,10 @@
-# 공공데이터 API Key
+# 공공데이터 API 관련 설정
 api:
+  url: ${API_URL}
   key: ${API_KEY}
+  response-type: ${API_RESPONSE_TYPE}
+  service-name: ${API_SERVICE_NAME}
+
 
 # 1. 기본값 프로파일
 spring:
