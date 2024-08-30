@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
@@ -45,17 +46,17 @@ public class ApiServiceImpl implements ApiService {
     private String responseType; // 요청파일 타입
 
     @Value("${API_SERVICE_NAME}")
-    private String serviceName; // 요청파일 타입
+    private String serviceName;  // 서비스명
 
     /**
-     * 1. 서울 맛집 데이터를 수집하여 DB 맛집 원본 테이블에 저장한 후, 전처리 작업을 거쳐 가공 맛집 테이블에 데이터를 저장합니다.
+     * 1. 서울 맛집 데이터를 수집하여 DB 맛집 원본 테이블에 저장합니다.
      * 작성자 : 유리빛나
      *
      * @param startIndex 요청 시작 위치
      * @param endIndex   요청 종료 위치
      */
     @Transactional
-    public void fetchRawRestaurants(String startIndex, String endIndex) throws Exception {
+    public void fetchRawRestaurants(String startIndex, String endIndex) {
 
         // 공공데이터 요청을 위한 URL 구성
         URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
@@ -92,26 +93,20 @@ public class ApiServiceImpl implements ApiService {
             // JSON 파싱 관련 예외 처리
             log.error("JSON 파싱 실패: {}", jsonResponse, e);
         }
-
-        // 전처리 후 가공된 데이터를 가공 맛집 테이블에 저장
-        preprocessing();
-
     }
 
     /**
-     * 2. 원본 맛집 데이터 전처리 후 가공된 데이터를 가공 맛집 테이블에 저장합니다.
+     * 2. 매일 자정에 원본 맛집 데이터 전처리 후 가공된 데이터를 가공 맛집 테이블에 저장합니다.
      * 작성자 : 유리빛나
      */
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * ?")
     public void preprocessing() throws Exception {
 
         // 원본 맛집 테이블 모든 데이터 조회
         List<RawRestaurant> rawRestaurantList = rawRestaurantRepository.findAll();
 
         for (RawRestaurant rawRestaurant : rawRestaurantList) {
-            // 폐업일자가 있는 데이터는 저장 제외
-            if (!rawRestaurant.getDcbymd().isEmpty()) {
-                continue;
-            }
             // 위도, 경도 값이 누락된 데이터 주입
             if (rawRestaurant.getLon().isEmpty()) {
                 Coordinate coordinate = coordinateService.getCoordinate(rawRestaurant.getRdnwhladdr());
@@ -120,6 +115,11 @@ public class ApiServiceImpl implements ApiService {
             }
             // 원본 데이터를 가공하여 새로운 엔티티 생성
             Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
+
+            // 원본 맛집에 폐업일자가 있는 데이터는 가공 맛집의 삭제여부를 true로 저장
+            if (!rawRestaurant.getDcbymd().isEmpty()) {
+                restaurant.setDeletedYn(true);
+            }
 
             // 가공된 데이터 저장
             restaurantRepository.save(restaurant);
