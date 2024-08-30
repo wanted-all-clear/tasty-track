@@ -20,9 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -54,10 +51,10 @@ public class Restaurant {
     private String newAddress;           // 도로명주소
 
     @Column(nullable = false)
-    private String lon;                  // 경도
+    private Double lon;                  // 경도
 
     @Column(nullable = false)
-    private String lat;                  // 위도
+    private Double lat;                  // 위도
 
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -67,7 +64,7 @@ public class Restaurant {
 
     @Column(nullable = false)
     @ColumnDefault("0.0")
-    private double rateScore;            // 평점
+    private Double rateScore;            // 평점
 
     @Column(nullable = false)
     private boolean deletedYn;           // 삭제여부

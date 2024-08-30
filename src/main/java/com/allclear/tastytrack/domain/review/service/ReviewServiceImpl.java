@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
 import com.allclear.tastytrack.domain.review.entity.Review;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final RestaurantServiceImpl restaurantServiceImpl;
     private final UserRepository userRepository;
 
     /**
@@ -119,8 +121,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public int getBeforeReviewTotalScore(int restaurantId) {
 
+        try {
+            restaurantServiceImpl.getRestaurant(restaurantId, false);
+            return reviewRepository.countByRestaurantId(restaurantId);
 
-        return 0;
+        } catch (CustomException ex) {
+            throw new CustomException(ErrorCode.CANNOT_LEAVE_REVIEW);
+        }
     }
 
 }
