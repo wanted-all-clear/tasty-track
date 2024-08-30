@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class ReviewServiceImplTest {
 	public void getAllReviewsTest() {
 		// given
 		List<Review> reviews = new ArrayList<>();
-		given(reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(anyInt())).willReturn(reviews);
+		given(reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(anyInt())).willReturn(Optional.of(reviews));
 
 		// when
 		reviewServiceImpl.getAllReviewsByRestaurantId(anyInt());

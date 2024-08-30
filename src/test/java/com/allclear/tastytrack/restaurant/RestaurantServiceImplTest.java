@@ -28,17 +28,17 @@ public class RestaurantServiceImplTest {
 	public void getRestaurantDetailSuccessTest() {
 		//given
 		Restaurant restaurant = Restaurant.builder()
-			.name("맥도날드")
-			.code("1234-8945")
-			.type("패스트푸드")
-			.status("영업")
-			.rateScore(4.2)
-			.oldAddress("old address")
-			.newAddress("new address")
-			.lon("위도")
-			.lat("경도")
-			.build();
-		given(restaurantRepository.findById(anyInt())).willReturn(restaurant);
+				.name("맥도날드")
+				.code("1234-8945")
+				.type("패스트푸드")
+				.status("영업")
+				.rateScore(4.2)
+				.oldAddress("old address")
+				.newAddress("new address")
+				.lon("위도")
+				.lat("경도")
+				.build();
+		given(restaurantRepository.findRestaurantById(anyInt())).willReturn(restaurant);
 
 		// when
 		restaurantServiceImpl.getRestaurant(anyInt());
