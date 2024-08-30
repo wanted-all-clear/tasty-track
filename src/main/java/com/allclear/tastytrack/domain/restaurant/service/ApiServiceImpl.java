@@ -55,7 +55,7 @@ public class ApiServiceImpl implements ApiService {
      * @param endIndex   요청 종료 위치
      */
     @Transactional
-    public void getRawRestaurants(String startIndex, String endIndex) throws Exception {
+    public void fetchRawRestaurants(String startIndex, String endIndex) throws Exception {
 
         // 공공데이터 요청을 위한 URL 구성
         URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
