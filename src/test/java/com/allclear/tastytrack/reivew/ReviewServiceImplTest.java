@@ -1,5 +1,7 @@
 package com.allclear.tastytrack.reivew;
 
+import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.domain.review.service.ReviewServiceImpl;
+import com.allclear.tastytrack.global.exception.CustomException;
+import com.allclear.tastytrack.global.exception.ErrorCode;
 
 @ExtendWith({MockitoExtension.class})
 public class ReviewServiceImplTest {
@@ -41,8 +45,8 @@ public class ReviewServiceImplTest {
     }
 
     @Test
-    @DisplayName("리뷰 생성 테스트를 진행합니다.")
-    public void createReviewTest() {
+    @DisplayName("리뷰 생성 해피 테스트를 진행합니다.")
+    public void createReviewSuccessTest() {
         // given
         Review review = mock(Review.class);
         given(reviewRepository.save(any())).willReturn(review);
@@ -53,6 +57,19 @@ public class ReviewServiceImplTest {
         // then
         verify(reviewRepository, times(1)).save(any());
 
+    }
+
+    @Test
+    @DisplayName("리뷰 생성 실패 테스트를 진행합니다.")
+    public void createReviewFailTest() {
+
+        // given, when
+        Throwable ex = assertThrows(CustomException.class,
+                () -> reviewServiceImpl.createReview(null));
+
+        // then
+        verify(reviewRepository, times(0)).save(any());
+        assertThat(ex.getMessage()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY.getMessage());
     }
 
 }

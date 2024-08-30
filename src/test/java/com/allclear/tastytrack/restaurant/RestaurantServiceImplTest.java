@@ -18,43 +18,51 @@ import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 @ExtendWith(MockitoExtension.class)
 public class RestaurantServiceImplTest {
 
-	@Mock
-	private RestaurantRepository restaurantRepository;
-	@InjectMocks
-	private RestaurantServiceImpl restaurantServiceImpl;
+    @Mock
+    private RestaurantRepository restaurantRepository;
+    @InjectMocks
+    private RestaurantServiceImpl restaurantServiceImpl;
 
-	@DisplayName("맛집 조회의 해피 테스트 입니다.")
-	@Test
-	public void getRestaurantDetailSuccessTest() {
-		//given
-		Restaurant restaurant = Restaurant.builder()
-				.name("맥도날드")
-				.code("1234-8945")
-				.type("패스트푸드")
-				.status("영업")
-				.rateScore(4.2)
-				.oldAddress("old address")
-				.newAddress("new address")
-				.lon("위도")
-				.lat("경도")
-				.build();
-		given(restaurantRepository.findRestaurantById(anyInt())).willReturn(restaurant);
+    @DisplayName("맛집 조회의 해피 테스트 입니다.")
+    @Test
+    public void getRestaurantDetailSuccessTest() {
+        //given
+        Restaurant restaurant = Restaurant.builder()
+                .name("맥도날드")
+                .code("1234-8945")
+                .type("패스트푸드")
+                .status("영업")
+                .rateScore(4.2)
+                .oldAddress("old address")
+                .newAddress("new address")
+                .lon("위도")
+                .lat("경도")
+                .build();
+        given(restaurantRepository.findRestaurantById(anyInt())).willReturn(restaurant);
 
-		// when
-		restaurantServiceImpl.getRestaurant(anyInt());
+        // when
+        restaurantServiceImpl.getRestaurant(anyInt());
 
-		//then
-		verify(restaurantRepository, times(1)).findById(anyInt());
-	}
+        //then
+        verify(restaurantRepository, times(1)).findById(anyInt());
+    }
 
-	@DisplayName("맛집 조회의 실패 테스트 입니다.")
-	@Test
-	public void getRestaurantDetailFailTest() {
-		// when
-		Throwable ex = assertThrows(RuntimeException.class, () -> restaurantServiceImpl.getRestaurant(anyInt()));
+    @DisplayName("맛집 조회의 실패 테스트 입니다.")
+    @Test
+    public void getRestaurantDetailFailTest() {
+        // when
+        Throwable ex = assertThrows(RuntimeException.class, () -> restaurantServiceImpl.getRestaurant(anyInt()));
 
-		// then
-		assertThat(ex.getMessage()).isEqualTo("조회된 음식점이 존재하지 않습니다.");
-	}
+        // then
+        assertThat(ex.getMessage()).isEqualTo("조회된 음식점이 존재하지 않습니다.");
+    }
+
+    @DisplayName("기존 리뷰 개수를 조회하는 테스트입니다.")
+    @Test
+    public void getBeforeReviewTotalScore() {
+        // given
+        int beforeReviewTotal = mock(Integer.class);
+        // given()
+    }
 
 }
