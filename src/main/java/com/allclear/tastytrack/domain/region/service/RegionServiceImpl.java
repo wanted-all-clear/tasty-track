@@ -1,6 +1,6 @@
 package com.allclear.tastytrack.domain.region.service;
 
-import com.allclear.tastytrack.domain.region.domain.Region;
+import com.allclear.tastytrack.domain.region.entity.Region;
 import com.allclear.tastytrack.domain.region.dto.RegionGroupResponse;
 import com.allclear.tastytrack.domain.region.dto.RegionResponse;
 import com.allclear.tastytrack.domain.region.repository.RegionRepository;
@@ -28,7 +28,7 @@ public class RegionServiceImpl implements RegionService{
      * 향후 지역 확장성을 고려하여, List 안에 ResponseDTO를 담는 형식으로 하였습니다.
      */
     @Override
-    public RegionGroupResponse getRegionInfo() {
+    public List<RegionResponse> getRegionInfo() {
         try {
             List<Region> regions = regionRepository.findAll();
 
@@ -52,7 +52,7 @@ public class RegionServiceImpl implements RegionService{
                             .build())
                     .collect(Collectors.toList());
 
-            return new RegionGroupResponse(regionResponses);
+            return regionResponses;
 
         } catch (DataAccessException e) {
             throw new CustomException(ErrorCode.DATABASE_EXCEPTION);

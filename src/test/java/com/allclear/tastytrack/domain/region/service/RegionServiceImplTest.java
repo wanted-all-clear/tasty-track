@@ -1,6 +1,6 @@
 package com.allclear.tastytrack.domain.region.service;
 
-import com.allclear.tastytrack.domain.region.domain.Region;
+import com.allclear.tastytrack.domain.region.entity.Region;
 import com.allclear.tastytrack.domain.region.dto.RegionGroupResponse;
 import com.allclear.tastytrack.domain.region.dto.RegionResponse;
 import com.allclear.tastytrack.domain.region.repository.RegionRepository;
@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,14 +48,14 @@ class RegionServiceImplTest {
         when(regionRepository.findAll()).thenReturn(regions);
 
         // then
-        RegionGroupResponse result = regionService.getRegionInfo();
-        assertEquals(2, result.getRegions().size()); // 결과가 그룹화되었는지 확인
+        List<RegionResponse> result = regionService.getRegionInfo();
+        assertEquals(2, result.size()); // 결과가 그룹화되었는지 확인
 
-        RegionResponse seoul = result.getRegions().stream().filter(r -> r.getDosi().equals("서울특별시")).findFirst().orElse(null);
+        RegionResponse seoul = result.stream().filter(r -> r.getDosi().equals("서울특별시")).findFirst().orElse(null);
         assertNotNull(seoul);
         assertEquals(2, seoul.getRegionCount()); // 서울특별시에 2개의 구가 있어야 함
 
-        RegionResponse gyeonggi = result.getRegions().stream().filter(r -> r.getDosi().equals("경기도")).findFirst().orElse(null);
+        RegionResponse gyeonggi = result.stream().filter(r -> r.getDosi().equals("경기도")).findFirst().orElse(null);
         assertNotNull(gyeonggi);
         assertEquals(1, gyeonggi.getRegionCount());
 

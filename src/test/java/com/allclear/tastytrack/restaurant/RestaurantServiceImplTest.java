@@ -33,10 +33,10 @@ public class RestaurantServiceImplTest {
 				.type("패스트푸드")
 				.status("영업")
 				.rateScore(4.2)
-				.oldAddress("old address")
-				.newAddress("new address")
-				.lon("위도")
-				.lat("경도")
+				.oldAddress("서울특별시 종로구 세종로 1-68")
+				.newAddress("서울특별시 종로구 세종대로 175")
+				.lon(37.5665)
+				.lat(126.9780)
 				.build();
 		given(restaurantRepository.findRestaurantById(anyInt())).willReturn(restaurant);
 

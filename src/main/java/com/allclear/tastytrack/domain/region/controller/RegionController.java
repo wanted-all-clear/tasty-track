@@ -36,9 +36,9 @@ public class RegionController {
                     content = @Content)
     })
     @GetMapping("")
-    public ResponseEntity<RegionGroupResponse> getRegions(){
+    public ResponseEntity<List<RegionResponse>> getRegions(){
 
-        RegionGroupResponse responses = regionService.getRegionInfo();
+        List<RegionResponse> responses = regionService.getRegionInfo();
 
         return ResponseEntity.ok(responses);
     }
