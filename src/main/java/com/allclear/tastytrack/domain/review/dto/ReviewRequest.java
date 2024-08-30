@@ -11,14 +11,11 @@ import lombok.Getter;
 public class ReviewRequest {
 
     @Column(unique = true, nullable = false)
-    private int userid;
-
-    @Column(unique = true, nullable = false)
     private int restaurantId;
 
     @Column(unique = true, nullable = false)
     private int score;
-    
+
     private String content;
 
 }

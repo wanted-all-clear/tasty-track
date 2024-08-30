@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.allclear.tastytrack.domain.auth.token.JwtTokenUtils;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
@@ -20,6 +21,7 @@ import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class ReviewControllerTest {
 
     @Autowired
@@ -51,8 +53,8 @@ public class ReviewControllerTest {
     public void 평가_생성_테스트() {
 
         ReviewRequest request = ReviewRequest.builder()
-                .userid(1)
-                .restaurantId(4)
+                // .userid(1)
+                .restaurantId(1)
                 .score(4)
                 .content("맛있어요")
                 .build();

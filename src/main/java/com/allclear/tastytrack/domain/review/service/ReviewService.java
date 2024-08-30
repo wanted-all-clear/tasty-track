@@ -16,8 +16,8 @@ public interface ReviewService {
     CompletableFuture<List<ReviewResponse>> combineToListFuture(
             List<CompletableFuture<ReviewResponse>> listCompletableFuture);
 
-    public Review createReview(ReviewRequest request);
+    public Review createReview(ReviewRequest request, String username);
 
-    int getBeforeReviewTotalScore(int restaurantId);
+    void removeReview(Review review);
 
 }

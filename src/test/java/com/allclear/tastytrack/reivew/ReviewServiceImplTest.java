@@ -20,6 +20,8 @@ import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.domain.review.service.ReviewServiceImpl;
+import com.allclear.tastytrack.domain.user.entity.User;
+import com.allclear.tastytrack.domain.user.repository.UserRepository;
 import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 
@@ -30,6 +32,8 @@ public class ReviewServiceImplTest {
     private ReviewRepository reviewRepository;
     @Mock
     private RestaurantServiceImpl restaurantServiceImpl;
+    @Mock
+    private UserRepository userRepository;
     @InjectMocks
     private ReviewServiceImpl reviewServiceImpl;
 
@@ -53,12 +57,14 @@ public class ReviewServiceImplTest {
         // given
         Review review = mock(Review.class);
         given(reviewRepository.save(any())).willReturn(review);
+        given(userRepository.findByUsername(anyString())).willReturn(Optional.ofNullable(mock(User.class)));
 
         // when
-        reviewServiceImpl.createReview(mock(ReviewRequest.class));
+        reviewServiceImpl.createReview(mock(ReviewRequest.class), anyString());
 
         // then
         verify(reviewRepository, times(1)).save(any());
+        verify(userRepository, times(1)).findByUsername(anyString());
 
     }
 
@@ -68,22 +74,11 @@ public class ReviewServiceImplTest {
 
         // given, when
         Throwable ex = assertThrows(CustomException.class,
-                () -> reviewServiceImpl.createReview(null));
+                () -> reviewServiceImpl.createReview(mock(ReviewRequest.class), anyString()));
 
         // then
         verify(reviewRepository, times(0)).save(any());
-        assertThat(ex.getMessage()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY.getMessage());
-    }
-
-    @DisplayName("기존 리뷰 개수를 조회하는 테스트입니다.")
-    @Test
-    public void getBeforeReviewTotalScore() {
-
-        // when
-        reviewServiceImpl.getBeforeReviewTotalScore(anyInt());
-
-        // then
-        verify(reviewRepository, times(1)).countByRestaurantId(anyInt());
+        assertThat(ex.getMessage()).isEqualTo(ErrorCode.USER_NOT_EXIST.getMessage());
     }
 
 }

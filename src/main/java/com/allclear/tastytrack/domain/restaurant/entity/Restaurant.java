@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
@@ -62,11 +63,12 @@ public class Restaurant {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime lastUpdatedAt; // 최종 수정일자
 
+    @Setter
     @Column(nullable = false)
     @ColumnDefault("0.0")
     private double rateScore;            // 평점
 
     @Column(nullable = false)
-    private boolean deletedYn;           // 삭제여부
+    private Integer deletedYn;           // 삭제여부
 
 }

@@ -2,16 +2,20 @@ package com.allclear.tastytrack.domain.restaurant.service;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
+import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService {
 
@@ -19,14 +23,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public Restaurant getRestaurant(int id, boolean deletedYn) {
+    public Restaurant getRestaurant(int id, int deletedYn) {
 
-        Restaurant restaurant = restaurantRepository.findRestaurantByIdAndDeletedYn(id, deletedYn);
+        Restaurant restaurant = restaurantRepository.findByIdAndDeletedYn(id, deletedYn);
         if (restaurant == null) {
             throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
         }
 
-        if (restaurant.isDeletedYn()) {
+        if (restaurant.getDeletedYn() == 0) {
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
         }
 
@@ -34,10 +38,24 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Double updateRestaurantScore(double beforeScore, int beforeReviewCount, int score) {
+    @Transactional
+    public Restaurant updateRestaurantScore(ReviewRequest request) {
 
-        return ((beforeScore * beforeReviewCount) + score) / (beforeReviewCount + 1);
+        Restaurant restaurant = restaurantRepository.getReferenceById(request.getRestaurantId());
+
+        if (restaurant.getDeletedYn() == 0) {
+            throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
+        }
+
+        double beforeScore = restaurant.getRateScore();
+        int countReview = reviewRepository.countByRestaurantId(request.getRestaurantId());
+        int score = request.getScore();
+
+        double newScore = (restaurant.getRateScore() * (countReview - 1) + score) / countReview;
+        double newScoreFormat = Math.floor((newScore * 10)) / 10.0;
+        restaurant.setRateScore(newScoreFormat);
+
+        return restaurantRepository.save(restaurant);
     }
-
 
 }

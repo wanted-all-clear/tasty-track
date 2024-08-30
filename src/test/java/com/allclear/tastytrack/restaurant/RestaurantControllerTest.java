@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.allclear.tastytrack.domain.auth.token.JwtTokenUtils;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class RestaurantControllerTest {
 
     @Autowired
@@ -53,7 +55,7 @@ public class RestaurantControllerTest {
     @DisplayName("맛집 상세 정보 조회 통합 테스트 입니다.")
     public void 맛집_상세정보_조회_테스트() throws JsonProcessingException {
 
-        HttpEntity<String> entity = new HttpEntity<>("4", httpHeaders);
+        HttpEntity<String> entity = new HttpEntity<>("1", httpHeaders);
         String url = "/api/restaurants";
 
         ResponseEntity<RestaurantDetail> responseEntity = testRestTemplate.exchange(url, HttpMethod.POST, entity,

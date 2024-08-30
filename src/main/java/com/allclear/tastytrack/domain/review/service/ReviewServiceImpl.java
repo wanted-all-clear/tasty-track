@@ -2,12 +2,14 @@ package com.allclear.tastytrack.domain.review.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
+import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
 import com.allclear.tastytrack.domain.review.entity.Review;
@@ -24,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final RestaurantServiceImpl restaurantServiceImpl;
+    private final RestaurantService restaurantService;
     private final UserRepository userRepository;
 
     /**
@@ -101,33 +103,34 @@ public class ReviewServiceImpl implements ReviewService {
      * 작성자 : 김은정
      * @return
      */
-    public Review createReview(ReviewRequest request) {
+    @Transactional
+    public Review createReview(ReviewRequest request, String username) {
 
         if (request == null) {
             throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
         }
 
-        Review review = Review.builder()
-                .userId(request.getUserid())
-                .restaurantId(request.getRestaurantId())
-                .score(request.getScore())
-                .content(request.getContent())
-                .build();
+        try {
+            User user = userRepository.findByUsername(username).get();
+            Review review = Review.builder()
+                    .userId(user.getId())
+                    .restaurantId(request.getRestaurantId())
+                    .score(request.getScore())
+                    .content(request.getContent())
+                    .build();
+            return reviewRepository.save(review);
 
-        return reviewRepository.save(review);
+        } catch (NoSuchElementException ex) {
+            throw new CustomException(ErrorCode.USER_NOT_EXIST);
+        }
 
     }
 
     @Override
-    public int getBeforeReviewTotalScore(int restaurantId) {
+    public void removeReview(Review review) {
 
-        try {
-            restaurantServiceImpl.getRestaurant(restaurantId, false);
-            return reviewRepository.countByRestaurantId(restaurantId);
-
-        } catch (CustomException ex) {
-            throw new CustomException(ErrorCode.CANNOT_LEAVE_REVIEW);
-        }
+        reviewRepository.delete(review);
     }
+
 
 }

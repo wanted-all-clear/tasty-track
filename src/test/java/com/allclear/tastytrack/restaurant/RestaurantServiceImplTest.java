@@ -16,6 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
+import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
+import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +25,8 @@ public class RestaurantServiceImplTest {
 
     @Mock
     private RestaurantRepository restaurantRepository;
+    @Mock
+    private ReviewRepository reviewRepository;
     @InjectMocks
     private RestaurantServiceImpl restaurantServiceImpl;
 
@@ -45,14 +49,15 @@ public class RestaurantServiceImplTest {
                 .newAddress("new address")
                 .lon(3123.1231)
                 .lat(134323.13212)
+                .deletedYn(1)
                 .build();
-        given(restaurantRepository.findRestaurantByIdAndDeletedYn(anyInt(), anyBoolean())).willReturn(restaurant);
+        given(restaurantRepository.findByIdAndDeletedYn(anyInt(), anyInt())).willReturn(restaurant);
 
         // when
-        restaurantServiceImpl.getRestaurant(anyInt(), anyBoolean());
+        restaurantServiceImpl.getRestaurant(anyInt(), anyInt());
 
         //then
-        verify(restaurantRepository, times(1)).findRestaurantByIdAndDeletedYn(anyInt(), anyBoolean());
+        verify(restaurantRepository, times(1)).findByIdAndDeletedYn(anyInt(), anyInt());
     }
 
     @Test
@@ -60,7 +65,7 @@ public class RestaurantServiceImplTest {
     public void getRestaurantDetailFailTest() {
         // when
         Throwable ex = assertThrows(RuntimeException.class,
-                () -> restaurantServiceImpl.getRestaurant(anyInt(), anyBoolean()));
+                () -> restaurantServiceImpl.getRestaurant(anyInt(), anyInt()));
 
         // then
         assertThat(ex.getMessage()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY.getMessage());
@@ -70,15 +75,19 @@ public class RestaurantServiceImplTest {
     @DisplayName("맛집 평점 업데이트 기능 성공 테스트입니다.")
     public void updateRestaurantScore() {
         // given
-        Double beforeScore = 4.0;
-        int beforeReviewCount = 200;
-        int score = 3;
+        Restaurant restaurant = mock(Restaurant.class);
+        given(restaurantRepository.getReferenceById(anyInt())).willReturn(restaurant);
+        given(reviewRepository.countByRestaurantId(anyInt())).willReturn(1);
+        given(restaurantRepository.save(any())).willReturn(restaurant);
+        given(restaurant.getDeletedYn()).willReturn(1);
 
         // when
-        Double result = restaurantServiceImpl.updateRestaurantScore(beforeScore, beforeReviewCount, score);
+        Restaurant result = restaurantServiceImpl.updateRestaurantScore(mock(ReviewRequest.class));
 
         // then
-        assertThat(result).isEqualTo(((beforeScore * beforeReviewCount) + score) / (beforeReviewCount + 1));
+        verify(restaurantRepository, times(1)).getReferenceById(anyInt());
+        verify(reviewRepository, times(1)).countByRestaurantId(anyInt());
+        verify(restaurantRepository, times(1)).save(restaurant);
 
     }
 

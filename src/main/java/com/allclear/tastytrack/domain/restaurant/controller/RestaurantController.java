@@ -36,9 +36,9 @@ public class RestaurantController {
     public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody int id) {
 
-        log.info("음식점 id = {}", id);
-        Restaurant restaurant = restaurantService.getRestaurant(id);
+        Restaurant restaurant = restaurantService.getRestaurant(id, 0);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
+
         List<ReviewResponse> reviewResponses = new ArrayList<>();
         if (!reviews.isEmpty()) {
 
