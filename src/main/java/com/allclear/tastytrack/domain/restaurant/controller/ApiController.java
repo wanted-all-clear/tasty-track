@@ -20,9 +20,8 @@ public class ApiController {
     // TODO: 1회 최대 요청 건수는 1000건입니다. 추후 예외 처리 필요합니다.
     @GetMapping("/{startIndex}/{endIndex}")
     public void getRawRestaurants(@PathVariable("startIndex") String startIndex,
-                                  @PathVariable("endIndex") String endIndex) {
+                                    @PathVariable("endIndex") String endIndex) {
 
         apiService.getRawRestaurants(startIndex, endIndex);
     }
-
 }

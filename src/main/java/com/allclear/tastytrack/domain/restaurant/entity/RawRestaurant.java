@@ -1,14 +1,13 @@
 package com.allclear.tastytrack.domain.restaurant.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +16,8 @@ public class RawRestaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;             // 맛집 원본 id
+
+    @Column(unique = true)
     private String mgtno;       // 관리번호
     private String bplcnm;      // 사업장명
     private String uptaenm;     // 업태구분명
