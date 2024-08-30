@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ApiService {
 
-    void getRawRestaurants(String startIndex, String endIndex);
+    void getRawRestaurants(String startIndex, String endIndex) throws Exception;
 
 }
