@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<List<Review>> reviewsOptional =
                 reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
-        
+
         return reviewsOptional.orElseGet(ArrayList::new);
 
     }
@@ -77,6 +77,25 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     /**
+     * Review 객체를 이용해 ReviewResponse를 생성하는 비동기 메소드 입니다.
+     * 작성자 : 김은정
+     *
+     * @param review
+     * @return
+     */
+    private ReviewResponse asyncCreateReviewResponse(Review review) {
+
+        User user = userRepository.findById(review.getUserId()).get();
+
+        return ReviewResponse.builder()
+                .username(user.getUsername())
+                .score(review.getScore())
+                .content(review.getContent())
+                .build();
+
+    }
+
+    /**
      * List<CompletableFuture<ReviewResponse>>를 CompletableFuture<List<ReviewResponse>>로 변경해주는 비동기 메서드입니다.
      * 작성자 : 김은정
      * @param listCompletableFuture
@@ -94,25 +113,6 @@ public class ReviewServiceImpl implements ReviewService {
                         i -> listCompletableFuture.stream()
                                 .map(CompletableFuture::join)
                                 .collect(Collectors.toList()));
-    }
-
-    /**
-     * Review 객체를 이용해 ReviewResponse를 생성하는 비동기 메소드 입니다.
-     * 작성자 : 김은정
-     *
-     * @param review
-     * @return
-     */
-    private ReviewResponse asyncCreateReviewResponse(Review review) {
-
-        User user = userRepository.findById(review.getUserId()).get();
-
-        return ReviewResponse.builder()
-                .username(user.getUsername())
-                .score(review.getScore())
-                .content(review.getContent())
-                .build();
-
     }
 
     /**

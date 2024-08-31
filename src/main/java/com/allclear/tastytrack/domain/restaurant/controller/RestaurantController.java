@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
@@ -31,8 +29,7 @@ public class RestaurantController {
     private final ReviewService reviewService;
 
     @PostMapping("")
-    public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody int id) {
+    public ResponseEntity<RestaurantDetail> getRestaurant(@RequestBody int id) {
 
         Restaurant restaurant = restaurantService.getRestaurant(id, 0);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);

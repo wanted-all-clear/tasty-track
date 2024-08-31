@@ -1,11 +1,15 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocation;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
@@ -50,7 +54,6 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
         }
 
-        double beforeScore = restaurant.getRateScore();
         int countReview = reviewRepository.countByRestaurantId(request.getRestaurantId());
         int score = request.getScore();
 
@@ -74,6 +77,46 @@ public class RestaurantServiceImpl implements RestaurantService {
         double westLon = userLocationInfo.getWestLon();
 
         return restaurantRepository.findBaseUserLocationByDeletedYn(westLon, eastLon, southLat, nothLat);
+    }
+
+    @Override
+    public List<RestaurantByUserLocation> createListRestaurantByUserLocation(List<Restaurant> restaurants) {
+
+        if (restaurants.isEmpty()) {
+            throw new CustomException(ErrorCode.NO_NEARBY_RESTAURANTS);
+        }
+
+        List<CompletableFuture<RestaurantByUserLocation>> listComplResult = new ArrayList<>();
+        for (Restaurant restaurant : restaurants) {
+            listComplResult.add(CompletableFuture.supplyAsync(
+                    () -> changeListComplRestaurantByUserLocation(restaurant))
+            );
+        }
+        CompletableFuture<List<RestaurantByUserLocation>> complListRestaurantByUserLocation =
+                changeComplListRestaurantByUserLocation(listComplResult);
+
+
+        return complListRestaurantByUserLocation.join();
+    }
+
+    private RestaurantByUserLocation changeListComplRestaurantByUserLocation(
+            Restaurant restaurant) {
+
+        return RestaurantByUserLocation.builder()
+                .restaurantName(restaurant.getName())
+                .rateScore(restaurant.getRateScore())
+                .build();
+    }
+
+    private CompletableFuture<List<RestaurantByUserLocation>> changeComplListRestaurantByUserLocation(
+            List<CompletableFuture<RestaurantByUserLocation>> listComplResult) {
+
+        CompletableFuture<?>[] complArray = listComplResult.toArray(new CompletableFuture<?>[0]);
+        return CompletableFuture.allOf(complArray)
+                .thenApplyAsync(i ->
+                        listComplResult.stream()
+                                .map(CompletableFuture::join)
+                                .collect(Collectors.toList()));
     }
 
 }

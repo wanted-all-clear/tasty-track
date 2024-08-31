@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class RestaurantByUserLocationRequest {
+public class RestaurantByUserLocation {
 
     private String restaurantName;
     private Double rateScore;

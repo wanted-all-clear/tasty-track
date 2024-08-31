@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.allclear.tastytrack.domain.auth.token.JwtTokenUtils;
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocationRequest;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocation;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
 import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
@@ -84,12 +84,12 @@ public class RestaurantControllerTest {
         HttpEntity<UserLocationInfo> entity = new HttpEntity<>(userLocationInfo, httpHeaders);
         String url = "/api/users/location";
 
-        ResponseEntity<List<RestaurantByUserLocationRequest>> responseEntity
+        ResponseEntity<List<RestaurantByUserLocation>> responseEntity
                 = testRestTemplate.exchange(url, HttpMethod.POST, entity,
-                new ParameterizedTypeReference<List<RestaurantByUserLocationRequest>>() {
+                new ParameterizedTypeReference<List<RestaurantByUserLocation>>() {
                 });
 
-        List<RestaurantByUserLocationRequest> result = responseEntity.getBody();
+        List<RestaurantByUserLocation> result = responseEntity.getBody();
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getRestaurantName()).isEqualTo("랩보이(wrap boy)");
     }
