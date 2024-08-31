@@ -12,6 +12,6 @@ public interface RestaurantService {
 
     Restaurant updateRestaurantScore(ReviewRequest request);
 
-    List<Restaurant> getRestaurantByUserLocation(UserLocationInfo mock);
+    List<Restaurant> getRestaurantByUserLocation(UserLocationInfo userLocationInfo);
 
 }

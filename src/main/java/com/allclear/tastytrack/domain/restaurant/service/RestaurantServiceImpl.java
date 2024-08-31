@@ -62,7 +62,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> getRestaurantByUserLocation(UserLocationInfo mock) {
+    public List<Restaurant> getRestaurantByUserLocation(UserLocationInfo userLocationInfo) {
+
+        if (userLocationInfo == null) {
+            throw new CustomException(ErrorCode.UNKNOWN_USER_POSITION);
+        }
 
         return null;
     }
