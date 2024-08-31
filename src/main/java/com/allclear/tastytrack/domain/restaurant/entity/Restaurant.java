@@ -3,6 +3,7 @@ package com.allclear.tastytrack.domain.restaurant.entity;
 
 import java.time.LocalDateTime;
 
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,17 +17,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 public class Restaurant {
 
     @Id
@@ -70,5 +67,17 @@ public class Restaurant {
 
     @Column(nullable = false)
     private Integer deletedYn;           // 삭제여부
+
+    public void updateWithNewData(Restaurant newRestaurant) {
+
+        this.name = newRestaurant.getName();
+        this.type = newRestaurant.getType();
+        this.status = newRestaurant.getStatus();
+        this.oldAddress = newRestaurant.getOldAddress();
+        this.newAddress = newRestaurant.getNewAddress();
+        this.lon = newRestaurant.getLon();
+        this.lat = newRestaurant.getLat();
+        this.lastUpdatedAt = newRestaurant.getLastUpdatedAt();
+    }
 
 }

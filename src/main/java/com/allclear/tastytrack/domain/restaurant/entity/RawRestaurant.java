@@ -1,5 +1,6 @@
 package com.allclear.tastytrack.domain.restaurant.entity;
 
+import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +27,18 @@ public class RawRestaurant {
     private String lat;         // 위도
     private String lastmodts;   // 최종 수정일자
     private String dcbymd;      // 폐업일자
+
+    public void updateWithRawRestaurant(RawRestaurantResponse raw) {
+
+        this.bplcnm = raw.getBplcnm();
+        this.uptaenm = raw.getUptaenm();
+        this.dtlstategbn = raw.getDtlstategbn();
+        this.sitewhladdr = raw.getSitewhladdr();
+        this.rdnwhladdr = raw.getRdnwhladdr();
+        this.lon = raw.getLon();
+        this.lat = raw.getLat();
+        this.lastmodts = raw.getLastmodts();
+        this.dcbymd = raw.getDcbymd();
+    }
 
 }

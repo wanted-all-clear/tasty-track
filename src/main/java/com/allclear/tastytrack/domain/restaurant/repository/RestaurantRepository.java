@@ -6,6 +6,9 @@ import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
-    public Restaurant findByIdAndDeletedYn(int id, int deletedYn);
+    Restaurant findRestaurantById(int id);
+
+    Restaurant findByCode(String code);
+    Restaurant findByIdAndDeletedYn(int id, int deletedYn);
 
 }
