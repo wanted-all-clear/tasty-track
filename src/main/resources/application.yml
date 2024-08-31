@@ -56,7 +56,7 @@ spring:
 
   sql:
     init:
-      mode: never # 서버 실행 시 data.sql 파일 항상 실행
+      mode: always # 서버 실행 시 data.sql 파일 항상 실행
       data-locations:
         - classpath:db/region.sql
 

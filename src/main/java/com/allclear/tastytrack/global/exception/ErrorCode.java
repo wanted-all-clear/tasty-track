@@ -19,7 +19,8 @@ public enum ErrorCode {
     // Region
     NO_REGION_DATA(HttpStatus.NOT_FOUND, "지역 정보 데이터가 없습니다."),
     DATABASE_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "데이터베이스 처리 중 오류가 발생했습니다."),
-
+    NOT_VALID_REQUEST(HttpStatus.BAD_REQUEST, "유효하지 않는 값입니다."),
+    NULL_REQUEST_DATA(HttpStatus.BAD_REQUEST, "요청한 값이 없습니다."),
     // Data Pipeline
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "API 요청에 실패했습니다."),
     JSON_PARSING(HttpStatus.BAD_REQUEST, "JSON 파싱 중 오류가 발생했습니다.");
