@@ -47,6 +47,7 @@ public class RawDataService {
     private String serviceName;  // 서비스명
 
     private static final int PAGE_SIZE = 100; // 1회 호출 시 응답받을 데이터 수
+    private static int counter = 0;
 
     /**
      * 1. 초기화 메서드 (의존성 주입 완료 후, 초기화 작업을 수행할 메서드 지정)
@@ -73,11 +74,11 @@ public class RawDataService {
     }
 
     /**
-     * 3. 3일 주기로 자정마다 서울 맛집 데이터 수집 및 최종수정일자가 변경된 맛집 원본을 조회하여 맛집 가공 DB의 데이터를 업데이트합니다.
+     * 3. 매주 금요일 자정마다 서울 맛집 데이터 수집 및 최종수정일자가 변경된 맛집 원본을 조회하여 맛집 가공 DB의 데이터를 업데이트합니다.
      * 작성자 : 유리빛나
      */
     @Transactional
-    @Scheduled(cron = "0 0 */3 * *")
+    @Scheduled(cron = "0 0 0 * * 5")
 //    @Scheduled(fixedRate = 30_000) // 30초마다 실행되는 테스트용 스케줄러
     public void fetchAndSaveUpdatedDatas() throws Exception {
 
@@ -169,9 +170,12 @@ public class RawDataService {
                     // 신규 데이터인 경우에만 저장
                     RawRestaurant newRestaurant = getRawRestaurantBuilder(raw);
 
-                    rawRestaurantRepository.save(newRestaurant);
+                    RawRestaurant savedRawRestaurant = rawRestaurantRepository.save(newRestaurant);
+                    counter++; // 로깅 카운터 1 증가
+                    log.info("{}번째 저장된 맛집 원본 : {}", counter, savedRawRestaurant.getBplcnm());
                 }
             }
+            log.info("JSON 응답 총 {}건 중 {}개가 원본 테이블에 저장 완료되었습니다.", totalCount, counter);
             return totalCount; // 전체 데이터 건수 반환
         } catch (JsonProcessingException e) {
             // JSON 파싱 관련 예외 처리

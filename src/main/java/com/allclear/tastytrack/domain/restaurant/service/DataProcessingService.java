@@ -101,6 +101,14 @@ public class DataProcessingService {
      */
     private void saveRestaurantsFromRawRestaurants(List<RawRestaurant> rawRestaurantList) throws Exception {
 
+        // 원본 맛집 데이터가 없을 경우 종료
+        if (rawRestaurantList == null) return;
+
+        // 원본 맛집 총 데이터 건수
+        int totalCount = rawRestaurantList.size();
+
+        int counter = 0; // 로깅에 사용될 카운터
+
         for (RawRestaurant rawRestaurant : rawRestaurantList) {
 
             // 맛집 원본 데이터의 도로명 주소로 주소 검색 openAPI를 활용해 WGS84 좌표계 타입의 위도, 경도 데이터를 맛집 가공 DB에 저장
@@ -135,13 +143,16 @@ public class DataProcessingService {
 
                 try {
                     // 가공된 데이터 저장
-                    restaurantRepository.save(restaurant);
+                    Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+                    counter++; // 로깅 카운터 1 증가
+                    log.info("{}번째 저장된 맛집 가공 : {}", counter, savedRestaurant.getName());
                 } catch (DataIntegrityViolationException e) {
                     // 중복된 데이터로 인한 예외가 발생한 경우 로깅 및 처리
                     log.error("중복된 데이터로 인해 저장 실패: {}", rawRestaurant.getMgtno(), e);
                 }
             }
         }
+        log.info("원본 데이터 총 {}건 중 {}개가 가공 테이블에 저장 완료되었습니다.", totalCount, counter);
     }
 
 }
