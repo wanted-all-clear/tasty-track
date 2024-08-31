@@ -13,6 +13,7 @@ public enum ErrorCode {
     USER_NOT_EXIST(HttpStatus.NOT_FOUND, "가입되지 않은 아이디입니다."),
 
     NOT_VALID_PROPERTY(HttpStatus.BAD_REQUEST, "입력 값을 확인해주세요"),
+
     NOT_EXISTENT_RESTAURANT(HttpStatus.BAD_REQUEST, "조회할 수 없는 음식점입니다."),
 
     // Region
@@ -22,6 +23,9 @@ public enum ErrorCode {
     // Data Pipeline
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "API 요청에 실패했습니다."),
     JSON_PARSING(HttpStatus.BAD_REQUEST, "JSON 파싱 중 오류가 발생했습니다.");
+
+    private final HttpStatus httpStatus;
+    private final String message;
 
     private final HttpStatus httpStatus;
     private final String message;

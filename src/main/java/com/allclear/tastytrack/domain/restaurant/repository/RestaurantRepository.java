@@ -9,5 +9,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     Restaurant findRestaurantById(int id);
 
     Restaurant findByCode(String code);
+    Restaurant findByIdAndDeletedYn(int id, int deletedYn);
 
 }

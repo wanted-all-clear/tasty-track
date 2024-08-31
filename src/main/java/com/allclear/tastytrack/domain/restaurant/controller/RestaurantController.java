@@ -2,7 +2,6 @@ package com.allclear.tastytrack.domain.restaurant.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,22 +32,14 @@ public class RestaurantController {
 
     @PostMapping("")
     public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                          @RequestBody int id) {
+            @RequestBody int id) {
 
-        log.info("음식점 id = {}", id);
-        Restaurant restaurant = restaurantService.getRestaurant(id);
+        Restaurant restaurant = restaurantService.getRestaurant(id, 0);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
+
         List<ReviewResponse> reviewResponses = new ArrayList<>();
         if (!reviews.isEmpty()) {
-
-            List<CompletableFuture<ReviewResponse>> listCompletableFuture =
-                    reviewService.createReviewResponse(reviews);
-
-            CompletableFuture<List<ReviewResponse>> completableFuture =
-                    reviewService.combineToListFuture(listCompletableFuture);
-
-            reviewResponses = completableFuture.join();
-
+            reviewResponses = reviewService.createListReviewResponse(restaurant, reviews, reviewResponses);
         }
         RestaurantDetail restaurantDetail = RestaurantDetail.builder()
                 .name(restaurant.getName())
@@ -57,8 +48,8 @@ public class RestaurantController {
                 .rateScore(restaurant.getRateScore())
                 .oldAddress(restaurant.getOldAddress())
                 .newAddress(restaurant.getNewAddress())
-                .lon(String.valueOf(restaurant.getLon()))
-                .lat(String.valueOf(restaurant.getLat()))
+                .lon(restaurant.getLon())
+                .lat(restaurant.getLat())
                 .lastUpdateAt(restaurant.getLastUpdatedAt())
                 .reviewResponses(reviewResponses)
                 .build();
