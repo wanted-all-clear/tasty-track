@@ -1,6 +1,7 @@
 package com.allclear.tastytrack.domain.user.service;
 
 import com.allclear.tastytrack.domain.auth.UserAuth;
+import com.allclear.tastytrack.domain.user.dto.LoginRequest;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
 import com.allclear.tastytrack.domain.user.dto.UserInfo;
 import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
@@ -48,14 +49,14 @@ public class UserServiceImpl implements UserService {
      * 로그인
      * 작성자 : 오예령
      *
-     * @param  userCreateRequest 계정명, 비밀번호
+     * @param  loginRequest 계정명, 비밀번호
      * @return 헤더에 토큰을 담아 반환
      */
     @Override
     @Transactional
-    public HttpHeaders signin(UserCreateRequest userCreateRequest) {
+    public HttpHeaders signin(LoginRequest loginRequest) {
 
-        User user = userCheck(userCreateRequest.getUsername());
+        User user = userCheck(loginRequest.getUsername());
         return userAuth.generateHeaderTokens(user);
     }
 
