@@ -138,7 +138,7 @@ public class DataProcessingService {
 
                 // 맛집 원본의 상세영업상태코드가 02인(폐업) 데이터는 맛집 가공의 삭제여부를 true로 저장
                 if ("02".equals(rawRestaurant.getDtlstategbn())) {
-                    restaurant.setDeletedYn(true);
+                    restaurant.setDeletedYn(1);
                 }
 
                 try {

@@ -15,26 +15,26 @@ import lombok.Setter;
 @Builder
 public class RestaurantDetail {
 
-	private String name;
+    private String name;
 
 
-	private String type;
+    private String type;
 
-	private String status;
+    private String status;
 
-	private Double rateScore;
+    private Double rateScore;
 
-	private String oldAddress;
+    private String oldAddress;
 
-	private String newAddress;
+    private String newAddress;
 
-	private String lon;
+    private Double lon;
 
-	private String lat;
+    private Double lat;
 
-	private LocalDateTime lastUpdateAt;
+    private LocalDateTime lastUpdateAt;
 
-	@Setter
-	private List<ReviewResponse> reviewResponses;
+    @Setter
+    private List<ReviewResponse> reviewResponses;
 
 }

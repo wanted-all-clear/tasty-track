@@ -94,7 +94,7 @@ public class RawDataService {
      * 이 메서드는 초기 데이터 구축과 업데이트 모두에서 호출됩니다.
      * 작성자 : 유리빛나
      */
-    void fetchAndSaveCommon() {
+    private void fetchAndSaveCommon() {
 
         int startIndex = 1;
         int endIndex = PAGE_SIZE;
@@ -153,26 +153,29 @@ public class RawDataService {
 
             // 각 JSON 응답 처리
             for (RawRestaurantResponse raw : rows) {
-                String mgtno = raw.getMgtno();
-                RawRestaurant existingRestaurant = rawRestaurantRepository.findByMgtno(mgtno);
 
-                if (existingRestaurant != null) {
-                    // 이미 존재하는 경우 업데이트
-                    LocalDateTime existingLastmodts = parseLastmodts(existingRestaurant.getLastmodts());
-                    LocalDateTime newLastmodts = parseLastmodts(raw.getLastmodts());
+                if (!raw.getDtlstategbn().equals("02")) {
+                    String mgtno = raw.getMgtno();
+                    RawRestaurant existingRestaurant = rawRestaurantRepository.findByMgtno(mgtno);
 
-                    if (!existingLastmodts.equals(newLastmodts)) {
-                        // 최종수정일자가 다른 경우에만 업데이트
-                        existingRestaurant.updateWithRawRestaurant(raw);
-                        rawRestaurantRepository.save(existingRestaurant);
+                    if (existingRestaurant != null) {
+                        // 이미 존재하는 경우 업데이트
+                        LocalDateTime existingLastmodts = parseLastmodts(existingRestaurant.getLastmodts());
+                        LocalDateTime newLastmodts = parseLastmodts(raw.getLastmodts());
+
+                        if (!existingLastmodts.equals(newLastmodts)) {
+                            // 최종수정일자가 다른 경우에만 업데이트
+                            existingRestaurant.updateWithRawRestaurant(raw);
+                            rawRestaurantRepository.save(existingRestaurant);
+                        }
+                    } else {
+                        // 신규 데이터인 경우에만 저장
+                        RawRestaurant newRestaurant = getRawRestaurantBuilder(raw);
+
+                        RawRestaurant savedRawRestaurant = rawRestaurantRepository.save(newRestaurant);
+                        counter++; // 로깅 카운터 1 증가
+                        log.info("{}번째 저장된 맛집 원본 : {}", counter, savedRawRestaurant.getBplcnm());
                     }
-                } else {
-                    // 신규 데이터인 경우에만 저장
-                    RawRestaurant newRestaurant = getRawRestaurantBuilder(raw);
-
-                    RawRestaurant savedRawRestaurant = rawRestaurantRepository.save(newRestaurant);
-                    counter++; // 로깅 카운터 1 증가
-                    log.info("{}번째 저장된 맛집 원본 : {}", counter, savedRawRestaurant.getBplcnm());
                 }
             }
             log.info("JSON 응답 총 {}건 중 {}개가 원본 테이블에 저장 완료되었습니다.", totalCount, counter);
