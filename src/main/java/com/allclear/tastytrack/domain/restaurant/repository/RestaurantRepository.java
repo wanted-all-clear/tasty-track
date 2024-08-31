@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 
+import io.lettuce.core.dynamic.annotation.Param;
+
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
     Restaurant findRestaurantById(int id);
@@ -21,6 +23,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
                     + "where r.deleted_yn = 1 "
                     + "and westLon <= r.lon <= eastLon"
                     + "and southLat <= r.lat <= nothLat")
-    List<Restaurant> findBaseUserLocationByDeletedYn(double westLon, double eastLon, double southLat, double nothLat);
+    List<Restaurant> findBaseUserLocationByDeletedYn(@Param("westLon") double westLon, @Param("eastLon") double eastLon,
+            @Param("southLat") double southLat, @Param("nothLat") double nothLat);
 
 }
