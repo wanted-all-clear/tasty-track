@@ -12,7 +12,11 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
 	Restaurant findRestaurantById(int id);
 
-	@Query(value = "SELECT * FROM Restaurant r WHERE " +
+    Restaurant findByCode(String code);
+
+    Restaurant findByIdAndDeletedYn(int id, int deletedYn);
+
+    @Query(value = "SELECT * FROM Restaurant r WHERE " +
 			"r.new_address LIKE CONCAT(:regionName, '%') AND " +
 			"r.type LIKE CONCAT('%', :type, '%') AND " +
 			"r.status = '01' AND " +
@@ -26,8 +30,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 			@Param("lon") double lon,
 			@Param("distance") double distance,
 			@Param("type") String type);
-
-
-	Restaurant findByCode(String code);
 
 }

@@ -75,6 +75,7 @@ public class Restaurant {
     @Comment("최종 수정일자")
     private LocalDateTime lastUpdatedAt;
 
+    @Setter
     @Column(nullable = false)
     @ColumnDefault("0.0")
     @Comment("평점")
@@ -82,7 +83,7 @@ public class Restaurant {
 
     @Column(nullable = false)
     @Comment("삭제여부")
-    private boolean deletedYn;           // 삭제여부
+    private Integer deletedYn;           // 삭제여부
 
     public void updateWithNewData(Restaurant newRestaurant) {
 
