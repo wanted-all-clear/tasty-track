@@ -77,6 +77,9 @@ public class DataProcessingService {
      */
     private Restaurant getRestaurantBuilder(RawRestaurant rawRestaurant) {
 
+        Double lon = rawRestaurant.getLon() != null ? Double.valueOf(rawRestaurant.getLon()) : null;
+        Double lat = rawRestaurant.getLat() != null ? Double.valueOf(rawRestaurant.getLat()) : null;
+
         return Restaurant.builder()
                 .code(rawRestaurant.getMgtno())
                 .name(rawRestaurant.getBplcnm())
@@ -84,8 +87,8 @@ public class DataProcessingService {
                 .status(rawRestaurant.getDtlstategbn())
                 .oldAddress(rawRestaurant.getSitewhladdr())
                 .newAddress(rawRestaurant.getRdnwhladdr())
-                .lon(Double.valueOf(rawRestaurant.getLon()))
-                .lat(Double.valueOf(rawRestaurant.getLat()))
+                .lon(lon)
+                .lat(lat)
                 .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
                 .build();
     }
@@ -99,15 +102,11 @@ public class DataProcessingService {
     private void saveRestaurantsFromRawRestaurants(List<RawRestaurant> rawRestaurantList) throws Exception {
 
         for (RawRestaurant rawRestaurant : rawRestaurantList) {
-            // 도로명주소가 없는 데이터는 일단 제외
-            if (rawRestaurant.getRdnwhladdr().isEmpty()) continue;
 
             // 위도, 경도 값이 누락된 데이터 주입
-            if (rawRestaurant.getLon().isEmpty()) {
-                Coordinate coordinate = coordinateService.getCoordinate(rawRestaurant.getRdnwhladdr());
-                rawRestaurant.setLon(coordinate.getLon());
-                rawRestaurant.setLat(coordinate.getLat());
-            }
+            Coordinate coordinate = coordinateService.getCoordinate(rawRestaurant.getRdnwhladdr());
+            rawRestaurant.setLon(coordinate.getLon());
+            rawRestaurant.setLat(coordinate.getLat());
 
             // 가공 테이블에서 동일한 mgtno(code) 값을 가진 데이터를 조회
             Restaurant existingRestaurant = restaurantRepository.findByCode(rawRestaurant.getMgtno());
