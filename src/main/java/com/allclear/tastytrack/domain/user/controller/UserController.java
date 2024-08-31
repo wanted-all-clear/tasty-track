@@ -1,6 +1,7 @@
 package com.allclear.tastytrack.domain.user.controller;
 
 import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
+import com.allclear.tastytrack.domain.user.dto.LoginRequest;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
 import com.allclear.tastytrack.domain.user.dto.UserInfo;
 import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
@@ -33,9 +34,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> signin(@Validated @RequestBody UserCreateRequest userCreateRequest) {
+    public ResponseEntity<String> signin(@Validated @RequestBody LoginRequest loginRequest) {
 
-        HttpHeaders httpHeaders = userService.signin(userCreateRequest);
+        HttpHeaders httpHeaders = userService.signin(loginRequest);
 
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(null);
     }
