@@ -1,10 +1,12 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantSearch;
+import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
+
 import java.util.List;
 
-import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
-import com.allclear.tastytrack.domain.review.entity.Review;
-
 public interface RestaurantService {
-	public Restaurant getRestaurant(int id);
+	Restaurant getRestaurant(int id);
+	List<Restaurant> getRestaurantSearchByRegion(String dosi, String sgg, String type);
+
 }

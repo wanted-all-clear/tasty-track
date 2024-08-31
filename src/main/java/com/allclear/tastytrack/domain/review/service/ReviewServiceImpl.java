@@ -61,7 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
 	 */
 	private ReviewResponse asyncCreateReviewResponse(Review review) {
 
-		User user = userRepository.findById(review.getUserId()).get();
+		User user = userRepository.findById(review.getId()).get();
 
 		return ReviewResponse.builder()
 				.username(user.getUsername())

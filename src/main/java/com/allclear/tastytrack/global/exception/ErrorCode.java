@@ -14,6 +14,8 @@ public enum ErrorCode {
 
 	NOT_VALID_PROPERTY(HttpStatus.BAD_REQUEST, "입력 값을 확인해주세요"),
 	NOT_EXISTENT_RESTAURANT(HttpStatus.BAD_REQUEST, "조회할 수 없는 음식점입니다."),
+	EMPTY_RESTAURANT(HttpStatus.NO_CONTENT, "맛집 데이터가 0건 입니다."),
+
 
 	// Region
 	NO_REGION_DATA(HttpStatus.NOT_FOUND, "지역 정보 데이터가 없습니다."),
