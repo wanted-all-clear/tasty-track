@@ -19,6 +19,7 @@ services:
 volumes:
   mysql-vl:
     driver: local
+
 networks:
   tastytrack:
     driver: bridge

@@ -83,7 +83,7 @@ public class Restaurant {
 
     @Column(nullable = false)
     @Comment("삭제여부")
-    private int deletedYn;           // 삭제여부
+    private int deletedYn;
 
     public void updateWithNewData(Restaurant newRestaurant) {
 
