@@ -2,12 +2,15 @@ package com.allclear.tastytrack.restaurant;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,8 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.allclear.tastytrack.domain.auth.token.JwtTokenUtils;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocationRequest;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
+import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 
@@ -64,6 +69,29 @@ public class RestaurantControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody().getName()).isEqualTo("오고보");
 
+    }
+
+    @Test
+    @DisplayName("사용자 위치 기반 맛집조회 통합 테스트 입니다.")
+    public void 사용자_위치_기반_맛집조회_테스트() {
+
+        UserLocationInfo userLocationInfo = UserLocationInfo.builder()
+                .lat(37.4987846719974)
+                .lon(127.031703595662)
+                .distance(1)
+                .build();
+
+        HttpEntity<UserLocationInfo> entity = new HttpEntity<>(userLocationInfo, httpHeaders);
+        String url = "/api/users/location";
+
+        ResponseEntity<List<RestaurantByUserLocationRequest>> responseEntity
+                = testRestTemplate.exchange(url, HttpMethod.POST, entity,
+                new ParameterizedTypeReference<List<RestaurantByUserLocationRequest>>() {
+                });
+
+        List<RestaurantByUserLocationRequest> result = responseEntity.getBody();
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getRestaurantName()).isEqualTo("랩보이(wrap boy)");
     }
 
 }

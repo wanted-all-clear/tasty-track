@@ -3,7 +3,13 @@ package com.allclear.tastytrack.domain.user.dto;
 import com.allclear.tastytrack.domain.user.enums.Coordinate;
 
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
+@AllArgsConstructor
 public class UserLocationInfo {
 
     @Column(nullable = false)
