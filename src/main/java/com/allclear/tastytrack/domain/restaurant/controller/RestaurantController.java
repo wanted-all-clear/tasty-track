@@ -1,9 +1,7 @@
 package com.allclear.tastytrack.domain.restaurant.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,16 +39,7 @@ public class RestaurantController {
 
         List<ReviewResponse> reviewResponses = new ArrayList<>();
         if (!reviews.isEmpty()) {
-
-            List<CompletableFuture<ReviewResponse>> listCompletableFuture =
-                    reviewService.createReviewResponse(reviews);
-
-            CompletableFuture<List<ReviewResponse>> completableFuture =
-                    reviewService.combineToListFuture(listCompletableFuture);
-
-            reviewResponses = completableFuture.join();
-            Collections.sort(reviewResponses);
-
+            reviewResponses = reviewService.createListReviewResponse(restaurant, reviews, reviewResponses);
         }
         RestaurantDetail restaurantDetail = RestaurantDetail.builder()
                 .name(restaurant.getName())

@@ -1,6 +1,7 @@
 package com.allclear.tastytrack.domain.review.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
@@ -41,14 +43,26 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId).get();
     }
 
+    @Override
+    @Transactional
+    public List<ReviewResponse> createListReviewResponse(Restaurant restaurant, List<Review> reviews,
+            List<ReviewResponse> reviewResponses) {
+
+        List<CompletableFuture<ReviewResponse>> listCompletableFuture = changeListCompletableReview(reviews);
+        CompletableFuture<List<ReviewResponse>> completableFuture = changeCompletableListReview(listCompletableFuture);
+        reviewResponses = completableFuture.join();
+        Collections.sort(reviewResponses);
+
+        return reviewResponses;
+    }
+
     /**
      * List<Review>를 List<CompletableFuture<ReviewResponse>>로 변경하는 메서드입니다.
      * 작성자 : 김은정
      * @param reviews
      * @return
      */
-    @Override
-    public List<CompletableFuture<ReviewResponse>> createReviewResponse(List<Review> reviews) {
+    private List<CompletableFuture<ReviewResponse>> changeListCompletableReview(List<Review> reviews) {
 
         List<CompletableFuture<ReviewResponse>> reviewResponses = new ArrayList<>();
         for (Review review : reviews) {
@@ -63,8 +77,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param listCompletableFuture
      * @return
      */
-    @Override
-    public CompletableFuture<List<ReviewResponse>> combineToListFuture(
+    private CompletableFuture<List<ReviewResponse>> changeCompletableListReview(
             List<CompletableFuture<ReviewResponse>> listCompletableFuture) {
 
         CompletableFuture<?>[] completableFutureArray =
@@ -131,6 +144,5 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewRepository.delete(review);
     }
-
 
 }
