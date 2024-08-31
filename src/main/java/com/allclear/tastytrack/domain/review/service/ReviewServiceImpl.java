@@ -41,8 +41,9 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<Review> getAllReviewsByRestaurantId(int restaurantId) {
 
-        Optional<List<Review>> reviewsOptional = reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(
-                restaurantId);
+        Optional<List<Review>> reviewsOptional =
+                reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
+        
         return reviewsOptional.orElseGet(ArrayList::new);
 
     }
@@ -113,7 +114,6 @@ public class ReviewServiceImpl implements ReviewService {
                 .build();
 
     }
-
 
     /**
      * 리뷰를 생성하는 메소드입니다.
