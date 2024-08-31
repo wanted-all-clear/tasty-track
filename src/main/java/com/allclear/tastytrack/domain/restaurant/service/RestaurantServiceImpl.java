@@ -88,10 +88,13 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         List<CompletableFuture<RestaurantByUserLocation>> listComplResult = new ArrayList<>();
         for (Restaurant restaurant : restaurants) {
-            listComplResult.add(CompletableFuture.supplyAsync(
-                    () -> changeListComplRestaurantByUserLocation(restaurant))
+
+            // RestaurantByUserLocation 변환 작업이 CompletableFuture에 의해 비동기로 실행되었기 때문에 ComplatableFuture로 감싸진다.
+            listComplResult.add(CompletableFuture
+                    .supplyAsync(() -> changeListComplRestaurantByUserLocation(restaurant))
             );
         }
+
         CompletableFuture<List<RestaurantByUserLocation>> complListRestaurantByUserLocation =
                 changeComplListRestaurantByUserLocation(listComplResult);
 
@@ -99,6 +102,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         return complListRestaurantByUserLocation.join();
     }
 
+    /**
+     * // 멀티 스레드를 이용하여 Restaurant 객체를 RestaurantByUserLocation 객체로 변환하는 비동기 메소드
+     * @param restaurant
+     * @return
+     */
     private RestaurantByUserLocation changeListComplRestaurantByUserLocation(
             Restaurant restaurant) {
 
@@ -108,10 +116,18 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .build();
     }
 
+    /**
+     * 필요한 데이터의 형태인 List<RestaurantByUserLocation>로 변환해주는 비동기 메서드
+     * @param listComplResult
+     * @return
+     */
     private CompletableFuture<List<RestaurantByUserLocation>> changeComplListRestaurantByUserLocation(
             List<CompletableFuture<RestaurantByUserLocation>> listComplResult) {
 
+        // 1. listComplResult을 배열로 변환해준다.
         CompletableFuture<?>[] complArray = listComplResult.toArray(new CompletableFuture<?>[0]);
+
+        // 2. allOf() 메소드를 이용해 비동기로 전달된 데이터가 전부 도착할 때까지 기다린 뒤 List 타입으로 다시 변환해준다.
         return CompletableFuture.allOf(complArray)
                 .thenApplyAsync(i ->
                         listComplResult.stream()
