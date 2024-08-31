@@ -79,6 +79,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantRepository.findBaseUserLocationByDeletedYn(westLon, eastLon, southLat, nothLat);
     }
 
+    /**
+     * 멀티스레드 환경에서 비동기 방식을 이용해 List<Restaurant>를 List<RestaurantByUserLocation> 변환하는 메소드
+     * - CompletableFuture를 이용하면 @async 애노테이션을 사용하지 않아도 된다.
+     *
+     * @param restaurants
+     * @return
+     */
     @Override
     public List<RestaurantByUserLocation> createListRestaurantByUserLocation(List<Restaurant> restaurants) {
 

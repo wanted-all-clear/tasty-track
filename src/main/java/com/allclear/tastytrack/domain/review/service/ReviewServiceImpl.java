@@ -48,6 +48,16 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
 
+    /**
+     * 멀티스레드 환경에서 비동기 방식을 이용해 List<reviews>를 List<ReviewResponse>으로 변환하는 메소드
+     *  - CompletableFuture를 이용하면 @async 애노테이션을 사용하지 않아도 된다.
+     *  - 파라미터로 전달된 reviewResponses는 비어있다.
+     *
+     * @param restaurant
+     * @param reviews
+     * @param reviewResponses
+     * @return
+     */
     @Override
     @Transactional
     public List<ReviewResponse> createListReviewResponse(Restaurant restaurant, List<Review> reviews,
@@ -143,6 +153,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
 
+    /**
+     * 리뷰 생성 api 도중에 오류가 발생했을 때 생성했던 리뷰를 삭제하기 위해 구현
+     *
+     * @param review
+     */
     @Override
     public void removeReview(Review review) {
 
