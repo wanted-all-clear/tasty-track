@@ -66,7 +66,7 @@ public class Restaurant {
     private double rateScore;            // 평점
 
     @Column(nullable = false)
-    private Integer deletedYn;           // 삭제여부
+    private int deletedYn;           // 삭제여부
 
     public void updateWithNewData(Restaurant newRestaurant) {
 
