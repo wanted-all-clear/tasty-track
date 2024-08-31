@@ -103,8 +103,11 @@ public class DataProcessingService {
 
         for (RawRestaurant rawRestaurant : rawRestaurantList) {
 
-            // 위도, 경도 값이 누락된 데이터 주입
-            Coordinate coordinate = coordinateService.getCoordinate(rawRestaurant.getRdnwhladdr());
+            // 맛집 원본 데이터의 도로명 주소로 주소 검색 openAPI를 활용해 WGS84 좌표계 타입의 위도, 경도 데이터를 맛집 가공 DB에 저장
+            // 도로명 주소가 없을 경우 -> 지번 주소로 위도 경도 데이터 설정
+            String addressToUse = rawRestaurant.getRdnwhladdr().isEmpty() ? rawRestaurant.getSitewhladdr() : rawRestaurant.getRdnwhladdr();
+
+            Coordinate coordinate = coordinateService.getCoordinate(addressToUse);
             rawRestaurant.setLon(coordinate.getLon());
             rawRestaurant.setLat(coordinate.getLat());
 
