@@ -95,15 +95,15 @@ public class RestaurantServiceImplTest {
     public void findRestaurantByUserLocation() {
         // given
         List<Restaurant> mockList = mock(List.class);
-        given(restaurantRepository.findBaseUserLocationByDeletedYn(anyDouble(), anyDouble(), anyDouble(), anyDouble(),
-                anyInt())).willReturn(mockList);
+        given(restaurantRepository.findBaseUserLocationByDeletedYn(anyDouble(), anyDouble(), anyDouble(),
+                anyDouble())).willReturn(mockList);
 
         // when
         restaurantServiceImpl.getRestaurantByUserLocation(mock(UserLocationInfo.class));
 
         // then
         verify(restaurantRepository, times(1)).findBaseUserLocationByDeletedYn(anyDouble(),
-                anyDouble(), anyDouble(), anyDouble(), anyInt());
+                anyDouble(), anyDouble(), anyDouble());
 
     }
 

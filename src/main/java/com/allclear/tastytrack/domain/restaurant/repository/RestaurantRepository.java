@@ -3,6 +3,7 @@ package com.allclear.tastytrack.domain.restaurant.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 
@@ -14,7 +15,12 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     Restaurant findByIdAndDeletedYn(int id, int deletedYn);
 
-    List<Restaurant> findBaseUserLocationByDeletedYn(double minLon, double minLat, double maxLon, double maxLat,
-            int deletedYn);
+    @Query(nativeQuery = true,
+            value = "SELECT *"
+                    + "from restaurant as r"
+                    + "where r.deleted_yn = 1 "
+                    + "and westLon <= r.lon <= eastLon"
+                    + "and southLat <= r.lat <= nothLat")
+    List<Restaurant> findBaseUserLocationByDeletedYn(double westLon, double eastLon, double southLat, double nothLat);
 
 }

@@ -68,7 +68,12 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new CustomException(ErrorCode.UNKNOWN_USER_POSITION);
         }
 
-        return null;
+        double nothLat = userLocationInfo.getNothLat();
+        double southLat = userLocationInfo.getSouthLat();
+        double eastLon = userLocationInfo.getEastLon();
+        double westLon = userLocationInfo.getWestLon();
+
+        return restaurantRepository.findBaseUserLocationByDeletedYn(westLon, eastLon, southLat, nothLat);
     }
 
 }
