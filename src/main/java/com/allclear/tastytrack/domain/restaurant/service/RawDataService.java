@@ -4,6 +4,8 @@ import com.allclear.tastytrack.domain.restaurant.dto.LocalDataResponse;
 import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
 import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RawRestaurantRepository;
+import com.allclear.tastytrack.global.exception.CustomException;
+import com.allclear.tastytrack.global.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -58,7 +60,7 @@ public class RawDataService {
     }
 
     /**
-     * 2. 서울 맛집 데이터 수집 및 맛집 원본, 맛집 가공 DB에 데이터를 저장하여 초기 데이터를 구축합니다.
+     * 2. 서울 맛집 데이터를 최초 수집하여 원본 테이블에 저장하고, 가공된 데이터를 가공 테이블에 저장하여 초기 데이터를 구축합니다.
      * 작성자 : 유리빛나
      */
     public void fetchAndSaveInitDatas() throws Exception {
@@ -87,10 +89,11 @@ public class RawDataService {
     }
 
     /**
-     * 맛집 데이터를 수집하여 맛집 원본 DB에 데이터를 저장하는 메서드
+     * 공공데이터 API에서 맛집 데이터를 수집하여 원본 테이블에 저장하는 공통 로직을 처리하는 메서드입니다.
+     * 이 메서드는 초기 데이터 구축과 업데이트 모두에서 호출됩니다.
      * 작성자 : 유리빛나
      */
-    private void fetchAndSaveCommon() {
+    void fetchAndSaveCommon() {
 
         int startIndex = 1;
         int endIndex = PAGE_SIZE;
@@ -112,7 +115,8 @@ public class RawDataService {
     }
 
     /**
-     * JSON 응답 데이터를 파싱하여 맛집 원본 DB에 저장하는 메서드
+     * JSON 형식으로 받은 공공데이터 응답을 파싱하여 맛집 원본 테이블에 저장하는 메서드입니다.
+     * 기존 데이터는 최종 수정일자가 변경된 경우에만 업데이트하며, 새로운 데이터는 추가합니다.
      * 작성자 : 유리빛나
      *
      * @param startIndex 요청 시작 위치
@@ -135,8 +139,7 @@ public class RawDataService {
             jsonResponse = template.getForObject(uri, String.class);
         } catch (RestClientException e) {
             // HTTP 요청 관련 예외 처리
-            log.error("API 요청 실패: {}", uri, e);
-            return 0;
+            throw new CustomException(ErrorCode.API_NOT_FOUND);
         }
 
         // JSON 응답 데이터를 파싱하여 엔티티로 변환
@@ -165,16 +168,15 @@ public class RawDataService {
                 } else {
                     // 신규 데이터인 경우에만 저장
                     RawRestaurant newRestaurant = getRawRestaurantBuilder(raw);
+
                     rawRestaurantRepository.save(newRestaurant);
                 }
             }
-
             return totalCount; // 전체 데이터 건수 반환
         } catch (JsonProcessingException e) {
             // JSON 파싱 관련 예외 처리
-            log.error("JSON 파싱 실패: {}", jsonResponse, e);
+            throw new CustomException(ErrorCode.JSON_PARSING);
         }
-        return 0;
     }
 
     /**
@@ -196,7 +198,6 @@ public class RawDataService {
                 .lon(raw.getLon())
                 .lat(raw.getLat())
                 .lastmodts(raw.getLastmodts())
-                .dcbymd(raw.getDcbymd())
                 .build();
     }
 

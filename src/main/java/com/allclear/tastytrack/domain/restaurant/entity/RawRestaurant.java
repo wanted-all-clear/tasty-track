@@ -26,7 +26,6 @@ public class RawRestaurant {
     private String lon;         // 경도
     private String lat;         // 위도
     private String lastmodts;   // 최종 수정일자
-    private String dcbymd;      // 폐업일자
 
     public void updateWithRawRestaurant(RawRestaurantResponse raw) {
 
@@ -38,7 +37,6 @@ public class RawRestaurant {
         this.lon = raw.getLon();
         this.lat = raw.getLat();
         this.lastmodts = raw.getLastmodts();
-        this.dcbymd = raw.getDcbymd();
     }
 
 }

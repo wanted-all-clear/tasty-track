@@ -26,7 +26,7 @@ public class DataProcessingService {
     private final CoordinateService coordinateService;
 
     /**
-     * 1. 맛집 원본 데이터 전처리 후 가공된 데이터를 맛집 가공 테이블에 저장하여 초기 데이터를 구축합니다.
+     * 1. 맛집 원본 데이터를 전처리한 후, 가공된 데이터를 가공 테이블에 저장하여 초기 데이터를 구축합니다.
      * 작성자 : 유리빛나
      */
     public void preprocessingAndSaveInitRestaurant() throws Exception {
@@ -34,12 +34,12 @@ public class DataProcessingService {
         // 맛집 원본 리스트의 모든 데이터 조회
         List<RawRestaurant> rawRestaurantList = rawRestaurantRepository.findAll();
 
-        // 맛집 원본 리스트를 맛집 가공 DB에 저장
+        // 맛집 원본 리스트를 맛집 가공 테이블에 저장
         saveRestaurantsFromRawRestaurants(rawRestaurantList);
     }
 
     /**
-     * 2. 맛집 원본과 맛집 가공의 최종수정일자가 다른 맛집 원본 데이터 전처리 후 가공된 데이터를 맛집 가공 테이블에 저장합니다.
+     * 2. 맛집 원본 테이블과 가공 테이블의 최종수정일자가 다른 경우, 맛집 원본 데이터를 전처리한 후 맛집 가공 테이블에 저장합니다.
      * 작성자 : 유리빛나
      */
     public void preprocessingAndSaveUpdatedAtNotMatchingRestaurant() throws Exception {
@@ -47,10 +47,10 @@ public class DataProcessingService {
         // 맛집 원본과 맛집 가공의 최종수정일자가 다른 맛집 원본 테이블의 데이터 조회
         List<RawRestaurant> rawRestaurantList = rawRestaurantRepository.findByLastUpdatedAtNotMatchingRawRestaurants();
 
-        // 업데이트된 맛집 원본 데이터가 없을 경우 리턴
+        // 업데이트된 맛집 원본 데이터가 없을 경우 종료
         if (rawRestaurantList.isEmpty()) return;
 
-        // 맛집 원본 리스트를 맛집 가공 DB에 저장
+        // 맛집 원본 리스트를 맛집 가공 테이블에 저장
         saveRestaurantsFromRawRestaurants(rawRestaurantList);
     }
 
@@ -94,10 +94,10 @@ public class DataProcessingService {
     }
 
     /**
-     * 맛집 원본 리스트를 맛집 가공 DB에 저장하는 메서드
+     * 맛집 원본 리스트를 전처리하여 맛집 가공 테이블에 저장합니다.
      * 작성자 : 유리빛나
      *
-     * @param rawRestaurantList 맛집 가공 DB에 저장할 맛집 원본 리스트
+     * @param rawRestaurantList 맛집 가공 테이블에 저장할 맛집 원본 리스트
      */
     private void saveRestaurantsFromRawRestaurants(List<RawRestaurant> rawRestaurantList) throws Exception {
 
@@ -128,8 +128,8 @@ public class DataProcessingService {
                 // 신규 데이터인 경우에만 저장
                 Restaurant restaurant = getRestaurantBuilder(rawRestaurant);
 
-                // 맛집 원본에 폐업일자가 있는 데이터는 맛집 가공의 삭제여부를 true로 저장
-                if (!rawRestaurant.getDcbymd().isEmpty()) {
+                // 맛집 원본의 상세영업상태코드가 02인(폐업) 데이터는 맛집 가공의 삭제여부를 true로 저장
+                if ("02".equals(rawRestaurant.getDtlstategbn())) {
                     restaurant.setDeletedYn(true);
                 }
 
@@ -137,8 +137,8 @@ public class DataProcessingService {
                     // 가공된 데이터 저장
                     restaurantRepository.save(restaurant);
                 } catch (DataIntegrityViolationException e) {
-                    log.error("중복된 데이터로 인해 저장 실패: {}", rawRestaurant.getMgtno(), e);
                     // 중복된 데이터로 인한 예외가 발생한 경우 로깅 및 처리
+                    log.error("중복된 데이터로 인해 저장 실패: {}", rawRestaurant.getMgtno(), e);
                 }
             }
         }
