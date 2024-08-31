@@ -2,10 +2,12 @@ package com.allclear.tastytrack.restaurant;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.*;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +20,7 @@ import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
+import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,10 +33,6 @@ public class RestaurantServiceImplTest {
     @InjectMocks
     private RestaurantServiceImpl restaurantServiceImpl;
 
-    @BeforeEach
-    public void setUp() {
-
-    }
 
     @Test
     @DisplayName("맛집 조회의 해피 테스트 입니다.")
@@ -88,6 +87,23 @@ public class RestaurantServiceImplTest {
         verify(restaurantRepository, times(1)).getReferenceById(anyInt());
         verify(reviewRepository, times(1)).countByRestaurantId(anyInt());
         verify(restaurantRepository, times(1)).save(restaurant);
+
+    }
+
+    @Test
+    @DisplayName("회원 위치 기반으로 음식점을 조회합니다.")
+    public void findRestaurantByUserLocation() {
+        // given
+        List<Restaurant> mockList = mock(List.class);
+        given(restaurantRepository.findBaseUserLocationByDeletedYn(anyDouble(), anyDouble(), anyDouble(), anyDouble(),
+                anyInt())).willReturn(mockList);
+
+        // when
+        restaurantServiceImpl.getRestaurantByUserLocation(mock(UserLocationInfo.class));
+
+        // then
+        verify(restaurantRepository, times(1)).findBaseUserLocationByDeletedYn(anyDouble(),
+                anyDouble(), anyDouble(), anyDouble(), anyInt());
 
     }
 

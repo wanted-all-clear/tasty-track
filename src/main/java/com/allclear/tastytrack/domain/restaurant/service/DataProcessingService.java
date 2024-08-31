@@ -1,19 +1,21 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
 import com.allclear.tastytrack.domain.restaurant.coordinate.dto.Coordinate;
 import com.allclear.tastytrack.domain.restaurant.coordinate.service.CoordinateService;
 import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RawRestaurantRepository;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -48,7 +50,8 @@ public class DataProcessingService {
         List<RawRestaurant> rawRestaurantList = rawRestaurantRepository.findByLastUpdatedAtNotMatchingRawRestaurants();
 
         // 업데이트된 맛집 원본 데이터가 없을 경우 리턴
-        if (rawRestaurantList.isEmpty()) return;
+        if (rawRestaurantList.isEmpty())
+            return;
 
         // 맛집 원본 리스트를 맛집 가공 DB에 저장
         saveRestaurantsFromRawRestaurants(rawRestaurantList);
@@ -105,7 +108,8 @@ public class DataProcessingService {
 
             // 맛집 원본 데이터의 도로명 주소로 주소 검색 openAPI를 활용해 WGS84 좌표계 타입의 위도, 경도 데이터를 맛집 가공 DB에 저장
             // 도로명 주소가 없을 경우 -> 지번 주소로 위도 경도 데이터 설정
-            String addressToUse = rawRestaurant.getRdnwhladdr().isEmpty() ? rawRestaurant.getSitewhladdr() : rawRestaurant.getRdnwhladdr();
+            String addressToUse = rawRestaurant.getRdnwhladdr().isEmpty() ? rawRestaurant.getSitewhladdr() :
+                    rawRestaurant.getRdnwhladdr();
 
             Coordinate coordinate = coordinateService.getCoordinate(addressToUse);
             rawRestaurant.setLon(coordinate.getLon());
@@ -130,7 +134,7 @@ public class DataProcessingService {
 
                 // 맛집 원본에 폐업일자가 있는 데이터는 맛집 가공의 삭제여부를 true로 저장
                 if (!rawRestaurant.getDcbymd().isEmpty()) {
-                    restaurant.setDeletedYn(true);
+                    restaurant.setDeletedYn(1);
                 }
 
                 try {

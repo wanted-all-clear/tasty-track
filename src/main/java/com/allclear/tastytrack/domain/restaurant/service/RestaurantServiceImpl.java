@@ -1,6 +1,8 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +10,7 @@ import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
+import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
 import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 
@@ -56,6 +59,12 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setRateScore(newScoreFormat);
 
         return restaurantRepository.save(restaurant);
+    }
+
+    @Override
+    public List<Restaurant> getRestaurantByUserLocation(UserLocationInfo mock) {
+
+        return null;
     }
 
 }
