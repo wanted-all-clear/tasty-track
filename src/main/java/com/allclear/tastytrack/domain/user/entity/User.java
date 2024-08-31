@@ -1,6 +1,7 @@
 package com.allclear.tastytrack.domain.user.entity;
 
 import com.allclear.tastytrack.domain.user.dto.UserInfo;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
