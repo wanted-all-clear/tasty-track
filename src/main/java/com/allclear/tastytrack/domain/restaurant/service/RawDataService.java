@@ -73,11 +73,11 @@ public class RawDataService {
     }
 
     /**
-     * 3. 매일 자정에 서울 맛집 데이터 수집 및 최종수정일자가 변경된 맛집 원본을 조회하여 맛집 가공 DB의 데이터를 업데이트합니다.
+     * 3. 3일 주기로 자정에 서울 맛집 데이터 수집 및 최종수정일자가 변경된 맛집 원본을 조회하여 맛집 가공 DB의 데이터를 업데이트합니다.
      * 작성자 : 유리빛나
      */
     @Transactional
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 */3 * *")
 //    @Scheduled(fixedRate = 30_000) // 30초마다 실행되는 테스트용 스케줄러
     public void fetchAndSaveUpdatedDatas() throws Exception {
 
