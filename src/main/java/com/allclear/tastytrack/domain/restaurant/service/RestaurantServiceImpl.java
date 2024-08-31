@@ -15,6 +15,7 @@ import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
+import com.allclear.tastytrack.domain.user.enums.Coordinate;
 import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 
@@ -71,10 +72,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new CustomException(ErrorCode.UNKNOWN_USER_POSITION);
         }
 
-        double nothLat = userLocationInfo.getNothLat();
-        double southLat = userLocationInfo.getSouthLat();
-        double eastLon = userLocationInfo.getEastLon();
-        double westLon = userLocationInfo.getWestLon();
+        double nothLat = userLocationInfo.getLat() + (userLocationInfo.getDistance() * Coordinate.LAT.getValue());
+        double southLat = userLocationInfo.getLat() - (userLocationInfo.getDistance() * Coordinate.LAT.getValue());
+        double eastLon = userLocationInfo.getLon() + (userLocationInfo.getDistance() * Coordinate.LON.getValue());
+        double westLon = userLocationInfo.getLon() - (userLocationInfo.getDistance() * Coordinate.LON.getValue());
 
         return restaurantRepository.findBaseUserLocationByDeletedYn(westLon, eastLon, southLat, nothLat);
     }
