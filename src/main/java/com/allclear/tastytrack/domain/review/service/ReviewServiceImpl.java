@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<Review> getAllReviewsByRestaurantId(int restaurantId) {
 
-        return reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId).get();
+        Optional<List<Review>> reviewsOptional = reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(
+                restaurantId);
+        return reviewsOptional.orElseGet(ArrayList::new);
+
     }
 
     @Override
