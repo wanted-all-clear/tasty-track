@@ -1,5 +1,6 @@
 package com.allclear.tastytrack.domain.user.service;
 
+import com.allclear.tastytrack.domain.user.dto.LoginRequest;
 import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
 import com.allclear.tastytrack.domain.user.dto.UserInfo;
 import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
@@ -9,7 +10,7 @@ public interface UserService {
 
     void signup(UserCreateRequest userCreateRequest);
 
-    HttpHeaders signin(UserCreateRequest userCreateRequest);
+    HttpHeaders signin(LoginRequest loginRequest);
 
     UserInfo updateUserInfo(String username, UserUpdateRequest userUpdateRequest);
 
