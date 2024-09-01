@@ -11,6 +11,23 @@ import io.lettuce.core.dynamic.annotation.Param;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
+    @Query(value = "SELECT * FROM ( " +
+            "SELECT * FROM Restaurant r WHERE " +
+            "r.type = :type AND " +
+            "ST_Distance_Sphere(POINT(r.lon, r.lat), POINT(:lon, :lat)) <= (:distance * 1000) AND " +
+            "r.status = '01' AND " +
+            "r.deleted_yn = 0 " +
+            "ORDER BY RAND() " +  // 무작위로 정렬
+            "LIMIT 5 " +  // 무작위로 5개 선택
+            ") as temp " +
+            "ORDER BY temp.last_updated_at DESC, temp.rate_score DESC",  // 추가 정렬 조건
+            nativeQuery = true)
+    List<Restaurant> findTop5ByTypeAndDistance(
+            @Param("type") String type,
+            @Param("lon") double lon,
+            @Param("lat") double lat,
+            @Param("distance") double distance);
+
     Restaurant findRestaurantById(int id);
 
     Restaurant findByCode(String code);

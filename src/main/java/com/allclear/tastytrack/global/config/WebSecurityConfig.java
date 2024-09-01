@@ -57,6 +57,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, ("/api/users/**")).permitAll()
                         .requestMatchers(
+                                "/api/webhook/**",
                                 "/api/restaurants/**",
                                 "/api/refresh",
                                 "/api/regions/**",
