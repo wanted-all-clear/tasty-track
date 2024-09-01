@@ -1,13 +1,7 @@
 package com.allclear.tastytrack.domain.user.service;
 
-import com.allclear.tastytrack.domain.user.dto.LoginRequest;
-import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
-import com.allclear.tastytrack.domain.user.dto.UserInfo;
-import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
-import com.allclear.tastytrack.domain.user.entity.User;
-import com.allclear.tastytrack.domain.user.repository.UserRepository;
-import com.allclear.tastytrack.global.exception.CustomException;
-import com.allclear.tastytrack.global.exception.ErrorCode;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,9 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.allclear.tastytrack.domain.user.dto.LoginRequest;
+import com.allclear.tastytrack.domain.user.dto.UserCreateRequest;
+import com.allclear.tastytrack.domain.user.dto.UserInfo;
+import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
+import com.allclear.tastytrack.domain.user.entity.User;
+import com.allclear.tastytrack.domain.user.repository.UserRepository;
+import com.allclear.tastytrack.global.exception.CustomException;
+import com.allclear.tastytrack.global.exception.ErrorCode;
 
 @SpringBootTest
 class UserServiceImplTest {

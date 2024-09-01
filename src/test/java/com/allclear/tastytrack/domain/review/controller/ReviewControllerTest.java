@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.reivew;
+package com.allclear.tastytrack.domain.review.controller;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
@@ -53,7 +53,6 @@ public class ReviewControllerTest {
     public void 평가_생성_테스트() {
 
         ReviewRequest request = ReviewRequest.builder()
-                // .userid(1)
                 .restaurantId(1)
                 .score(4)
                 .content("맛있어요")
