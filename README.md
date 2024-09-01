@@ -134,8 +134,20 @@
 
  > 자세한 명세는 API 명세서(Postman)를 클릭해 확인 해주세요!
 
-| 도메인 | 기능명               | Http Method | API Path                       | 인증 | 담당자        |
-|--------|----------------------|-------------|--------------------------------|------|---------------|
+| 대분류   | 기능                  | Http Method | API Path                               | 인증 | 담당자 |
+|----------|-----------------------|-------------|----------------------------------------|------|--------|
+| 사용자   | 사용자 회원 가입       | `POST`        | /api/users                             | X    | [오예령](https://github.com/ohyeryung) |
+| 사용자   | 로그인                 | `POST`        | /api/users/login                       | X    | [오예령](https://github.com/ohyeryung) |
+| 사용자   | 회원정보 조회          | `GET`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
+| 사용자   | 회원 정보 수정         | `PUT`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
+| 사용자   | 위치 기반 맛집 추천 기능 | `POST`        | /api/users/location                    | X    | [김은정](https://github.com/fkznsha23)   |
+| 사용자   | AccessToken 재발급     | `POST`        | /api/refresh                           | X    | [오예령](https://github.com/ohyeryung) |
+| 맛집 | 맛집 상세 정보 조회    | `POST`        | /api/restaurants/detail                | O    | [김은정](https://github.com/fkznsha23)   |
+| 맛집 | 맛집 평가 생성        | `POST`        | /api/reviews                           | O    | [김은정](https://github.com/fkznsha23)   |
+| 맛집 | 맛집 목록 조회        | `GET`         | /api/restaurants/list                  | X    | [배서진](https://github.com/bsjin1122)   |
+| 맛집 | 지역명 기준 맛집 추천  | `GET`         | /api/restaurants/region?dosi<br>={dosi}&sgg={sgg}&type={type}            | X    | [배서진](https://github.com/bsjin1122)   |
+| 맛집 | 시군구 조회           | `GET`         | /api/regions                           | X    | [배서진](https://github.com/bsjin1122)   |
+* 데이터 파이프라인은 자동화 시스템을 통해 처리됩니다.
 
 
 
