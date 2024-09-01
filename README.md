@@ -164,12 +164,142 @@
 <details><summary>디렉토리 구조</summary>
 
 ```text
-
+📦src
+ ┣ 📂main
+ ┃ ┣ 📂java
+ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┗ 📂allclear
+ ┃ ┃ ┃ ┃ ┗ 📂tastytrack
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂auth
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂token
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JwtTokenUtils.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RefreshToken.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RefreshTokenCleanupScheduler.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RefreshTokenManager.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RefreshTokenRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜TokenProvider.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JwtAuthenticationFilter.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserAuth.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserAuthImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserDetailsImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserDetailsServiceImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂region
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RegionController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RegionGroupResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RegionResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Region.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RegionRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RegionService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RegionServiceImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂restaurant
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RestaurantController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂coordinate
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Coordinate.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CoordinateAddress.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CoordinateMeta.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CoordinateResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CoordinateRoadAddress.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Documents.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CoordinateService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CoordinateServiceImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LocalData.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LocalDataResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RawRestaurantResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RestaurantDetail.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RestaurantListRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RestaurantSearch.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Result.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RawRestaurant.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Restaurant.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RawRestaurantRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RestaurantRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DataProcessingService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RawDataService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RestaurantService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RestaurantServiceImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂review
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReviewController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReviewResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Review.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReviewRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReviewServiceImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂user
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜TokenController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LoginRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserCreateRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserInfo.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserLocationInfo.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserUpdateRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜User.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserServiceImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂global
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JpaConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜SwaggerConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WebSecurityConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Timestamped.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂exception
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂handler
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RestApiExceptionHandler.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CustomException.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ErrorCode.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ErrorResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜TastytrackApplication.java
+ ┃ ┗ 📂resources
+ ┃ ┃ ┣ 📂db
+ ┃ ┃ ┃ ┗ 📜region.sql
+ ┃ ┃ ┗ 📜application.yml
+ ┗ 📂test
+ ┃ ┗ 📂java
+ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┗ 📂allclear
+ ┃ ┃ ┃ ┃ ┗ 📂tastytrack
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂region
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RegionServiceImplTest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂user
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserControllerTest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜TokenVerifyTest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserServiceImplTest.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂reivew
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReviewControllerTest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReviewServiceImplTest.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂restaurant
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RestaurantControllerTest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RestaurantServiceImplTest.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜TastytrackApplicationTests.java
 ```
-
-<br>
-    
-```text
-
-``` 
 </details>
