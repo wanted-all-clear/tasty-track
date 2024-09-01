@@ -81,4 +81,19 @@ public class RestaurantController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/region")
+    public ResponseEntity<List<Restaurant>> getRestuarantSearchByRegion(@RequestParam String dosi,
+                                                                        @RequestParam String sgg,
+                                                                        @RequestParam String type) {
+        // 특정 지역의 맛집을 검색하여 반환
+        List<Restaurant> response = restaurantService.getRestaurantSearchByRegion(dosi, sgg, type);
+
+        if (response.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }

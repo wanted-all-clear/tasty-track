@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<List<Review>> reviewsOptional =
                 reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
-        
+
         return reviewsOptional.orElseGet(ArrayList::new);
 
     }

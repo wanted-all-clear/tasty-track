@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.*;
 
+import com.allclear.tastytrack.domain.region.entity.Region;
+import com.allclear.tastytrack.domain.region.repository.RegionRepository;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import com.allclear.tastytrack.global.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +39,11 @@ public class RestaurantServiceImplTest {
     private ReviewRepository reviewRepository;
     @InjectMocks
     private RestaurantServiceImpl restaurantServiceImpl;
+    @Mock
+    private RegionRepository regionRepository;
 
     private Restaurant mockRestaurant;  // 전역 변수로 mockRestaurant 선언
+
 
     @BeforeEach
     public void setUp() {
@@ -122,7 +127,7 @@ public class RestaurantServiceImplTest {
         RestaurantListRequest request = new RestaurantListRequest(37.5088, 126.8913, 10.0, "한식", "점");
 
         // Mock 설정
-        when(restaurantRepository.findUserRequestRestaurant(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
+        when(restaurantRepository.findUserRequestRestaurantList(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
                 .thenReturn(List.of(mockRestaurant));
 
         // when
@@ -130,7 +135,7 @@ public class RestaurantServiceImplTest {
 
         // then
         assertThat(result).isNotNull();
-        verify(restaurantRepository, times(1)).findUserRequestRestaurant(
+        verify(restaurantRepository, times(1)).findUserRequestRestaurantList(
                 request.getLat(), request.getLon(), request.getRange(), request.getType(), request.getName());
     }
 
@@ -152,7 +157,7 @@ public class RestaurantServiceImplTest {
         RestaurantListRequest request = new RestaurantListRequest(37.5088, 126.8913, 10.0, "한식", "점");
 
         // Mock 설정
-        when(restaurantRepository.findUserRequestRestaurant(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
+        when(restaurantRepository.findUserRequestRestaurantList(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
                 .thenReturn(Collections.emptyList());
 
         // when
@@ -160,7 +165,7 @@ public class RestaurantServiceImplTest {
 
         // then
         assertThat(result).isNotNull();
-        verify(restaurantRepository, times(1)).findUserRequestRestaurant(
+        verify(restaurantRepository, times(1)).findUserRequestRestaurantList(
                 request.getLat(), request.getLon(), request.getRange(), request.getType(), request.getName());
     }
 
@@ -183,5 +188,85 @@ public class RestaurantServiceImplTest {
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_REQUEST);
     }
 
+
+    @Test
+    @DisplayName("유효한 지역 정보를 기반으로 맛집 목록을 조회합니다.")
+    void testGetRestaurantSearchByRegion_Success() {
+        // given
+        Region region = Region.builder()
+                .dosi("서울특별시")
+                .sgg("금천구")
+                .lat(37.44910833)
+                .lon(126.9041972)
+                .build();
+
+
+        given(regionRepository.findFirstByDosiAndSgg(anyString(), anyString()))
+                .willReturn(region);
+
+        given(restaurantRepository.findRestaurantsWithinDistance(anyString(), anyDouble(), anyDouble(), anyDouble(), anyString()))
+                .willReturn(List.of(mockRestaurant));
+
+        // when
+        List<Restaurant> result = restaurantServiceImpl.getRestaurantSearchByRegion("서울특별시", "금천구", "한식");
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.get(0).getName()).isEqualTo("소팔소곱창 독산점");
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 지역일 경우 예외를 발생시킵니다.")
+    void testGetRestaurantSearchByRegion_NoRegionData() {
+        // given
+        given(regionRepository.findFirstByDosiAndSgg(anyString(), anyString()))
+                .willReturn(null);
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantSearchByRegion("서울특별시", "존재하지않는구", "한식"));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NO_REGION_DATA);
+    }
+
+    @Test
+    @DisplayName("조회된 맛집이 없을 경우 예외를 발생시킵니다.")
+    void testGetRestaurantSearchByRegion_EmptyRestaurantList() {
+        // given
+        Region region = Region.builder()
+                .dosi("서울특별시")
+                .sgg("금천구")
+                .lat(37.44910833)
+                .lon(126.9041972)
+                .build();
+
+
+        given(regionRepository.findFirstByDosiAndSgg(anyString(), anyString()))
+                .willReturn(region);
+
+        given(restaurantRepository.findRestaurantsWithinDistance(anyString(), anyDouble(), anyDouble(), anyDouble(), anyString()))
+                .willReturn(Collections.emptyList());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantSearchByRegion("서울특별시", "금천구", "한식"));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.EMPTY_RESTAURANT);
+    }
+
+    @Test
+    @DisplayName("입력 매개변수가 null일 경우 예외를 발생시킵니다.")
+    void testGetRestaurantSearchByRegion_InvalidParameter() {
+        // when & then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantSearchByRegion(null, "금천구", "한식"));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY);
+
+        exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantSearchByRegion("서울특별시", null, "한식"));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY);
+
+        exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantSearchByRegion("서울특별시", "금천구", null));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY);
+    }
 
 }

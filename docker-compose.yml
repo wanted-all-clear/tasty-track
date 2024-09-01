@@ -29,4 +29,3 @@ volumes:
     driver: local
   redis-vl:
     driver: local
-

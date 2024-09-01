@@ -36,10 +36,11 @@ public class RegionController {
                     content = @Content)
     })
     @GetMapping("")
-    public ResponseEntity<RegionGroupResponse> getRegions(){
+    public ResponseEntity<List<RegionResponse>> getRegionList() {
 
-        RegionGroupResponse responses = regionService.getRegionInfo();
+        List<RegionResponse> responses = regionService.getRegionList();
 
         return ResponseEntity.ok(responses);
     }
+
 }
