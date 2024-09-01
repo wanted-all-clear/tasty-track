@@ -22,8 +22,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
                     + "from restaurant as r"
                     + "where r.deleted_yn = 1 "
                     + "and westLon <= r.lon <= eastLon"
-                    + "and southLat <= r.lat <= nothLat")
+                    + "and southLat <= r.lat <= northLat")
     List<Restaurant> findBaseUserLocationByDeletedYn(@Param("westLon") double westLon, @Param("eastLon") double eastLon,
-            @Param("southLat") double southLat, @Param("nothLat") double nothLat);
+            @Param("southLat") double southLat, @Param("northLat") double northLat);
 
 }
