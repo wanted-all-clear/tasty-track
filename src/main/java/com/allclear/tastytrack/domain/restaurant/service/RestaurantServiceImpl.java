@@ -15,6 +15,7 @@ import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 import java.util.List;
@@ -26,15 +27,15 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final ReviewRepository reviewRepository;
-	private final RegionRepository regionRepository;
+    private final RegionRepository regionRepository;
 
     @Override
     public Restaurant getRestaurant(int id, int deletedYn) {
 
-		Restaurant restaurant = restaurantRepository.findRestaurantById(id);
-		if (restaurant == null) {
-			throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
-		}
+        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
+        if (restaurant == null) {
+            throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
+        }
 
         if (restaurant.getDeletedYn() == 0) {
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
@@ -82,7 +83,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         log.info("맛집 검색 - 위도: {}, 경도: {}, 범위: {}, 타입: {}, 이름: {}",
                 request.getLat(), request.getLon(), request.getRange(), type, name);
 
-        List<Restaurant> response = restaurantRepository.findUserRequestRestaurant(request.getLat(), request.getLon(),
+        List<Restaurant> response = restaurantRepository.findUserRequestRestaurantList(request.getLat(), request.getLon(),
                 request.getRange(), type, name);
 
         log.info("검색된 식당 수: {}", response.size());
@@ -124,49 +125,56 @@ public class RestaurantServiceImpl implements RestaurantService {
         return request;
     }
 
-	/** 지역 기반의 맛집 리스트를 조회합니다.
-	 *  작성자: 배서진
-	 *  - 쿼리 where절 : 도로명주소, 타입, 상태, 삭제여부
-	 *  - 쿼리 order by절: 평점 순, 최신수정일자
-	 *
-	 * @param dosi 서울특별시
-	 * @param sgg 00구
-	 * @param type 맛집의 타입
-	 * @return 맛집 리스트
-	 */
-	@Override
-	public List<Restaurant> getRestaurantSearchByRegion(String dosi, String sgg, String type) {
+    /**
+     * 지역 기반의 맛집 리스트를 조회합니다.
+     * 작성자: 배서진
+     * - 쿼리 where절 : 도로명주소, 타입, 상태, 삭제여부
+     * - 쿼리 order by절: 평점 순, 최신수정일자
+     *
+     * @param dosi 서울특별시
+     * @param sgg  00구
+     * @param type 맛집의 타입
+     * @return 맛집 리스트
+     */
+    @Override
+    public List<Restaurant> getRestaurantSearchByRegion(String dosi, String sgg, String type) {
 
-		// 1. 입력 매개변수 유효성 검사
-		if (dosi == null || sgg == null || type == null) {
-			throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
-		}
+        log.info("맛집 검색 요청 - 도/시: {}, 시/군/구: {}, 타입: {}", dosi, sgg, type);
+        // 1. 입력 매개변수 유효성 검사
+        if (dosi == null || sgg == null || type == null) {
+            log.error("유효하지 않은 요청 - 도/시: {}, 시/군/구: {}, 타입: {}", dosi, sgg, type);
+            throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
+        }
 
-		// 2. Region 조회
-		Region region = regionRepository.findFirstByDosiAndSgg(dosi, sgg);
-		if (region == null) {
-			throw new CustomException(ErrorCode.NO_REGION_DATA);
-		}
+        // 2. Region 조회
+        Region region = regionRepository.findFirstByDosiAndSgg(dosi, sgg);
+        log.info("지역 정보 조회 - 도/시: {}, 시/군/구: {}", dosi, sgg);
 
-		// 3. 좌표 유효성 검사
-		double lat = region.getLat();
-		double lon = region.getLon();
+        if (region == null) {
+            log.error("지역 정보 조회 실패 - 도/시: {}, 시/군/구: {}", dosi, sgg);
+            throw new CustomException(ErrorCode.NO_REGION_DATA);
+        }
 
-        double distance = 10000.0; // 10km 반경
-		String regionName = dosi + " " + sgg;
-
-		// 4. Restaurant 조회
-		List<Restaurant> response = restaurantRepository.findRestaurantsWithinDistance(regionName, lat, lon, distance, type);
-		if (response.isEmpty()) {
-			throw new CustomException(ErrorCode.EMPTY_RESTAURANT);
-		}
-
-		return response;
-	}
+        // 3. 좌표 유효성 검사
+        double lat = region.getLat();
+        double lon = region.getLon();
+        log.info("서울특별시 지역 좌표 - 위도: {}, 경도: {}", lat, lon);
 
 
+        double distance = 10.0; // 10km 반경
+        String regionName = dosi + " " + sgg;
 
+        // 4. Restaurant 조회
+        log.info("맛집 조회 - 지역명: {}, 거리: {}km, 타입: {}", regionName, distance, type);
+        List<Restaurant> response = restaurantRepository.findRestaurantsWithinDistance(regionName, lat, lon, distance, type);
+        if (response.isEmpty()) {
+            log.warn("검색된 맛집이 없습니다 - 지역명: {}, 거리: {}km, 타입: {}", regionName, distance, type);
+            throw new CustomException(ErrorCode.EMPTY_RESTAURANT);
+        }
 
+        log.info("맛집 조회 완료 - 검색된 맛집 수: {}", response.size());
+        return response;
+    }
 
 
 }

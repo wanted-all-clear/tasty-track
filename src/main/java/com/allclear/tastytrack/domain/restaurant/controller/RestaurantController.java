@@ -3,6 +3,7 @@ package com.allclear.tastytrack.domain.restaurant.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -81,11 +82,17 @@ public class RestaurantController {
     }
 
     @GetMapping("/region")
-    public List<Restaurant> getRestuarantSearchByRegion(@RequestParam String dosi,
-                                                        @RequestParam String sgg,
-                                                        @RequestParam String type){
+    public ResponseEntity<List<Restaurant>> getRestuarantSearchByRegion(@RequestParam String dosi,
+                                                                        @RequestParam String sgg,
+                                                                        @RequestParam String type) {
         // 특정 지역의 맛집을 검색하여 반환
-        return restaurantService.getRestaurantSearchByRegion(dosi, sgg, type);
+        List<Restaurant> response = restaurantService.getRestaurantSearchByRegion(dosi, sgg, type);
+
+        if (response.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(response);
     }
 
 
