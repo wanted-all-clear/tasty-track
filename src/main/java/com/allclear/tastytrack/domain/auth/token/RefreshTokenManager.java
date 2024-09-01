@@ -2,11 +2,14 @@ package com.allclear.tastytrack.domain.auth.token;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 @RequiredArgsConstructor
@@ -81,7 +84,7 @@ public class RefreshTokenManager {
      * @param refreshToken 유효성을 검증할 RefreshToken
      * @return 새로 생성된 AccessToken
      */
-    public String refreshAccessToken(String refreshToken) {
+    public HttpHeaders refreshAccessToken(String refreshToken) {
 
         // RefreshToken 검증
         String username = validateRefreshToken(refreshToken);
@@ -91,7 +94,10 @@ public class RefreshTokenManager {
 
         }
         // 새로운 AccessToken 생성
-        return jwtTokenUtils.generateJwtToken(username);
+        String newAccessToken = jwtTokenUtils.generateJwtToken(username);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(AUTHORIZATION, "Bearer " + newAccessToken);
+        return headers;
     }
 
 }
