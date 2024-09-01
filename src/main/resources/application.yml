@@ -83,5 +83,6 @@ spring:
 
   sql:
     init:
-      mode: never # 테스트 실행 시 data.sql 실행하지 않음
-
+      mode: always # 테스트 실행 시 data.sql 실행하지 않음
+      data-locations:
+        - classpath:db/region.sql

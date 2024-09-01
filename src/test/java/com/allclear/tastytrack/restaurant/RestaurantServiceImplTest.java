@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.*;
 
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
+import com.allclear.tastytrack.global.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +22,13 @@ import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.global.exception.ErrorCode;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Collections;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class RestaurantServiceImplTest {
 
     @Mock
@@ -31,10 +38,25 @@ public class RestaurantServiceImplTest {
     @InjectMocks
     private RestaurantServiceImpl restaurantServiceImpl;
 
+    private Restaurant mockRestaurant;  // 전역 변수로 mockRestaurant 선언
+
     @BeforeEach
     public void setUp() {
 
-        MockitoAnnotations.openMocks(this);
+        // 전역 변수로 mockRestaurant 초기화
+        mockRestaurant = Restaurant.builder()
+                .id(133)
+                .code("3170000-101-2023-00100")
+                .name("소팔소곱창 독산점")
+                .type("한식")
+                .status("01")
+                .oldAddress("서울특별시 금천구 독산동 291-1 현대지식산업센터")
+                .newAddress("서울특별시 금천구 두산로 70, 현대지식산업센터 지하1층 T-L 132호 (독산동)")
+                .lon(126.895620657193)
+                .lat(37.4689627800606)
+                .rateScore(0.0)
+                .deletedYn(0)
+                .build();
     }
 
     @Test
@@ -91,6 +113,74 @@ public class RestaurantServiceImplTest {
         verify(reviewRepository, times(1)).countByRestaurantId(anyInt());
         verify(restaurantRepository, times(1)).save(restaurant);
 
+    }
+
+    @Test
+    @DisplayName("유효한 요청으로 맛집 목록을 성공적으로 조회합니다.")
+    void testGetRestaurantListWithValidRequest() {
+        // given
+        RestaurantListRequest request = new RestaurantListRequest(37.5088, 126.8913, 10.0, "한식", "점");
+
+        // Mock 설정
+        when(restaurantRepository.findUserRequestRestaurant(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
+                .thenReturn(List.of(mockRestaurant));
+
+        // when
+        List<Restaurant> result = restaurantServiceImpl.getRestaurantList(request);
+
+        // then
+        assertThat(result).isNotNull();
+        verify(restaurantRepository, times(1)).findUserRequestRestaurant(
+                request.getLat(), request.getLon(), request.getRange(), request.getType(), request.getName());
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 요청으로 인해 예외가 발생합니다.")
+    void testGetRestaurantListWithInvalidRequest() {
+        // given
+        RestaurantListRequest invalidRequest = new RestaurantListRequest(-100.0, 200.0, -5.0, "한식", "점");
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_REQUEST);
+    }
+
+    @Test
+    @DisplayName("유효한 요청이지만 검색된 맛집이 없는 경우 빈 리스트를 반환합니다.")
+    void testGetRestaurantListWithEmptyResult() {
+        // given
+        RestaurantListRequest request = new RestaurantListRequest(37.5088, 126.8913, 10.0, "한식", "점");
+
+        // Mock 설정
+        when(restaurantRepository.findUserRequestRestaurant(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
+                .thenReturn(Collections.emptyList());
+
+        // when
+        List<Restaurant> result = restaurantServiceImpl.getRestaurantList(request);
+
+        // then
+        assertThat(result).isNotNull();
+        verify(restaurantRepository, times(1)).findUserRequestRestaurant(
+                request.getLat(), request.getLon(), request.getRange(), request.getType(), request.getName());
+    }
+
+    @Test
+    @DisplayName("유효성 검사에서 null 요청이 들어오면 예외를 발생시킵니다.")
+    void testValidateRequestWithNullRequest() {
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () -> restaurantServiceImpl.getRestaurantList(null));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NULL_REQUEST_DATA);
+    }
+
+    @Test
+    @DisplayName("유효성 검사에서 범위가 0 이하일 때 예외를 발생시킵니다.")
+    void testValidateRequestWithInvalidRange() {
+        // given
+        RestaurantListRequest invalidRequest = new RestaurantListRequest(37.5088, 126.8913, 0.0, "한식", "점");
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_REQUEST);
     }
 
 
