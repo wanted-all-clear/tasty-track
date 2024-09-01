@@ -52,7 +52,7 @@ public class CoordinateServiceImpl implements CoordinateService {
         RestTemplate template = new RestTemplate();
         String jsonResponse;
 
-        // hedaer에 인증키 담아서 전송
+        // header에 인증키 담아서 전송
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", coordinateApiKey);
 
