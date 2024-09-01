@@ -113,9 +113,9 @@
 
 ### 기술 선택 이유
 
-<details>
-  <summary><b></b></summary>
-</details>
+- **SpringSecurity** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/SpringSecurity-%EB%8F%84%EC%9E%85"> WIKI 이동 </a>
+- **AccessToken과 RefreshToken** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/AccessToken%EA%B3%BC-RefreshToken"> WIKI 이동 </a>
+- **ComplatableFuture** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/ComplatableFuture"> WIKI 이동 </a>
 
 <br>
 
@@ -170,6 +170,7 @@
 - **위도 경도 데이터 타입 통일 과정 중 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9C%84%EB%8F%84-%EA%B2%BD%EB%8F%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%ED%86%B5%EC%9D%BC-%EA%B3%BC%EC%A0%95-%EC%A4%91-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 - **토큰 검증을 필요로하지 않는 API 호출시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D%EC%9D%84-%ED%95%84%EC%9A%94%EB%A1%9C%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-API-%ED%98%B8%EC%B6%9C%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 - **토큰 검증 테스트 시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
+- **Invalid use of argument matchers!** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Invalid-use-of-argument-matchers!"> WIKI 이동 </a>
 
 <br>
 
