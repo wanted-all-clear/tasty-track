@@ -60,10 +60,11 @@
 <details>
 <summary>문서화 작업</summary>
 <div markdown="1">
-<p align="center">
-    <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="49%">
-    <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="49%">
-</p>
+    <p align="center">
+        <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="49%">
+        <img src="https://github.com/user-attachments/assets/3a081e64-7e6b-4bbf-93f0-d8cef455b029" align="center" width="49%">
+    </p>
+    <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="70%">
 </div>
 </details>
 
@@ -86,8 +87,8 @@
 <details>
 <summary>소통 및 PR 알림 확인</summary>
 <div markdown="1">
-![image](https://github.com/user-attachments/assets/9a329b8b-bec5-4742-b32c-9073edf22f26)
-<img src="https://github.com/user-attachments/assets/1c5c0cc7-102b-4924-b0b4-2ba4bd5150e6" alt="Alt text" width="430" height="600"/>
+    <img src="https://github.com/user-attachments/assets/9a329b8b-bec5-4742-b32c-9073edf22f26">
+    <img src="https://github.com/user-attachments/assets/1c5c0cc7-102b-4924-b0b4-2ba4bd5150e6" alt="Alt text" width="430" height="600"/>
 </div>
 </details>
 
