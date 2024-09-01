@@ -3,7 +3,7 @@ package com.allclear.tastytrack.domain.restaurant.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantsList;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,7 +37,7 @@ public class RestaurantController {
 
     @PostMapping("")
     public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody int id) {
+                                                          @RequestBody int id) {
 
         Restaurant restaurant = restaurantService.getRestaurant(id, 0);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
@@ -70,7 +70,7 @@ public class RestaurantController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류입니다.", content = @Content)
     })
     @PostMapping("/list")
-    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestBody RestaurantsList request) {
+    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestBody RestaurantListRequest request) {
 
         List<Restaurant> response = restaurantService.getRestaurantList(request);
 
@@ -80,4 +80,5 @@ public class RestaurantController {
 
         return ResponseEntity.ok(response);
     }
+
 }
