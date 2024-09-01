@@ -6,15 +6,18 @@ import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class RefreshTokenManager {
-    
+
     private final static int TOKEN_LENGTH = 32; // Refresh Token의 길이를 설정
     private final SecureRandom secureRandom; // 난수 생성을 위한 SecureRandom 인스턴스
     private final RefreshTokenRepository refreshTokenRepository; // RefreshToken을 저장할 Repository
+
+    private final JwtTokenUtils jwtTokenUtils;
 
 
     /**
@@ -58,5 +61,37 @@ public class RefreshTokenManager {
         return refreshToken;
     }
 
+    /**
+     * 유효한 RefreshToken인지 확인합니다.
+     *
+     * @param refreshToken 요청된 RefreshToken
+     * @return 유효한 경우 사용자 계정명 반환, 유효하지 않은 경우 null 반환
+     */
+    public String validateRefreshToken(String refreshToken) {
+
+        Optional<RefreshToken> token = refreshTokenRepository.findByUsername(refreshToken);
+        return token.isPresent() ? token.get().username() : null;
+    }
+
+
+    /**
+     * RefreshToken을 검증하고, 새로운 AccessToken을 생성합니다.
+     * 작성자 : 오예령
+     *
+     * @param refreshToken 유효성을 검증할 RefreshToken
+     * @return 새로 생성된 AccessToken
+     */
+    public String refreshAccessToken(String refreshToken) {
+
+        // RefreshToken 검증
+        String username = validateRefreshToken(refreshToken);
+
+        if (username == null) {
+            throw new IllegalArgumentException("유효하지 않은 RefreshToken 입니다.");
+
+        }
+        // 새로운 AccessToken 생성
+        return jwtTokenUtils.generateJwtToken(username);
+    }
 
 }
