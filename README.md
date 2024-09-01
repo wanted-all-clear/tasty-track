@@ -62,7 +62,8 @@
 <div markdown="1">
     <p align="center">
         <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="49%">
-        <img src="https://github.com/user-attachments/assets/3a081e64-7e6b-4bbf-93f0-d8cef455b029" align="center" width="49%">
+        <img src="https://github.com/user-attachments/assets/af8b2113-4979-4064-ae7f-5acc74f5c003" align="center" width="49%">
+
     </p>
     <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="70%">
 </div>
