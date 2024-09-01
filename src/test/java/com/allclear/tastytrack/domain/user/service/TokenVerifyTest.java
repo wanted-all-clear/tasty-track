@@ -74,7 +74,7 @@ public class TokenVerifyTest {
         RefreshToken refreshToken = refreshTokenRepository.findByUsername(key).orElseThrow(
                 () -> new NullPointerException("해당 값이 존재하지 않습니다.")
         );
-        assertThat(refreshToken.getUsername()).isEqualTo("testUser");
+        assertThat(refreshToken.username()).isEqualTo("testUser");
     }
 
 }
