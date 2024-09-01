@@ -78,11 +78,9 @@
 <details>
 <summary>개발일정 관리</summary>
 <div markdown="1">
-<img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" alt="Alt text" width="980" height="610"/>
-
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="40%">
-    <img src="https://github.com/user-attachments/assets/3b8c33ac-019d-4f85-be1c-73cbc1b7cb36" align="center" width="40%">
+    <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="45%">
+    <img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" align="center" width="45%"/>
 </p>
 
 </div>
