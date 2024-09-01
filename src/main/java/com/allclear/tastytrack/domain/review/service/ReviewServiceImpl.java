@@ -23,8 +23,10 @@ import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
@@ -44,7 +46,11 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<List<Review>> reviewsOptional =
                 reviewRepository.findAllByRestaurantIdOrderByCreatedAtDesc(restaurantId);
 
-        return reviewsOptional.orElseGet(ArrayList::new);
+        List<Review> reviews = reviewsOptional.orElseGet(ArrayList::new);
+
+        log.info("조회된 리뷰의 수는 {} 입니다.", reviews.size());
+
+        return reviews;
 
     }
 
@@ -95,7 +101,10 @@ public class ReviewServiceImpl implements ReviewService {
      */
     private ReviewResponse asyncCreateReviewResponse(Review review) {
 
-        User user = userRepository.findById(review.getUserId()).get();
+        Optional<User> userOpt = userRepository.findById(review.getUserId());
+        User user = userOpt.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_EXIST));
+
+        log.info("비동기 메서드로 조회하는 {}님의 리뷰입니다 : {}", user.getUsername(), user.getId());
 
         return ReviewResponse.builder()
                 .username(user.getUsername())
@@ -134,6 +143,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Review createReview(ReviewRequest request, String username) {
 
         if (request == null) {
+            log.error("조회 가능한 데이터가 존재하지 않습니다.");
             throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
         }
 
@@ -145,9 +155,13 @@ public class ReviewServiceImpl implements ReviewService {
                     .score(request.getScore())
                     .content(request.getContent())
                     .build();
+
+            log.info("{}님이 리뷰를 작성했습니다.", user.getUsername());
+
             return reviewRepository.save(review);
 
         } catch (NoSuchElementException ex) {
+            log.error("가입 되지 않은 유저 입니다.");
             throw new CustomException(ErrorCode.USER_NOT_EXIST);
         }
 
@@ -161,6 +175,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void removeReview(Review review) {
 
+        log.info("{}님의 리뷰를 삭제합니다.", review.getUserId());
         reviewRepository.delete(review);
     }
 

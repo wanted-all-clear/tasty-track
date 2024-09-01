@@ -71,6 +71,7 @@ public class RestaurantController {
                 .reviewResponses(reviewResponses)
                 .build();
 
+
         return ResponseEntity.ok(restaurantDetail);
     }
 

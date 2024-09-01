@@ -38,15 +38,20 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant getRestaurant(int id, int deletedYn) {
 
+        log.info("상세정보를 요청한 음식점의 id = {}", id);
+
         Restaurant restaurant = restaurantRepository.findByIdAndDeletedYn(id, deletedYn);
         if (restaurant == null) {
+            log.error("조회 가능한 데이터가 존재하지 않습니다.");
             throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
         }
 
         if (restaurant.getDeletedYn() == 1) {
+            log.error("해당 데이터는 삭제되었습니다.");
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
         }
 
+        log.info("조회된 음식점의 이름은 {} 입니다.", restaurant.getName());
         return restaurant;
     }
 
@@ -54,9 +59,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     public Restaurant updateRestaurantScore(ReviewRequest request) {
 
+        if (request == null) {
+            log.error("요청 데이터가 존재하지 않습니다.");
+            throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
+        }
+
         Restaurant restaurant = restaurantRepository.getReferenceById(request.getRestaurantId());
 
         if (restaurant.getDeletedYn() == 1) {
+            log.error("해당 데이터는 삭제되었습니다.");
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
         }
 
@@ -68,6 +79,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         double newScoreFormat = Math.floor((newScore * 10)) / 10.0;
         restaurant.setRateScore(newScoreFormat);
 
+        log.info("{}의 평점이 업데이트 되었습니다.", restaurant.getName());
+
         return restaurantRepository.save(restaurant);
     }
 
@@ -75,6 +88,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Restaurant> getRestaurantByUserLocation(UserLocationInfo userLocationInfo) {
 
         if (userLocationInfo == null) {
+            log.error("요청 데이터가 존재하지 않습니다.");
             throw new CustomException(ErrorCode.UNKNOWN_USER_POSITION);
         }
 
@@ -83,7 +97,12 @@ public class RestaurantServiceImpl implements RestaurantService {
         double eastLon = userLocationInfo.getLon() + (userLocationInfo.getDistance() * Coordinate.LON.getValue());
         double westLon = userLocationInfo.getLon() - (userLocationInfo.getDistance() * Coordinate.LON.getValue());
 
-        return restaurantRepository.findBaseUserLocationByDeletedYn(westLon, eastLon, southLat, northLat);
+        List<Restaurant> restaurants = restaurantRepository.findBaseUserLocationByDeletedYn(westLon, eastLon, southLat,
+                northLat);
+
+        log.info("조회된 음식점의 수는 {} 입니다.", restaurants.size());
+
+        return restaurants;
     }
 
     /**
@@ -97,6 +116,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<RestaurantByUserLocation> createListRestaurantByUserLocation(List<Restaurant> restaurants) {
 
         if (restaurants.isEmpty()) {
+            log.error("인근에 조회된 음식점이 존재하지 않습니다.");
             throw new CustomException(ErrorCode.NO_NEARBY_RESTAURANTS);
         }
 
@@ -123,6 +143,8 @@ public class RestaurantServiceImpl implements RestaurantService {
      */
     private RestaurantByUserLocation changeListComplRestaurantByUserLocation(
             Restaurant restaurant) {
+
+        log.info("비동기 메서드가 실행 중입니다 : {}", restaurant.getId());
 
         return RestaurantByUserLocation.builder()
                 .restaurantName(restaurant.getName())
