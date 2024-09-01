@@ -122,6 +122,22 @@
 <br>
 
 ### 요구사항 정의서 정리
+| 대분류 | 기능명               | Controller & Service method   | 담당자        |
+|--------|----------------------|-------------------------|---------------|
+| 사용자 | 회원가입              | signup                | [오예령](https://github.com/ohyeryung)        |
+| 사용자 | 로그인                | signin               |  [오예령](https://github.com/ohyeryung)       |
+| 사용자 | 설정 업데이트         | updateUserInfo    | [오예령](https://github.com/ohyeryung)        |
+| 사용자 | 정보 조회             | getUserInfo         | [오예령](https://github.com/ohyeryung)        |
+| 사용자 | 위치 기반 맛집 추천    | getRestaurantByUserLocation | [김은정](https://github.com/fkznsha23)        |
+| 맛집   | 맛집 평가 생성         | createReview          | [김은정](https://github.com/fkznsha23)      |
+| 맛집   | 맛집 상세 조회         | getRestaurant | [김은정](https://github.com/fkznsha23)       |
+| 맛집   | 맛집 목록 조회         | getRestaurantList      | [배서진](https://github.122)       |
+| 맛집   | 지역명 기준 맛집 추천   | getRestuarantSearchByRegion      | [배서진](https://github.122)       |
+| 맛집   | 시군구 조회            | getRegionList                    | [배서진](https://github.122)       |
+| 데이터 | 맛집 데이터 수집       | fetchAndSaveInitDatas              |  [유리빛나](https://github.com/ryuneng)        |
+| 데이터 | 맛집 데이터 전처리     | preprocessingAndSaveInitRestaurant | [유리빛나](https://github.com/ryuneng)        |
+| 데이터 | 맛집 데이터 저장       | saveRestaurantsFromRawRestaurants  | [유리빛나](https://github.com/ryuneng)        |
+| 데이터 | 맛집 데이터 자동화     | fetchAndSaveUpdatedDatas           | [유리빛나](https://github.com/ryuneng)        |
 
 
 <br/>
@@ -132,7 +148,7 @@
 
 | 대분류   | 기능                  | Http Method | API Path                               | 인증 | 담당자 |
 |----------|-----------------------|-------------|----------------------------------------|------|--------|
-| 사용자   | 사용자 회원 가입       | `POST`        | /api/users                             | X    | [오예령](https://github.com/ohyeryung) |
+| 사용자   | 회원 가입              | `POST`        | /api/users                             | X    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 로그인                 | `POST`        | /api/users/login                       | X    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 회원정보 조회          | `GET`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 회원 정보 수정         | `PUT`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
