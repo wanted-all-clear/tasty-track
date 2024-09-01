@@ -70,8 +70,7 @@ public class RestaurantController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류입니다.", content = @Content)
     })
     @PostMapping("/list")
-    public ResponseEntity<List<Restaurant>> getRestaurantList(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                              @RequestBody RestaurantsList request) {
+    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestBody RestaurantsList request) {
 
         List<Restaurant> response = restaurantService.getRestaurantList(request);
 

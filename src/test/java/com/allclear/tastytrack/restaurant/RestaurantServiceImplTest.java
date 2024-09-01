@@ -5,12 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.*;
 
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantsList;
+import com.allclear.tastytrack.global.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
@@ -19,6 +22,15 @@ import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.global.exception.ErrorCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class RestaurantServiceImplTest {
@@ -33,6 +45,7 @@ public class RestaurantServiceImplTest {
     @BeforeEach
     public void setUp() {
 
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

@@ -62,7 +62,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     /**
-     * 사용자 위치 정보에 따른 맛집 목록을 조회합니다.
+     * 위치 정보에 따른 맛집 목록을 조회합니다.
      * 작성자: 배서진
      *
      * @param request
@@ -70,8 +70,8 @@ public class RestaurantServiceImpl implements RestaurantService {
      */
     @Override
     public List<Restaurant> getRestaurantList(RestaurantsList request) {
-        // 요청 객체 유효성 검사
-        request = validateRequest(request);
+
+        request = validateRequest(request); // 요청 객체 유효성 검사
 
         String type = (request.getType() != null) ? request.getType() : "";
         String name = (request.getName() != null) ? request.getName() : "";
