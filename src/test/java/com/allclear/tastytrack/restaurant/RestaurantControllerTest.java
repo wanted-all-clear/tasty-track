@@ -34,6 +34,7 @@ public class RestaurantControllerTest {
 
     private HttpHeaders httpHeaders;
 
+
     @BeforeEach
     public void setUp() {
 
@@ -65,5 +66,6 @@ public class RestaurantControllerTest {
         assertThat(responseEntity.getBody().getName()).isEqualTo("오고보");
 
     }
+
 
 }
