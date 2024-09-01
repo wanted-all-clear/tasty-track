@@ -40,7 +40,7 @@ public class DiscordWebhookService {
 
         double lat = searchRegion.get().getLat();
         double lon = searchRegion.get().getLon();
-        double distance = 3.0;
+        double distance = 5.0; // 5km
 
         Map<String, String> restaurantMessages = new LinkedHashMap<>();
 
