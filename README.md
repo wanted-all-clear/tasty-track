@@ -151,8 +151,10 @@
 
 <br>
 
-### ERD
+## ERD
+<img src="https://github.com/user-attachments/assets/feca69c7-e72e-4e58-8c41-dbdc79d8026b" width="70%">
 
+<br>
 
 ## 트러블 슈팅
 <p></p>
@@ -160,6 +162,113 @@
 
 ## 디렉토리 구조
 <details><summary>디렉토리 구조</summary>
+- 직관적인 구조 파악과 관리를 위해 <b>도메인형 구조</b>를 채택하였습니다.<br>
+    
+```text
+    Folder PATH listing
+Volume serial number is D6B6-EE51
+C:.
+│   .env
+│   .gitignore
+│   .gitmessage.txt
+│   build.gradle
+│   docker-compose.yml
+│   Dockerfile
+│   gradlew
+│   gradlew.bat
+│   README.md
+│   settings.gradle
+│   structure.txt
+│   
+├───.github
+│   │   PULL_REQUEST_TEMPLATE.md
+│   ├───ISSUE_TEMPLATE
+│   │       issue_form.yml
+│   └───workflows
+│           create-jira-issue.yml
+├───.gradle
+│
+├───build
+├───gradle
+│   └───wrapper
+│           gradle-wrapper.jar
+│           gradle-wrapper.properties
+└───src
+    ├───main
+    │   ├───java
+    │   │   └───com
+    │   │       └───allclear
+    │   │           └───tastytrack
+    │   │               │   TastytrackApplication.java
+    │   │               │   
+    │   │               ├───domain
+    │   │               │   ├───auth
+    │   │               │   │   └───token
+    │   │               │   ├───region
+    │   │               │   │   ├───controller
+    │   │               │   │   ├───dto
+    │   │               │   │   ├───entity
+    │   │               │   │   ├───repository
+    │   │               │   │   └───service
+    │   │               │   │           
+    │   │               │   ├───restaurant
+    │   │               │   │   ├───controller
+    │   │               │   │   ├───coordinate
+    │   │               │   │   │   ├───dto
+    │   │               │   │   │   └───service
+    │   │               │   │   ├───dto
+    │   │               │   │   ├───entity
+    │   │               │   │   ├───repository
+    │   │               │   │   └───service
+    │   │               │   ├───review
+    │   │               │   │   ├───controller
+    │   │               │   │   ├───dto
+    │   │               │   │   ├───entity
+    │   │               │   │   ├───repository
+    │   │               │   │   └───service
+    │   │               │   └───user
+    │   │               │       ├───controller
+    │   │               │       ├───dto
+    │   │               │       ├───entity
+    │   │               │       ├───repository
+    │   │               │       └───service
+    │   │               │               
+    │   │               └───global
+    │   │                   ├───config
+    │   │                   ├───domain
+    │   │                   ├───entity
+    │   │                   └───exception
+    │   │                       └───handler
+    │   └───resources
+    │       │   application.yml
+    │       └───db
+    │               region.sql
+    └───test
+        └───java
+            └───com
+                └───allclear
+                    └───tastytrack
+                        │   TastytrackApplicationTests.java
+                        ├───domain
+                        │   ├───region
+                        │   │   └───service
+                        │   │           RegionServiceImplTest.java
+                        │   └───user
+                        │       ├───controller
+                        │       │       UserControllerTest.java
+                        │       └───service
+                        │               TokenVerifyTest.java
+                        │               UserServiceImplTest.java
+                        ├───reivew
+                        │       ReviewControllerTest.java
+                        │       ReviewServiceImplTest.java
+                        └───restaurant
+                                RestaurantControllerTest.java
+                                RestaurantServiceImplTest.java                                
+
+```
+
+<br>
 
 ```text
 📦src
