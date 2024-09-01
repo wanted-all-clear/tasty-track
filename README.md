@@ -64,10 +64,10 @@
 <details>
 <summary>문서화 작업</summary>
 <div markdown="1">
-<figure class="half">
-    <a href="link"><img src="https://github.com/user-attachments/assets/ef15aa60-f315-4af0-bb5b-48ec088c4e6e" width="32%"></a>
-    <a href="link"><img src="https://github.com/user-attachments/assets/c387b28a-c238-426d-9ded-be3bad56f1c0" width="32%"></a>
-</figure>
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="45%">
+    <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="45%">
+</p>
 </div>
 </details>
 
@@ -82,7 +82,7 @@
 
 <p align="center">
     <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="40%">
-    <img src="https://github.com/user-attachments/assets/7f882208-8f1c-435e-b038-b3182e7a8455" align="center" width="40%">
+    <img src="https://github.com/user-attachments/assets/3b8c33ac-019d-4f85-be1c-73cbc1b7cb36" align="center" width="40%">
 </p>
 
 </div>
