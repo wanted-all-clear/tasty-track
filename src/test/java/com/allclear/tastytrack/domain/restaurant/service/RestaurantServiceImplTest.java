@@ -6,31 +6,28 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.*;
 
+import java.util.Collections;
 import java.util.List;
 
-import com.allclear.tastytrack.domain.region.entity.Region;
-import com.allclear.tastytrack.domain.region.repository.RegionRepository;
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
-import com.allclear.tastytrack.global.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
+import com.allclear.tastytrack.domain.region.entity.Region;
+import com.allclear.tastytrack.domain.region.repository.RegionRepository;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
+import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
-import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Collections;
-import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -147,7 +144,8 @@ public class RestaurantServiceImplTest {
         RestaurantListRequest request = new RestaurantListRequest(37.5088, 126.8913, 10.0, "한식", "점");
 
         // Mock 설정
-        when(restaurantRepository.findUserRequestRestaurantList(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
+        when(restaurantRepository.findUserRequestRestaurantList(anyDouble(), anyDouble(), anyDouble(), anyString(),
+                anyString()))
                 .thenReturn(List.of(mockRestaurant));
 
         // when
@@ -166,7 +164,8 @@ public class RestaurantServiceImplTest {
         RestaurantListRequest invalidRequest = new RestaurantListRequest(-100.0, 200.0, -5.0, "한식", "점");
 
         // when & then
-        CustomException exception = assertThrows(CustomException.class, () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
+        CustomException exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_REQUEST);
     }
 
@@ -177,7 +176,8 @@ public class RestaurantServiceImplTest {
         RestaurantListRequest request = new RestaurantListRequest(37.5088, 126.8913, 10.0, "한식", "점");
 
         // Mock 설정
-        when(restaurantRepository.findUserRequestRestaurantList(anyDouble(), anyDouble(), anyDouble(), anyString(), anyString()))
+        when(restaurantRepository.findUserRequestRestaurantList(anyDouble(), anyDouble(), anyDouble(), anyString(),
+                anyString()))
                 .thenReturn(Collections.emptyList());
 
         // when
@@ -193,7 +193,8 @@ public class RestaurantServiceImplTest {
     @DisplayName("유효성 검사에서 null 요청이 들어오면 예외를 발생시킵니다.")
     void testValidateRequestWithNullRequest() {
         // when & then
-        CustomException exception = assertThrows(CustomException.class, () -> restaurantServiceImpl.getRestaurantList(null));
+        CustomException exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantList(null));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NULL_REQUEST_DATA);
     }
 
@@ -204,7 +205,8 @@ public class RestaurantServiceImplTest {
         RestaurantListRequest invalidRequest = new RestaurantListRequest(37.5088, 126.8913, 0.0, "한식", "점");
 
         // when & then
-        CustomException exception = assertThrows(CustomException.class, () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
+        CustomException exception = assertThrows(CustomException.class,
+                () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_REQUEST);
     }
 
@@ -224,7 +226,8 @@ public class RestaurantServiceImplTest {
         given(regionRepository.findFirstByDosiAndSgg(anyString(), anyString()))
                 .willReturn(region);
 
-        given(restaurantRepository.findRestaurantsWithinDistance(anyString(), anyDouble(), anyDouble(), anyDouble(), anyString()))
+        given(restaurantRepository.findRestaurantsWithinDistance(anyString(), anyDouble(), anyDouble(), anyDouble(),
+                anyString()))
                 .willReturn(List.of(mockRestaurant));
 
         // when
@@ -263,7 +266,8 @@ public class RestaurantServiceImplTest {
         given(regionRepository.findFirstByDosiAndSgg(anyString(), anyString()))
                 .willReturn(region);
 
-        given(restaurantRepository.findRestaurantsWithinDistance(anyString(), anyDouble(), anyDouble(), anyDouble(), anyString()))
+        given(restaurantRepository.findRestaurantsWithinDistance(anyString(), anyDouble(), anyDouble(), anyDouble(),
+                anyString()))
                 .willReturn(Collections.emptyList());
 
         // when & then

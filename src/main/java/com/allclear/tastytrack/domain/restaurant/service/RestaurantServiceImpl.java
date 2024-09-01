@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
-import com.allclear.tastytrack.domain.region.entity.Region;
-import com.allclear.tastytrack.domain.region.repository.RegionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.allclear.tastytrack.domain.region.entity.Region;
+import com.allclear.tastytrack.domain.region.repository.RegionRepository;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocation;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
@@ -25,8 +25,6 @@ import com.allclear.tastytrack.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
 
 @Service
 @Slf4j
@@ -35,11 +33,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final ReviewRepository reviewRepository;
+    private final RegionRepository regionRepository;
 
     @Override
     public Restaurant getRestaurant(int id, int deletedYn) {
 
-        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
+        Restaurant restaurant = restaurantRepository.findByIdAndDeletedYn(id, deletedYn);
         if (restaurant == null) {
             throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
         }
@@ -57,7 +56,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Restaurant restaurant = restaurantRepository.getReferenceById(request.getRestaurantId());
 
-        if (restaurant.getDeletedYn() == 0) {
+        if (restaurant.getDeletedYn() == 1) {
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
         }
 
@@ -168,7 +167,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         log.info("맛집 검색 - 위도: {}, 경도: {}, 범위: {}, 타입: {}, 이름: {}",
                 request.getLat(), request.getLon(), request.getRange(), type, name);
 
-        List<Restaurant> response = restaurantRepository.findUserRequestRestaurantList(request.getLat(), request.getLon(),
+        List<Restaurant> response = restaurantRepository.findUserRequestRestaurantList(request.getLat(),
+                request.getLon(),
                 request.getRange(), type, name);
 
         log.info("검색된 식당 수: {}", response.size());
@@ -251,7 +251,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         // 4. Restaurant 조회
         log.info("맛집 조회 - 지역명: {}, 거리: {}km, 타입: {}", regionName, distance, type);
-        List<Restaurant> response = restaurantRepository.findRestaurantsWithinDistance(regionName, lat, lon, distance, type);
+        List<Restaurant> response = restaurantRepository.findRestaurantsWithinDistance(regionName, lat, lon, distance,
+                type);
         if (response.isEmpty()) {
             log.warn("검색된 맛집이 없습니다 - 지역명: {}, 거리: {}km, 타입: {}", regionName, distance, type);
             throw new CustomException(ErrorCode.EMPTY_RESTAURANT);
