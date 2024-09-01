@@ -30,13 +30,14 @@ class RegionServiceImplTest {
 
     @BeforeEach
     void setUp() {
+
         MockitoAnnotations.openMocks(this);
     }
 
-    
+
     @Test
     @DisplayName("지역구 정보를 성공적으로 조회하고 그룹화하여 반환합니다.")
-    void testGetRegionInfoSuccess(){
+    void testGetRegionInfoSuccess() {
         // given : 준비된 지역 데이턴
         List<Region> regions = Arrays.asList(
                 new Region(1, "서울특별시", "강남구", 37.514575, 127.0495556),
@@ -48,7 +49,7 @@ class RegionServiceImplTest {
         when(regionRepository.findAll()).thenReturn(regions);
 
         // then
-        List<RegionResponse> result = regionService.getRegionInfo();
+        List<RegionResponse> result = regionService.getRegionList();
         assertEquals(2, result.size()); // 결과가 그룹화되었는지 확인
 
         RegionResponse seoul = result.stream().filter(r -> r.getDosi().equals("서울특별시")).findFirst().orElse(null);
@@ -63,12 +64,12 @@ class RegionServiceImplTest {
 
     @Test
     @DisplayName("지역 정보 데이터가 없을 때 예외 테스트를 수행합니다.")
-    void testGetRegionInfoNoData(){
+    void testGetRegionInfoNoData() {
         // given 빈 데이터
         when(regionRepository.findAll()).thenReturn(Collections.emptyList());
 
         // when & then 데이터가 없을 때
-        CustomException exception = assertThrows(CustomException.class, ()-> regionService.getRegionInfo());
+        CustomException exception = assertThrows(CustomException.class, () -> regionService.getRegionList());
         assertEquals(ErrorCode.NO_REGION_DATA, exception.getErrorCode());
     }
 

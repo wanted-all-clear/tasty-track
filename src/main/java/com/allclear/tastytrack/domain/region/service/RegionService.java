@@ -6,5 +6,7 @@ import com.allclear.tastytrack.domain.region.dto.RegionResponse;
 import java.util.List;
 
 public interface RegionService {
-    List<RegionResponse> getRegionInfo();
+
+    List<RegionResponse> getRegionList();
+
 }

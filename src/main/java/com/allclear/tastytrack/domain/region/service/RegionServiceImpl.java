@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RegionServiceImpl implements RegionService{
+public class RegionServiceImpl implements RegionService {
 
     private final RegionRepository regionRepository;
 
@@ -28,7 +28,8 @@ public class RegionServiceImpl implements RegionService{
      * 향후 지역 확장성을 고려하여, List 안에 ResponseDTO를 담는 형식으로 하였습니다.
      */
     @Override
-    public List<RegionResponse> getRegionInfo() {
+    public List<RegionResponse> getRegionList() {
+
         try {
             List<Region> regions = regionRepository.findAll();
 
