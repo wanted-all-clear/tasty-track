@@ -1,4 +1,7 @@
-# TastyTrack
+# 😋 TastyTrack
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/a1228576-ef6f-49e2-b720-988ad1aab5a3">
+</div>
 
 > ## 📝 목차
 > 1. [서비스 소개](#서비스-소개)
@@ -18,7 +21,7 @@
 
 <br/>
 
-## 서비스 소개
+## 🍣 서비스 소개
 - 서울시 음식점 공공데이터를 활용하여 서울의 맛집 목록을 자동으로 업데이트하고, 이를 기반으로 서비스를 제공합니다. **사용자의 위치에 맞춰 맛집 및 메뉴를 추천**함으로써 다양한 음식을 더욱 풍부하게 경험할 수 있도록 돕고, 음식을 좋아하는 사람들 간의 소통과 공유를 지원하는 애플리케이션의 API 서버입니다.
 
 - 🔗 **활용한 공공데이터** | [<a href="https://data.seoul.go.kr/dataList/OA-16094/S/1/datasetView.do">https://data.seoul.go.kr/</a>](https://data.seoul.go.kr/dataList/OA-16094/S/1/datasetView.do)
@@ -49,7 +52,7 @@
 
 ### 프로젝트 일정
 <details>
-    <summary><b>프로젝트 과정 타임라인🗓</b></summary>
+    <summary><b>프로젝트 과정 타임라인 🗓</b></summary>
     - 프로젝트 기간: 2024.08.27 ~ 2024.09.02
 </details>
 
@@ -94,7 +97,7 @@
 
 <br/>
 
-## 프로젝트 환경
+## 🛠️ 프로젝트 환경
 
 | Stack                                                                                                        | Version           |
 |:------------------------------------------------------------------------------------------------------------:|:-----------------:|
@@ -114,7 +117,7 @@
 
 <br>
 
-### 요구사항 정의서 정리
+### 📄 요구사항 정의서 정리
 | 대분류 | 기능명               | Controller & Service method        | 담당자                                 |
 |--------|----------------------|------------------------------------|----------------------------------------|
 | 사용자 | 회원가입              | signup                             | [오예령](https://github.com/ohyeryung)  |
@@ -134,7 +137,7 @@
 
 <br/>
 
-### API 명세서
+### 🧾 API 명세서
 
  > 자세한 명세는 <a href="">🔗여기</a> 를 클릭해주세요! `(Postman API)`
 
@@ -155,16 +158,17 @@
 
 <br>
 
-## ERD
+## ⛓️ ERD
 <img src="https://github.com/user-attachments/assets/feca69c7-e72e-4e58-8c41-dbdc79d8026b" width="80%">
 
 <br>
 
-## 트러블 슈팅
-<p></p>
+## 💥 트러블 슈팅
+- **위도 경도 데이터 타입 통일 과정 중 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9C%84%EB%8F%84-%EA%B2%BD%EB%8F%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%ED%86%B5%EC%9D%BC-%EA%B3%BC%EC%A0%95-%EC%A4%91-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
+
 <br>
 
-## 디렉토리 구조
+## 🗂️ 디렉토리 구조
 <details><summary>직관적인 구조 파악과 관리를 위해 <b>도메인형 구조</b>를 채택하였습니다.</summary>
 
 <h3>🗂️ 전체 구조</h3>
