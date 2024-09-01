@@ -20,12 +20,23 @@
 <br/>
 
 ## 서비스 소개
+- 서울시 음식점 공공데이터를 활용하여 서울의 맛집 목록을 자동으로 업데이트하고, 이를 기반으로 서비스를 제공합니다. **사용자의 위치에 맞춰 맛집 및 메뉴를 추천**함으로써 다양한 음식을 더욱 풍부하게 경험할 수 있도록 돕고, 음식을 좋아하는 사람들 간의 소통과 공유를 지원하는 애플리케이션의 API 서버입니다.
+
+- 🔗 **활용한 공공데이터** | [<a href="https://data.seoul.go.kr/dataList/OA-16094/S/1/datasetView.do">https://data.seoul.go.kr/</a>](https://data.seoul.go.kr/dataList/OA-16094/S/1/datasetView.do)
 
 
 
 ### 주요 기능
 
-> 1. 
+> 1. 유저는 본 사이트에 접속해 회원가입 및 내 위치를 지정합니다.<br>
+> 2. **A. 내 위치 기반 맛집추천 = (`내 주변보기`)**<br>
+    - `도보` 기준 `1km` 이내의 맛집을 추천합니다.<br>
+    - `교통수단` 기준 `5km` 이내의 맛집을 추천합니다.<br>
+> 3. **B. 지역명 기준 맛집추천(`특정 지역 보기`)**<br>
+    - 지정한 `지명(시군구)` 중심위치 기준 `10km` 이내의 맛집을 추천합니다.<br>
+> 4. A, B를 다양한 검색기준 (정렬, 필터링 등)으로 맛집 목록을 확인합니다. (`거리순`, `평점순` , `양식`, `중식`)<br>
+> 5. 해당 맛집의 상세정보를 확인할 수 있습니다.<br>
+> 6. 원하는 맛집의 평가를 등록할 수 있습니다.
 
 <br/>
 
@@ -53,10 +64,10 @@
 <details>
 <summary>문서화 작업</summary>
 <div markdown="1">
-<figure class="half">  
-    <a href=""><img src="" width="32%"></a>  
+<figure class="half">
+    <a href="link"><img src="https://github.com/user-attachments/assets/ef15aa60-f315-4af0-bb5b-48ec088c4e6e" width="32%"></a>
+    <a href="link"><img src="https://github.com/user-attachments/assets/c387b28a-c238-426d-9ded-be3bad56f1c0" width="32%"></a>
 </figure>
-
 </div>
 </details>
 
@@ -67,10 +78,11 @@
 <details>
 <summary>개발일정 관리</summary>
 <div markdown="1">
-
+<img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" alt="Alt text" width="980" height="610"/>
 
 <p align="center">
-    
+    <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="40%">
+    <img src="https://github.com/user-attachments/assets/7f882208-8f1c-435e-b038-b3182e7a8455" align="center" width="40%">
 </p>
 
 </div>
@@ -84,6 +96,8 @@
 <summary>소통 및 PR 알림 확인</summary>
 <div markdown="1">
 
+![image](https://github.com/user-attachments/assets/9a329b8b-bec5-4742-b32c-9073edf22f26)
+<img src="https://github.com/user-attachments/assets/1c5c0cc7-102b-4924-b0b4-2ba4bd5150e6" alt="Alt text" width="430" height="600"/>
 
 </div>
 </details>
