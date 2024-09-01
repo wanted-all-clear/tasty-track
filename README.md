@@ -96,6 +96,7 @@
 </details>
 
 <br/>
+<br/>
 
 ## 🛠️ 프로젝트 환경
 
@@ -109,7 +110,7 @@
 
 <br/>
 
-## 기술 선택 이유
+### 기술 선택 이유
 
 <details>
   <summary><b></b></summary>
@@ -147,8 +148,8 @@
 | 사용자   | 로그인                 | `POST`        | /api/users/login                       | X    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 회원정보 조회          | `GET`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 회원 정보 수정         | `PUT`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
-| 사용자   | AccessToken 재발급     | `POST`        | /api/refresh                          | X    | [오예령](https://github.com/ohyeryung) |
-| 사용자   | 위치 기반 맛집 추천 기능 | `POST`        | /api/users/location                    | X    | [김은정](https://github.com/fkznsha23)   |
+| 사용자   | AccessToken 재발급    | `POST`        | /api/refresh                          | X    | [오예령](https://github.com/ohyeryung) |
+| 사용자   | 위치 기반 맛집 추천  | `POST`        | /api/users/location                    | X    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 상세 정보 조회    | `POST`        | /api/restaurants/detail                | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 평가 생성        | `POST`        | /api/reviews                           | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 목록 조회        | `GET`         | /api/restaurants/list                  | X    | [배서진](https://github.com/bsjin1122)   |
@@ -162,9 +163,19 @@
 <img src="https://github.com/user-attachments/assets/feca69c7-e72e-4e58-8c41-dbdc79d8026b" width="80%">
 
 <br>
+<br>
 
 ## 💥 트러블 슈팅
 - **위도 경도 데이터 타입 통일 과정 중 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9C%84%EB%8F%84-%EA%B2%BD%EB%8F%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%ED%86%B5%EC%9D%BC-%EA%B3%BC%EC%A0%95-%EC%A4%91-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
+- **토큰 검증을 필요로하지 않는 API 호출시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D%EC%9D%84-%ED%95%84%EC%9A%94%EB%A1%9C%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-API-%ED%98%B8%EC%B6%9C%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
+- **토큰 검증 테스트 시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
+
+<br>
+
+## 🤔 고민한 흔적
+- **프로젝트 서버 분리 고민** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%9C%EB%B2%84-%EB%B6%84%EB%A6%AC-%EA%B3%A0%EB%AF%BC"> WIKI 이동 </a>
+- **Entity 클래스의 PK 필드 타입 (Long vs int)** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Entity-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%9D%98-PK-%ED%95%84%EB%93%9C-%ED%83%80%EC%9E%85-(Long-vs-int)"> WIKI 이동 </a>
+- **위도, 경도의 데이터 타입 (Double vs Decimal)** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9C%84%EB%8F%84,-%EA%B2%BD%EB%8F%84%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-(Double-vs-Decimal)"> WIKI 이동 </a>
 
 <br>
 
