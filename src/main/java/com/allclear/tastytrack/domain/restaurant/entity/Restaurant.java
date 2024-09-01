@@ -17,6 +17,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
 @Entity
 @AllArgsConstructor
@@ -28,45 +33,57 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;                      // 맛집 가공 id
+    @Comment("맛집 가공 id")
+    private int id;
 
     @Column(unique = true, nullable = false)
-    private String code;                 // 관리번호
+    @Comment("관리번호")
+    private String code;
 
     @Column(nullable = false, length = 50)
-    private String name;                 // 사업장명
+    @Comment("사업장명")
+    private String name;
 
     @Column(nullable = false, length = 16)
-    private String type;                 // 업태구분명
+    @Comment("업태구분명")
+    private String type;
 
     @Column(nullable = false, length = 16)
-    private String status;               // 상세영업상태코드
+    @Comment("상세영업상태코드")
+    private String status;
 
     @Column(nullable = false)
-    private String oldAddress;           // 지번주소
+    @Comment("지번주소")
+    private String oldAddress;
 
     @Column(nullable = false)
-    private String newAddress;           // 도로명주소
+    @Comment("도로명주소")
+    private String newAddress;
 
     @Column(nullable = false)
-    private Double lon;                  // 경도
+    @Comment("경도")
+    private Double lon;
 
     @Column(nullable = false)
-    private Double lat;                  // 위도
+    @Comment("위도")
+    private Double lat;
 
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime lastUpdatedAt; // 최종 수정일자
+    @Comment("최종 수정일자")
+    private LocalDateTime lastUpdatedAt;
 
     @Setter
     @Column(nullable = false)
     @ColumnDefault("0.0")
-    private double rateScore;            // 평점
+    @Comment("평점")
+    private double rateScore;
 
     @Column(nullable = false)
-    private int deletedYn;           // 삭제여부
+    @Comment("삭제여부")
+    private int deletedYn;
 
     public void updateWithNewData(Restaurant newRestaurant) {
 
@@ -80,4 +97,7 @@ public class Restaurant {
         this.lastUpdatedAt = newRestaurant.getLastUpdatedAt();
     }
 
+    // TODO: 은정님 기능 완료 후 반영 예정
+    //    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)  // 1:다 관계 설정
+    //    private List<Review> reviews;
 }

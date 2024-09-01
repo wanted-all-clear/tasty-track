@@ -1,10 +1,6 @@
 version: "3.9"
 
 services:
-  tastytrack:
-    build: .
-    ports:
-      - "8080:8080"
   mysql:
     image: mysql:latest
     container_name: tasty-track-mysql
@@ -16,9 +12,20 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql-vl:/var/lib/mysql
+  redis:
+    image: redis:latest
+    container_name: tasty-track-redis
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    restart: always
+    volumes:
+      - redis-vl:/data
+
+
 volumes:
   mysql-vl:
     driver: local
-networks:
-  tastytrack:
-    driver: bridge
+  redis-vl:
+    driver: local

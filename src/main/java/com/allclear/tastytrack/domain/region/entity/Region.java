@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.domain.region.domain;
+package com.allclear.tastytrack.domain.region.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

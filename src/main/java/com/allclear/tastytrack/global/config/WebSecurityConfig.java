@@ -58,6 +58,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, ("/api/users/**")).permitAll()
                         .requestMatchers(
                                 "/api/restaurants/**",
+                                "/api/refresh",
                                 "/api/regions/**",
                                 "/h2-console/**",
                                 "/swagger-ui/**",
