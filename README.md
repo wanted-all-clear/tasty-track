@@ -1,6 +1,6 @@
 # 😋 TastyTrack
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/a1228576-ef6f-49e2-b720-988ad1aab5a3">
+    <img src="https://github.com/user-attachments/assets/cec1e214-a1a6-4bfc-8915-401012e281c3">
 </div>
 
 > ## 📝 목차
