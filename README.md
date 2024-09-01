@@ -138,14 +138,14 @@
 
  > 자세한 명세는 <a href="">🔗여기</a> 를 클릭해주세요! `(Postman API)`
 
-| 대분류   | 기능                  | Http Method | API Path                               | 인증 | 담당자 |
+| 대분류   | 기능                  | Http Method | API Path                               | 토큰 검증 여부 | 담당자 |
 |----------|-----------------------|-------------|----------------------------------------|------|--------|
 | 사용자   | 회원 가입              | `POST`        | /api/users                             | X    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 로그인                 | `POST`        | /api/users/login                       | X    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 회원정보 조회          | `GET`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 회원 정보 수정         | `PUT`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
+| 사용자   | AccessToken 재발급     | `POST`        | /api/refresh                          | X    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 위치 기반 맛집 추천 기능 | `POST`        | /api/users/location                    | X    | [김은정](https://github.com/fkznsha23)   |
-| 사용자   | AccessToken 재발급     | `POST`        | /api/refresh                           | X    | [오예령](https://github.com/ohyeryung) |
 | 맛집 | 맛집 상세 정보 조회    | `POST`        | /api/restaurants/detail                | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 평가 생성        | `POST`        | /api/reviews                           | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 목록 조회        | `GET`         | /api/restaurants/list                  | X    | [배서진](https://github.com/bsjin1122)   |
