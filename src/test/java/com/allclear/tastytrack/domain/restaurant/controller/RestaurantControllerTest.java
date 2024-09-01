@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.restaurant;
+package com.allclear.tastytrack.domain.restaurant.controller;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
@@ -67,7 +67,7 @@ public class RestaurantControllerTest {
                 RestaurantDetail.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody().getName()).isEqualTo("오고보");
+        assertThat(responseEntity.getBody().getName()).isEqualTo("매취랑 동대문점");
 
     }
 
@@ -90,8 +90,8 @@ public class RestaurantControllerTest {
                 });
 
         List<RestaurantByUserLocation> result = responseEntity.getBody();
-        assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getRestaurantName()).isEqualTo("랩보이(wrap boy)");
+        assertThat(result.size()).isEqualTo(11);
+        assertThat(result.get(0).getRestaurantName()).isEqualTo("뮤지컬펍넘버스테이지");
     }
 
 }

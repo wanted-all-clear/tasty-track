@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.reivew;
+package com.allclear.tastytrack.domain.review.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
-import com.allclear.tastytrack.domain.review.service.ReviewServiceImpl;
 import com.allclear.tastytrack.domain.user.entity.User;
 import com.allclear.tastytrack.domain.user.repository.UserRepository;
 import com.allclear.tastytrack.global.exception.CustomException;

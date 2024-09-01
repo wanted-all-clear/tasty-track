@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.reivew;
+package com.allclear.tastytrack.domain.review.controller;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 

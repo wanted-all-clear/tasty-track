@@ -18,11 +18,11 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     Restaurant findByIdAndDeletedYn(int id, int deletedYn);
 
     @Query(nativeQuery = true,
-            value = "SELECT *"
-                    + "from restaurant as r"
-                    + "where r.deleted_yn = 1 "
-                    + "and westLon <= r.lon <= eastLon"
-                    + "and southLat <= r.lat <= northLat")
+            value = "SELECT * "
+                    + "FROM restaurant r "
+                    + "WHERE r.deleted_yn = 0 "
+                    + "AND r.lon BETWEEN :westLon AND :eastLon "
+                    + "AND r.lat BETWEEN :southLat AND :northLat")
     List<Restaurant> findBaseUserLocationByDeletedYn(@Param("westLon") double westLon, @Param("eastLon") double eastLon,
             @Param("southLat") double southLat, @Param("northLat") double northLat);
 

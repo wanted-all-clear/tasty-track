@@ -1,8 +1,9 @@
 package com.allclear.tastytrack.domain.user.controller;
 
-import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
-import com.allclear.tastytrack.domain.user.dto.UserInfo;
-import com.allclear.tastytrack.domain.user.service.UserService;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,16 +15,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
+import com.allclear.tastytrack.domain.user.dto.UserInfo;
+import com.allclear.tastytrack.domain.user.service.UserService;
 
 @WebMvcTest(UserController.class)
+@ActiveProfiles("test")
 public class UserControllerTest {
 
     @Autowired
@@ -54,7 +56,8 @@ public class UserControllerTest {
 
         // SecurityContext에 UserDetails Mock 객체 설정 => SecurityContext에 Authentication 객체를 설정하여, 이후 테스트에서 인증된 사용자의 정보를 사용할 수 있도록 함
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(mockUserDetails, null, mockUserDetails.getAuthorities()));
+        securityContext.setAuthentication(
+                new UsernamePasswordAuthenticationToken(mockUserDetails, null, mockUserDetails.getAuthorities()));
 
     }
 

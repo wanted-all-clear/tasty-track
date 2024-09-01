@@ -24,6 +24,10 @@ import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
 import com.allclear.tastytrack.domain.user.dto.UserUpdateRequest;
 import com.allclear.tastytrack.domain.user.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -64,6 +68,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserInfo(userDetails.getUsername()));
     }
 
+    @Operation(summary = "사용자 위치 기반 음식점 조회", description = "사용자의 위치에서 1Km 혹은 5Km 이내의 음식점을 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "인근 음식점 리스트를 조회하였습니다.",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "사용자의 위치를 알 수 없습니다.")
+    })
     @PostMapping("/location")
     public ResponseEntity<List<RestaurantByUserLocation>> getRestaurantByUserLocation(
             @Valid @RequestBody UserLocationInfo userLocationInfo) {

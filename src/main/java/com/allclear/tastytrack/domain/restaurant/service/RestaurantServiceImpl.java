@@ -38,7 +38,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new CustomException(ErrorCode.NOT_VALID_PROPERTY);
         }
 
-        if (restaurant.getDeletedYn() == 0) {
+        if (restaurant.getDeletedYn() == 1) {
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
         }
 
@@ -51,7 +51,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Restaurant restaurant = restaurantRepository.getReferenceById(request.getRestaurantId());
 
-        if (restaurant.getDeletedYn() == 0) {
+        if (restaurant.getDeletedYn() == 1) {
             throw new CustomException(ErrorCode.NOT_EXISTENT_RESTAURANT);
         }
 

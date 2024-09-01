@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.restaurant;
+package com.allclear.tastytrack.domain.restaurant.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
-import com.allclear.tastytrack.domain.restaurant.service.RestaurantServiceImpl;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.repository.ReviewRepository;
 import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
@@ -48,7 +47,7 @@ public class RestaurantServiceImplTest {
                 .newAddress("new address")
                 .lon(3123.1231)
                 .lat(134323.13212)
-                .deletedYn(1)
+                .deletedYn(0)
                 .build();
         given(restaurantRepository.findByIdAndDeletedYn(anyInt(), anyInt())).willReturn(restaurant);
 
@@ -78,7 +77,7 @@ public class RestaurantServiceImplTest {
         given(restaurantRepository.getReferenceById(anyInt())).willReturn(restaurant);
         given(reviewRepository.countByRestaurantId(anyInt())).willReturn(1);
         given(restaurantRepository.save(any())).willReturn(restaurant);
-        given(restaurant.getDeletedYn()).willReturn(1);
+        given(restaurant.getDeletedYn()).willReturn(0);
 
         // when
         Restaurant result = restaurantServiceImpl.updateRestaurantScore(mock(ReviewRequest.class));
