@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class CoordinateResponse {
+public class CoordinateResponse { // 최상위 응답객체
     private List<Documents> documents;
     private CoordinateMeta meta;
 
