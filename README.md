@@ -12,7 +12,7 @@
 > 6. [Github Issue & Jira 를 통한 Task 트래킹 관리 (WBS)](#github-issue--jira-를-통한-task-트래킹-관리-wbs-%EF%B8%8F%EF%B8%8F)
 > 7. [Discord 를 활용한 소통 및 PR 알림 봇](#discord를-활용한-소통-및-pr-알림-봇-)
 > 8. [프로젝트 환경](#%EF%B8%8F-프로젝트-환경)
-> 9. [기술 선택 이유](#기술-선택-이유)
+> 9. [기술 선택 이유](#-기술-선택-이유)
 > 10. [요구사항 정의서 정리](#-요구사항-정의서-정리)
 > 11. [API 명세서](#-api-명세서)
 > 12. [ERD](#%EF%B8%8F-erd)
@@ -53,7 +53,7 @@
 
 ### 프로젝트 일정
 <details>
-    <summary><b>프로젝트 과정 타임라인 🗓</b></summary>
+    <summary><b>프로젝트 과정 타임라인 🗓</b></summary><br>
     <img src="https://github.com/user-attachments/assets/04066110-4312-4a57-b1df-a065f3f987fc">
 </details>
 
@@ -111,7 +111,7 @@
 
 <br/>
 
-### 기술 선택 이유
+### ✅ 기술 선택 이유
 
 - **SpringSecurity** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/SpringSecurity-%EB%8F%84%EC%9E%85"> WIKI 이동 </a>
 - **AccessToken과 RefreshToken** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/AccessToken%EA%B3%BC-RefreshToken"> WIKI 이동 </a>
