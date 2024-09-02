@@ -2,10 +2,12 @@ package com.allclear.tastytrack.domain.restaurant.entity;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
+import com.allclear.tastytrack.domain.review.entity.Review;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -14,9 +16,11 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -84,6 +88,9 @@ public class Restaurant {
     @Comment("삭제여부")
     private int deletedYn;
 
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private List<Review> reviews;
+
     public void updateByReview(double rateScore, LocalDateTime updatedAt) {
 
         this.rateScore = rateScore;
@@ -103,7 +110,4 @@ public class Restaurant {
         this.lastUpdatedAt = newRestaurant.getLastUpdatedAt();
     }
 
-    // TODO: 은정님 기능 완료 후 반영 예정
-    //    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)  // 1:다 관계 설정
-    //    private List<Review> reviews;
 }
