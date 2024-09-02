@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetailRequest;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
@@ -48,12 +48,12 @@ public class RestaurantController {
             @ApiResponse(responseCode = "400", description = "입력값을 확인해주세요."),
             @ApiResponse(responseCode = "404", description = "조회할 수 없는 음식점입니다.")
     })
-    @PostMapping("/detail")
+    @GetMapping("/{id}")
     public ResponseEntity<RestaurantDetail> getRestaurantById(@AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody RestaurantDetailRequest request) {
+            @PathVariable int id) {
 
-        Restaurant restaurant = restaurantService.getRestaurantById(request.getId(), 0);
-        List<Review> reviews = reviewService.getAllReviewsByRestaurantId(request.getId());
+        Restaurant restaurant = restaurantService.getRestaurantById(id, 0);
+        List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
 
         List<ReviewResponse> reviewResponses = new ArrayList<>();
         if (!reviews.isEmpty()) {

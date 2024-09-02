@@ -64,9 +64,9 @@ public class RestaurantControllerTest {
         // RestaurantDetailRequest request = RestaurantDetailRequest.builder().id(1).build();
 
         HttpEntity<Integer> entity = new HttpEntity<>(1, httpHeaders);
-        String url = "/api/restaurants/detail";
+        String url = "/api/restaurants/" + 1;
 
-        ResponseEntity<RestaurantDetail> responseEntity = testRestTemplate.exchange(url, HttpMethod.POST, entity,
+        ResponseEntity<RestaurantDetail> responseEntity = testRestTemplate.exchange(url, HttpMethod.GET, entity,
                 RestaurantDetail.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
