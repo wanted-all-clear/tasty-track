@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
-import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
+import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
 import com.allclear.tastytrack.domain.review.entity.Review;
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final RestaurantService restaurantService;
+    private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
     /**
@@ -101,7 +101,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     private ReviewResponse asyncCreateReviewResponse(Review review) {
 
-        Optional<User> userOpt = userRepository.findById(review.getUserId());
+        Optional<User> userOpt = userRepository.findById(review.getUser().getId());
         User user = userOpt.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_EXIST));
 
         log.info("비동기 메서드로 조회하는 {}님의 리뷰입니다 : {}", user.getUsername(), user.getId());
@@ -151,8 +151,8 @@ public class ReviewServiceImpl implements ReviewService {
         try {
             User user = userRepository.findByUsername(username).get();
             Review review = Review.builder()
-                    .userId(user.getId())
-                    .restaurantId(request.getRestaurantId())
+                    .user(user)
+                    .restaurant(restaurantRepository.getReferenceById(request.getRestaurantId()))
                     .score(request.getScore())
                     .content(request.getContent())
                     .build();
@@ -176,7 +176,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void removeReview(Review review) {
 
-        log.info("{}님의 리뷰를 삭제합니다.", review.getUserId());
+        log.info("{}님의 리뷰를 삭제합니다.", review.getUser().getUsername());
         reviewRepository.delete(review);
     }
 
