@@ -141,7 +141,7 @@
 | 사용자 | 정보 조회             | getUserInfo                        | [오예령](https://github.com/ohyeryung)  |
 | 사용자 | 위치 기반 맛집 추천    | getRestaurantByUserLocation        | [김은정](https://github.com/fkznsha23)  |
 | 맛집   | 맛집 평가 생성         | createReview                      | [김은정](https://github.com/fkznsha23)  |
-| 맛집   | 맛집 상세 조회         | getRestaurant                     | [김은정](https://github.com/fkznsha23)  |
+| 맛집   | 맛집 상세 조회         | getRestaurantById                     | [김은정](https://github.com/fkznsha23)  |
 | 맛집   | 맛집 목록 조회         | getRestaurantList                 | [배서진](https://github.122)            |
 | 맛집   | 지역명 기준 맛집 추천   | getRestuarantSearchByRegion       | [배서진](https://github.122)            |
 | 맛집   | 시군구 조회            | getRegionList                     | [배서진](https://github.122)            |
@@ -164,7 +164,7 @@
 | 사용자   | 회원 정보 수정         | `PUT`         | /api/users                             | O    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | AccessToken 재발급    | `POST`        | /api/refresh                          | X    | [오예령](https://github.com/ohyeryung) |
 | 사용자   | 위치 기반 맛집 추천  | `POST`        | /api/users/location                    | X    | [김은정](https://github.com/fkznsha23)   |
-| 맛집 | 맛집 상세 정보 조회    | `POST`        | /api/restaurants/detail                | O    | [김은정](https://github.com/fkznsha23)   |
+| 맛집 | 맛집 상세 정보 조회    | `POST`        | /api/restaurants/{id}                | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 평가 생성        | `POST`        | /api/reviews                           | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 목록 조회        | `GET`         | /api/restaurants/list                  | X    | [배서진](https://github.com/bsjin1122)   |
 | 맛집 | 지역명 기준 맛집 추천  | `GET`         | /api/restaurants/region?dosi<br>={dosi}&sgg={sgg}&type={type}            | X    | [배서진](https://github.com/bsjin1122)   |
