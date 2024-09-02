@@ -139,6 +139,7 @@
 | 사용자 | 로그인                | signin                             |  [오예령](https://github.com/ohyeryung) |
 | 사용자 | 설정 업데이트         | updateUserInfo                     | [오예령](https://github.com/ohyeryung)  |
 | 사용자 | 정보 조회             | getUserInfo                        | [오예령](https://github.com/ohyeryung)  |
+| 사용자   | AccessToken 재발급    | refreshAccessToken               | [오예령](https://github.com/ohyeryung) |
 | 사용자 | 위치 기반 맛집 추천    | getRestaurantByUserLocation        | [김은정](https://github.com/fkznsha23)  |
 | 맛집   | 맛집 평가 생성         | createReview                      | [김은정](https://github.com/fkznsha23)  |
 | 맛집   | 맛집 상세 조회         | getRestaurantById                     | [김은정](https://github.com/fkznsha23)  |
