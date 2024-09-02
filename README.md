@@ -64,11 +64,18 @@
 <details>
 <summary>문서화 작업</summary>
 <div markdown="1">
-    <p align="center">
-        <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="49%">
-        <img src="https://github.com/user-attachments/assets/af8b2113-4979-4064-ae7f-5acc74f5c003" align="center" width="49%">
-    </p>
-    <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="70%">
+    <div>
+        <h4>☑️ 1) 회의록</h4>
+        <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="60%">
+    </div><br>
+    <div>
+        <h4>☑️ 2) 개인 Daily TODO</h4>
+        <img src="https://github.com/user-attachments/assets/af8b2113-4979-4064-ae7f-5acc74f5c003" align="center" width="60%">
+    </div><br>
+    <div>
+        <h4>☑️ 3) 전체 TODO</h4>
+        <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="60%">
+    </div><br>
 </div>
 </details>
 
@@ -79,8 +86,14 @@
 <details>
 <summary>개발일정 관리</summary>
 <div markdown="1">
-    <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="70%"> <br><br>
-    <img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" align="center" width="70%">
+    <div>
+        <h4>☑️ 1) Github Issues</h4>
+        <img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" align="center" width="70%">
+    </div><br>
+    <div>
+        <h4>☑️ 2) Jira</h4>
+        <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="70%">
+    </div><br>
 </div>
 </details>
 
