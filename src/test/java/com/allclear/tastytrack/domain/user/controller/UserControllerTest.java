@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -34,6 +35,8 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private RestaurantService restaurntService;
     @Mock
     private UserDetailsImpl mockUserDetails;
 
