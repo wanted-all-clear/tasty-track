@@ -21,6 +21,7 @@ import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
 import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.service.ReviewService;
+import com.allclear.tastytrack.domain.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,6 +41,7 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
     private final ReviewService reviewService;
+    private final UserService userService;
 
     @Operation(summary = "음식점의 상세정보 조회", description = "특정 음식점의 상세정보를 조회하는 API")
     @ApiResponses(value = {
@@ -52,6 +54,7 @@ public class RestaurantController {
     public ResponseEntity<RestaurantDetail> getRestaurantById(@AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable int id) {
 
+        userService.getUserInfo(userDetails.getUsername());
         Restaurant restaurant = restaurantService.getRestaurantById(id, 0);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
 

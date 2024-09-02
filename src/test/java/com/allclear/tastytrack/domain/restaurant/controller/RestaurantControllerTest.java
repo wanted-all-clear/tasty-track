@@ -61,8 +61,6 @@ public class RestaurantControllerTest {
     @DisplayName("맛집 상세 정보 조회 통합 테스트 입니다.")
     public void 맛집_상세정보_조회_테스트() throws JsonProcessingException {
 
-        // RestaurantDetailRequest request = RestaurantDetailRequest.builder().id(1).build();
-
         HttpEntity<Integer> entity = new HttpEntity<>(1, httpHeaders);
         String url = "/api/restaurants/" + 1;
 
