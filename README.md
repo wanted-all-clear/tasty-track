@@ -12,7 +12,7 @@
 > 6. [Github Issue & Jira 를 통한 Task 트래킹 관리 (WBS)](#github-issue--jira-를-통한-task-트래킹-관리-wbs-%EF%B8%8F%EF%B8%8F)
 > 7. [Discord 를 활용한 소통 및 PR 알림 봇](#discord를-활용한-소통-및-pr-알림-봇-)
 > 8. [프로젝트 환경](#%EF%B8%8F-프로젝트-환경)
-> 9. [기술 선택 이유](#기술-선택-이유)
+> 9. [기술 선택 이유](#-기술-선택-이유)
 > 10. [요구사항 정의서 정리](#-요구사항-정의서-정리)
 > 11. [API 명세서](#-api-명세서)
 > 12. [ERD](#%EF%B8%8F-erd)
@@ -53,8 +53,8 @@
 
 ### 프로젝트 일정
 <details>
-    <summary><b>프로젝트 과정 타임라인 🗓</b></summary>
-    - 프로젝트 기간: 2024.08.27 ~ 2024.09.02
+    <summary><b>프로젝트 과정 타임라인 🗓</b></summary><br>
+    <img src="https://github.com/user-attachments/assets/04066110-4312-4a57-b1df-a065f3f987fc">
 </details>
 
 <br>
@@ -64,11 +64,18 @@
 <details>
 <summary>문서화 작업</summary>
 <div markdown="1">
-    <p align="center">
-        <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="49%">
-        <img src="https://github.com/user-attachments/assets/af8b2113-4979-4064-ae7f-5acc74f5c003" align="center" width="49%">
-    </p>
-    <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="70%">
+    <div>
+        <h4>☑️ 1) 회의록</h4>
+        <img src="https://github.com/user-attachments/assets/c0cf185c-6c8d-4d0d-94ed-a208d02d3f66" align="center" width="60%">
+    </div><br>
+    <div>
+        <h4>☑️ 2) 개인 Daily TODO</h4>
+        <img src="https://github.com/user-attachments/assets/af8b2113-4979-4064-ae7f-5acc74f5c003" align="center" width="60%">
+    </div><br>
+    <div>
+        <h4>☑️ 3) 전체 TODO</h4>
+        <img src="https://github.com/user-attachments/assets/b4b6f352-93a7-4a9d-8491-375868d2f0c6" align="center" width="60%">
+    </div><br>
 </div>
 </details>
 
@@ -79,8 +86,14 @@
 <details>
 <summary>개발일정 관리</summary>
 <div markdown="1">
-    <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="70%"> <br><br>
-    <img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" align="center" width="70%">
+    <div>
+        <h4>☑️ 1) Github Issues</h4>
+        <img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" align="center" width="70%">
+    </div><br>
+    <div>
+        <h4>☑️ 2) Jira</h4>
+        <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="70%">
+    </div><br>
 </div>
 </details>
 
@@ -111,7 +124,7 @@
 
 <br/>
 
-### 기술 선택 이유
+### ✅ 기술 선택 이유
 
 - **SpringSecurity** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/SpringSecurity-%EB%8F%84%EC%9E%85"> WIKI 이동 </a>
 - **AccessToken과 RefreshToken** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/AccessToken%EA%B3%BC-RefreshToken"> WIKI 이동 </a>
