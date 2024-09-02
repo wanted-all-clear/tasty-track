@@ -90,7 +90,7 @@ class UserServiceImplTest {
                 .build();
 
         Exception exception = assertThrows(CustomException.class, () -> userService.signin(loginRequest));
-        assertEquals(ErrorCode.USER_NOT_EXIST, exception.getMessage());
+        assertEquals(ErrorCode.USER_NOT_EXIST.getMessage(), exception.getMessage());
     }
 
     @Test
