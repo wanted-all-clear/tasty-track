@@ -54,7 +54,7 @@
 ### 프로젝트 일정
 <details>
     <summary><b>프로젝트 과정 타임라인 🗓</b></summary>
-    - 프로젝트 기간: 2024.08.27 ~ 2024.09.02
+    <img src="https://github.com/user-attachments/assets/04066110-4312-4a57-b1df-a065f3f987fc">
 </details>
 
 <br>
