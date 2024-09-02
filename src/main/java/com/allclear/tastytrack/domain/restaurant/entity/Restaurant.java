@@ -3,8 +3,8 @@ package com.allclear.tastytrack.domain.restaurant.entity;
 
 import java.time.LocalDateTime;
 
-import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
@@ -75,7 +75,6 @@ public class Restaurant {
     @Comment("최종 수정일자")
     private LocalDateTime lastUpdatedAt;
 
-    @Setter
     @Column(nullable = false)
     @ColumnDefault("0.0")
     @Comment("평점")
@@ -84,6 +83,13 @@ public class Restaurant {
     @Column(nullable = false)
     @Comment("삭제여부")
     private int deletedYn;
+
+    public void updateByReview(double rateScore, LocalDateTime updatedAt) {
+
+        this.rateScore = rateScore;
+        this.lastUpdatedAt = updatedAt;
+
+    }
 
     public void updateWithNewData(Restaurant newRestaurant) {
 

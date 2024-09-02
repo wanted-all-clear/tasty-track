@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetailRequest;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
@@ -47,12 +48,12 @@ public class RestaurantController {
             @ApiResponse(responseCode = "400", description = "입력값을 확인해주세요."),
             @ApiResponse(responseCode = "404", description = "조회할 수 없는 음식점입니다.")
     })
-    @PostMapping("")
-    public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody int id) {
+    @PostMapping("/detail")
+    public ResponseEntity<RestaurantDetail> getRestaurantById(@AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody RestaurantDetailRequest request) {
 
-        Restaurant restaurant = restaurantService.getRestaurant(id, 0);
-        List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
+        Restaurant restaurant = restaurantService.getRestaurantById(request.getId(), 0);
+        List<Review> reviews = reviewService.getAllReviewsByRestaurantId(request.getId());
 
         List<ReviewResponse> reviewResponses = new ArrayList<>();
         if (!reviews.isEmpty()) {

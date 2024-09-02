@@ -83,7 +83,7 @@ public class RestaurantServiceImplTest {
         given(restaurantRepository.findByIdAndDeletedYn(anyInt(), anyInt())).willReturn(restaurant);
 
         // when
-        restaurantServiceImpl.getRestaurant(anyInt(), anyInt());
+        restaurantServiceImpl.getRestaurantById(anyInt(), anyInt());
 
         //then
         verify(restaurantRepository, times(1)).findByIdAndDeletedYn(anyInt(), anyInt());
@@ -94,7 +94,7 @@ public class RestaurantServiceImplTest {
     public void getRestaurantDetailFailTest() {
         // when
         Throwable ex = assertThrows(RuntimeException.class,
-                () -> restaurantServiceImpl.getRestaurant(anyInt(), anyInt()));
+                () -> restaurantServiceImpl.getRestaurantById(anyInt(), anyInt()));
 
         // then
         assertThat(ex.getMessage()).isEqualTo(ErrorCode.NOT_VALID_PROPERTY.getMessage());

@@ -110,6 +110,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .username(user.getUsername())
                 .score(review.getScore())
                 .content(review.getContent())
+                .createdAt(review.getCreatedAt())
                 .build();
 
     }
