@@ -61,10 +61,10 @@ public class RestaurantControllerTest {
     @DisplayName("맛집 상세 정보 조회 통합 테스트 입니다.")
     public void 맛집_상세정보_조회_테스트() throws JsonProcessingException {
 
-        HttpEntity<String> entity = new HttpEntity<>("1", httpHeaders);
-        String url = "/api/restaurants";
+        HttpEntity<Integer> entity = new HttpEntity<>(1, httpHeaders);
+        String url = "/api/restaurants/" + 1;
 
-        ResponseEntity<RestaurantDetail> responseEntity = testRestTemplate.exchange(url, HttpMethod.POST, entity,
+        ResponseEntity<RestaurantDetail> responseEntity = testRestTemplate.exchange(url, HttpMethod.GET, entity,
                 RestaurantDetail.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -94,6 +94,5 @@ public class RestaurantControllerTest {
         assertThat(result.size()).isEqualTo(11);
         assertThat(result.get(0).getRestaurantName()).isEqualTo("뮤지컬펍넘버스테이지");
     }
-
 
 }

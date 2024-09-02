@@ -10,7 +10,7 @@ import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
 
 public interface RestaurantService {
 
-    Restaurant getRestaurant(int id, int deletedYn);
+    Restaurant getRestaurantById(int id, int deletedYn);
 
     Restaurant updateRestaurantScore(ReviewRequest request);
 

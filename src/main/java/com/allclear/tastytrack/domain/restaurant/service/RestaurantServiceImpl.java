@@ -1,6 +1,7 @@
 package com.allclear.tastytrack.domain.restaurant.service;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -36,7 +37,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final RegionRepository regionRepository;
 
     @Override
-    public Restaurant getRestaurant(int id, int deletedYn) {
+    public Restaurant getRestaurantById(int id, int deletedYn) {
 
         log.info("상세정보를 요청한 음식점의 id = {}", id);
 
@@ -77,7 +78,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         double newScore = (restaurant.getRateScore() * (countReview - 1) + score) / countReview;
         double newScoreFormat = Math.floor((newScore * 10)) / 10.0;
-        restaurant.setRateScore(newScoreFormat);
+        restaurant.updateByReview(newScoreFormat, LocalDateTime.now());
 
         log.info("{}의 평점이 업데이트 되었습니다.", restaurant.getName());
 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
 import com.allclear.tastytrack.domain.review.entity.Review;
 import com.allclear.tastytrack.domain.review.service.ReviewService;
+import com.allclear.tastytrack.domain.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -39,6 +41,7 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
     private final ReviewService reviewService;
+    private final UserService userService;
 
     @Operation(summary = "음식점의 상세정보 조회", description = "특정 음식점의 상세정보를 조회하는 API")
     @ApiResponses(value = {
@@ -47,11 +50,12 @@ public class RestaurantController {
             @ApiResponse(responseCode = "400", description = "입력값을 확인해주세요."),
             @ApiResponse(responseCode = "404", description = "조회할 수 없는 음식점입니다.")
     })
-    @PostMapping("")
-    public ResponseEntity<RestaurantDetail> getRestaurant(@AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<RestaurantDetail> getRestaurantById(@AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable int id) {
 
-        Restaurant restaurant = restaurantService.getRestaurant(id, 0);
+        userService.getUserInfo(userDetails.getUsername());
+        Restaurant restaurant = restaurantService.getRestaurantById(id, 0);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
 
         List<ReviewResponse> reviewResponses = new ArrayList<>();
