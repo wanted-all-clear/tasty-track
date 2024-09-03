@@ -50,27 +50,18 @@ public class BatchConfig {
 
     // 1. Job 으로 하나의 배치 작업을 정의
     @Bean
-    public Job initRestaurantDataJob() {    // 초기 데이터 구축 Job
+    public Job fetchJob() {
 
-        // initRestaurantDataJob : 해당 Job을 지칭할 이름
-        return new JobBuilder("initRestaurantDataJob", jobRepository)
+        // fetchJob : 해당 Job을 지칭할 이름
+        return new JobBuilder("fetchJob", jobRepository)
                 .start(fetchAndSaveStep()) // 이 Job 작업에서 처음 시작할 Step
-                .next(processDataStep())
-                .build();
-    }
-
-    @Bean
-    public Job updatedRestaurantDataJob() { // 업데이트 Job
-
-        return new JobBuilder("updatedRestaurantDataJob", jobRepository)
-                .start(fetchAndSaveStep()) // 이 Job 작업에서 처음 시작할 Step
-                .next(updatedProcessDataStep())
+                .next(processDataStep())   // 다음 Step
                 .build();
     }
 
     // 2. Step 에서 실제 배치 처리 수행, 읽기 > 처리 > 쓰기 과정 구상
     @Bean
-    public Step fetchAndSaveStep() {     // 원본 맛집 (초기 데이터 + 업데이트)
+    public Step fetchAndSaveStep() { // 원본 맛집 Step
 
         // chunck : 대량의 데이터를 끊어서 처리할 최소 단위 (1회 호출 시 응답받을 데이터 수)
         // platformTransactionManager : 청크가 진행되다가 실패했을 때, 다시 처리할 수 있도록 롤백을 진행한다든지, 다시 처리하도록 세팅해줌
@@ -83,7 +74,7 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step processDataStep() {      // 가공 맛집 초기 데이터
+    public Step processDataStep() {  // 가공 맛집 Step
 
         return new StepBuilder("processDataStep", jobRepository)
                 .<RawRestaurant, Restaurant>chunk(100, platformTransactionManager)
@@ -93,20 +84,9 @@ public class BatchConfig {
                 .build();
     }
 
-    @Bean
-    public Step updatedProcessDataStep() { // 가공 맛집 업데이트
-
-        return new StepBuilder("processDataStep", jobRepository)
-                .<RawRestaurant, Restaurant>chunk(100, platformTransactionManager)
-                .reader(updatedRestaurantReader())
-                .processor(restaurantProcessor())
-                .writer(restaurantWriter())
-                .build();
-    }
-
     // 3. Reader : 읽어오는 작업 수행
     @Bean
-    public ItemReader<RawRestaurantResponse> SeoulRestaurantReader() { // 원본 맛집 (초기 데이터 + 업데이트)
+    public ItemReader<RawRestaurantResponse> SeoulRestaurantReader() { // 원본 맛집 Reader
 
         // RawDataService 에서 공공데이터 Open API를 호출하여 받은 응답 값
         List<RawRestaurantResponse> jsonRows = rawDataService.fetchAndSaveCommon();
@@ -114,7 +94,7 @@ public class BatchConfig {
     }
 
     @Bean
-    public RepositoryItemReader<RawRestaurant> restaurantReader() {    // 가공 맛집 초기 데이터
+    public RepositoryItemReader<RawRestaurant> restaurantReader() {    // 가공 맛집 Reader
 
         return new RepositoryItemReaderBuilder<RawRestaurant>()
                 .name("restaurantReader")
@@ -125,21 +105,9 @@ public class BatchConfig {
                 .build();
     }
 
-    @Bean
-    public RepositoryItemReader<RawRestaurant> updatedRestaurantReader() { // 가공 맛집 업데이트
-
-        return new RepositoryItemReaderBuilder<RawRestaurant>()
-                .name("restaurantReader")
-                .pageSize(100)
-                .methodName("findByLastUpdatedAtNotMatchingRawRestaurants")
-                .repository(rawRestaurantRepository)
-                .sorts(Map.of("id", Sort.Direction.ASC))
-                .build();
-    }
-
     // 4. Processor : 읽어오는 Data 중간 처리
     @Bean
-    public ItemProcessor<RawRestaurantResponse, RawRestaurant> SeoulRestaurantProcessor() {
+    public ItemProcessor<RawRestaurantResponse, RawRestaurant> SeoulRestaurantProcessor() { // 원본 맛집 Processor
 
         // <[Reader에서 읽어들일 데이터 타입], [Writer에서 쓸 데이터 타입]>
         return new ItemProcessor<RawRestaurantResponse, RawRestaurant>() {
@@ -159,19 +127,24 @@ public class BatchConfig {
                     // 최종수정일자가 다른 경우에만 업데이트
                     if (!existingLastmodts.equals(newLastmodts)) {
                         existingRawRestaurant.updateWithRawRestaurant(item);
+                        log.info("업데이트된 원본 맛집 : {}, {}", existingRawRestaurant.getBplcnm(), existingRawRestaurant.getMgtno());
                         return existingRawRestaurant; // 업데이트할 원본 맛집 반환
                     } else {
                         return null;                  // 수정일자가 같으면 업데이트 제외
                     }
                 } else {
-                    return rawDataService.getRawRestaurantBuilder(item); // 저장할 신규 데이터 반환
+                    RawRestaurant rawRestaurant = rawDataService.getRawRestaurantBuilder(item);
+                    log.info("저장된 원본 맛집 : {}, {}", rawRestaurant.getBplcnm(), rawRestaurant.getMgtno());
+
+                    return rawRestaurant; // 저장할 신규 데이터 반환
+
                 }
             }
         };
     }
 
     @Bean
-    public ItemProcessor<RawRestaurant, Restaurant> restaurantProcessor() {
+    public ItemProcessor<RawRestaurant, Restaurant> restaurantProcessor() { // 가공 맛집 Processor
 
         return new ItemProcessor<RawRestaurant, Restaurant>() {
             @Override
@@ -190,8 +163,8 @@ public class BatchConfig {
 
                 if (coordinateByRdnwhladder.getLat() == null && coordinateByRdnwhladder.getLon() == null) {
                     Coordinate coordinateBySitewhladdr = coordinateService.getCoordinate(item.getSitewhladdr());
-                    log.info("{}번째 {}의 지번주소 : {}", item.getId(), item.getBplcnm(), item.getSitewhladdr());
-                    log.info("{}번째 {}의 지번주소 버전 위도 : {}, 경도 : {}", item.getId(), item.getBplcnm(), coordinateBySitewhladdr.getLon(), coordinateBySitewhladdr.getLat());
+                    log.info("{} 맛집의 지번주소 : {}", item.getBplcnm(), item.getSitewhladdr());
+                    log.info("{} 맛집의 지번주소 버전 위도 : {}, 경도 : {}", item.getBplcnm(), coordinateBySitewhladdr.getLon(), coordinateBySitewhladdr.getLat());
 
                     item.setLon(coordinateBySitewhladdr.getLon());
                     item.setLat(coordinateBySitewhladdr.getLat());
@@ -200,7 +173,7 @@ public class BatchConfig {
                     item.setLat(coordinateByRdnwhladder.getLat());
                 }
 
-                log.info("{}번째 {}의 도로명주소 버전 위도 : {}, 경도 : {}", item.getId(), item.getBplcnm(), coordinateByRdnwhladder.getLon(), coordinateByRdnwhladder.getLat());
+                log.info("{} 맛집의 도로명주소 버전 위도 : {}, 경도 : {}", item.getBplcnm(), coordinateByRdnwhladder.getLon(), coordinateByRdnwhladder.getLat());
 
 
                 // 가공 테이블에서 동일한 mgtno(code) 값을 가진 데이터를 조회
@@ -219,13 +192,14 @@ public class BatchConfig {
                         }
 
                         existingRestaurant.updateWithNewData(rawDataService.getRestaurantBuilder(item));
+
+                        log.info("업데이트된 원본 맛집 : {}", existingRestaurant.getName());
                         return existingRestaurant; // 업데이트할 가공 맛집 반환
                     }
                 } else {
                     // 신규 데이터인 경우에만 저장
                     Restaurant restaurant = rawDataService.getRestaurantBuilder(item);
 
-//                    counter++; // 로깅 카운터 1 증가
                     try {
                         return restaurant; // 가공된 데이터 반환
                     } catch (DataIntegrityViolationException e) {
@@ -240,7 +214,7 @@ public class BatchConfig {
 
     // 5. Writer : 처리한 결과 저장
     @Bean
-    public ItemWriter<RawRestaurant> seoulRestaurantWriter() { // 원본 맛집 저장
+    public ItemWriter<RawRestaurant> seoulRestaurantWriter() { // 원본 맛집 저장 Writer
 
         return new RepositoryItemWriterBuilder<RawRestaurant>()
                 .repository(rawRestaurantRepository) // rawRestaurantRepository 를 통해서
@@ -249,7 +223,7 @@ public class BatchConfig {
     }
 
     @Bean
-    public ItemWriter<Restaurant> restaurantWriter() {         // 가공 맛집 저장
+    public ItemWriter<Restaurant> restaurantWriter() {         // 가공 맛집 저장 Writer
 
         return new RepositoryItemWriterBuilder<Restaurant>()
                 .repository(restaurantRepository)
