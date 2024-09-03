@@ -68,7 +68,7 @@ public class WebSecurityConfig {
                                 "/v2/api-docs/**", // Swagger 2.0 관련 API 문서 경로
                                 "/swagger-resources/**", // Swagger 리소스 경로
                                 "/webjars/**", // 웹 자원 경로 (CSS, JS 등)
-                                "/first"
+                                "/api/fetch/**"
                         ).permitAll()
 
                         .anyRequest().authenticated()
