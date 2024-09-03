@@ -2,6 +2,7 @@ package com.allclear.tastytrack.domain.user.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,11 @@ class UserServiceImplTest {
         userRepository.save(user);
     }
 
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAllInBatch();
+    }
+
 
     @Test
     @DisplayName("이미 가입된 계정명으로 회원가입을 합니다.")
@@ -90,7 +96,7 @@ class UserServiceImplTest {
                 .build();
 
         Exception exception = assertThrows(CustomException.class, () -> userService.signin(loginRequest));
-        assertEquals(ErrorCode.USER_NOT_EXIST, exception.getMessage());
+        assertEquals(ErrorCode.USER_NOT_EXIST.getMessage(), exception.getMessage());
     }
 
     @Test
