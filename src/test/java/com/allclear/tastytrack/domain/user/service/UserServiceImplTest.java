@@ -2,6 +2,7 @@ package com.allclear.tastytrack.domain.user.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,6 +46,11 @@ class UserServiceImplTest {
                 .build();
 
         userRepository.save(user);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAllInBatch();
     }
 
 
