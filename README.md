@@ -131,6 +131,7 @@
 - **SpringSecurity** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/SpringSecurity-%EB%8F%84%EC%9E%85"> WIKI 이동 </a>
 - **AccessToken과 RefreshToken** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/AccessToken%EA%B3%BC-RefreshToken"> WIKI 이동 </a>
 - **ComplatableFuture** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/ComplatableFuture"> WIKI 이동 </a>
+- **Spring Batch** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Spring-Batch-%EB%8F%84%EC%9E%85"> WIKI 이동 </a>
 
 <br>
 
