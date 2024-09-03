@@ -21,7 +21,7 @@ public class ApiController {
 
     // TODO: 테스트용으로 Controller API 호출중이며, 추후 스케줄링으로 전환할 예정입니다.
     @GetMapping("/{value}")
-    public ResponseEntity<String> firstApi(@PathVariable String value) throws Exception {
+    public ResponseEntity<String> fetchRestaurant(@PathVariable("value") String value) throws Exception {
 
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("date", value)
