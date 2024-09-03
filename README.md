@@ -47,7 +47,7 @@
 | [오예령(팀장)](https://github.com/ohyeryung) | 사용자 기능 구현 (로그인, 회원가입, 회원정보 조회, 회원정보 수정)     |
 | [유리빛나](https://github.com/ryuneng)       | 데이터 파이프라인 구축 (서울시 공공데이터 수집, 전처리, 저장, 자동화) |
 | [김은정](https://github.com/fkznsha23)       | 맛집 조회 기능 구현 (상세 조회, 위치 기반 맛집 추천, 평가 생성)      |
-| [배서진](https://github.com/bsjin1122)       | 맛집 조회 기능 구현 (목록 조회, 지역명 기준 맛집 추천, 시군구 조회)  |
+| [배서진](https://github.com/bsjin1122)       | 맛집 조회 기능 구현 (목록 조회, 지역명 기준 맛집 추천, 시군구 조회), 디스코드 점심메뉴 추천  |
 
 <br>
 
@@ -192,7 +192,8 @@
 - **프로젝트 서버 분리 고민** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%9C%EB%B2%84-%EB%B6%84%EB%A6%AC-%EA%B3%A0%EB%AF%BC"> WIKI 이동 </a>
 - **Entity 클래스의 PK 필드 타입 (Long vs int)** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Entity-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%9D%98-PK-%ED%95%84%EB%93%9C-%ED%83%80%EC%9E%85-(Long-vs-int)"> WIKI 이동 </a>
 - **위도, 경도의 데이터 타입 (Double vs Decimal)** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9C%84%EB%8F%84,-%EA%B2%BD%EB%8F%84%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-(Double-vs-Decimal)"> WIKI 이동 </a>
-
+- **디스코드 점심 메뉴 추천 알림 구현하기** <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EB%94%94%EC%8A%A4%EC%BD%94%EB%93%9C-%EC%A0%90%EC%8B%AC-%EB%A9%94%EB%89%B4-%EC%B6%94%EC%B2%9C-%EC%95%8C%EB%A6%BC-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0"> WIKI 이동</a>
+ 
 <br>
 
 ## 🗂️ 디렉토리 구조
