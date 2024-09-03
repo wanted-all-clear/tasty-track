@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.allclear.tastytrack.domain.region.entity.Region;
 import com.allclear.tastytrack.domain.region.repository.RegionRepository;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocation;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
@@ -22,6 +23,7 @@ import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
 import com.allclear.tastytrack.domain.user.enums.Coordinate;
 import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
+import com.allclear.tastytrack.global.util.RedisUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final ReviewRepository reviewRepository;
     private final RegionRepository regionRepository;
+
+    private final RedisUtil redisUtil;
 
     @Override
     public Restaurant getRestaurantById(int id, int deletedYn) {
@@ -135,6 +139,24 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 
         return complListRestaurantByUserLocation.join();
+    }
+
+    @Override
+    public RestaurantDetail checkRedisCache(int id) {
+
+        RestaurantDetail restaurantDetail1 = redisUtil.getCache(id);
+
+        if (restaurantDetail1 != null) {
+            log.info("data in cache!");
+        }
+
+        return restaurantDetail1;
+    }
+
+    @Override
+    public void saveCache(int id, RestaurantDetail restaurantDetail1) {
+
+        redisUtil.setCache(id, restaurantDetail1);
     }
 
     /**
