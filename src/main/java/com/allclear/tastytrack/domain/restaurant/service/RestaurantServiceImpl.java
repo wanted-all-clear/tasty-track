@@ -139,6 +139,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     /**
      * // 멀티 스레드를 이용하여 Restaurant 객체를 RestaurantByUserLocation 객체로 변환하는 비동기 메소드
+     *
      * @param restaurant
      * @return
      */
@@ -155,6 +156,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     /**
      * 필요한 데이터의 형태인 List<RestaurantByUserLocation>로 변환해주는 비동기 메서드
+     *
      * @param listComplResult
      * @return
      */
@@ -176,16 +178,24 @@ public class RestaurantServiceImpl implements RestaurantService {
      * 위치 정보에 따른 맛집 목록을 조회합니다.
      * 작성자: 배서진
      *
-     * @param request
+     * @param lat, lon, range, type, name
      * @return 맛집 리스트 반환
      */
     @Override
-    public List<Restaurant> getRestaurantList(RestaurantListRequest request) {
+    public List<Restaurant> getRestaurantList(double lat, double lon, double range, String type, String name) {
+
+        RestaurantListRequest request = RestaurantListRequest.builder()
+                .lat(lat)
+                .lon(lon)
+                .range(range)
+                .type(type)
+                .name(name)
+                .build();
 
         request = validateRequest(request); // 요청 객체 유효성 검사
 
-        String type = (request.getType() != null) ? request.getType() : "";
-        String name = (request.getName() != null) ? request.getName() : "";
+        type = (request.getType() != null) ? request.getType() : "";
+        name = (request.getName() != null) ? request.getName() : "";
 
         log.info("맛집 검색 - 위도: {}, 경도: {}, 범위: {}, 타입: {}, 이름: {}",
                 request.getLat(), request.getLon(), request.getRange(), type, name);
