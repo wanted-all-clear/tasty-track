@@ -94,6 +94,8 @@
         <h4>☑️ 2) Jira</h4>
         <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="70%">
     </div><br>
+    <img width="462" alt="image" src="https://github.com/user-attachments/assets/c8b56429-8c3a-4a7a-a474-39ba7d759255">
+
 </div>
 </details>
 
@@ -152,6 +154,14 @@
 | 데이터 | 맛집 데이터 자동화     | fetchAndSaveUpdatedDatas           | [유리빛나](https://github.com/ryuneng)  |
 
 <br/>
+
+### 서비스 아키텍처
+
+
+<img width="724" alt="image" src="https://github.com/user-attachments/assets/6067de34-e195-4f99-9b62-1e2fbe4527fa">
+
+<br/>
+
 
 ### 🧾 API 명세서
 
