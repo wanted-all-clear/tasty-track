@@ -1,20 +1,17 @@
-package com.allclear.tastytrack.domain.restaurant.service;
+package com.allclear.tastytrack.domain.batch.service;
 
-import com.allclear.tastytrack.domain.restaurant.dto.LocalDataResponse;
-import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
+import com.allclear.tastytrack.domain.batch.dto.LocalDataResponse;
+import com.allclear.tastytrack.domain.batch.dto.RawRestaurantResponse;
 import com.allclear.tastytrack.domain.restaurant.entity.RawRestaurant;
-import com.allclear.tastytrack.domain.restaurant.repository.RawRestaurantRepository;
+import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,10 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RawDataService {
 
-    private final RawRestaurantRepository rawRestaurantRepository;
     private final ObjectMapper objectMapper;
-
-    private final DataProcessingService dataProcessingService;
 
     @Value("${API_URL}")
     private String apiUrl; // API URL
@@ -50,59 +45,21 @@ public class RawDataService {
     private static int counter = 0;
 
     /**
-     * 1. 초기화 메서드 (의존성 주입 완료 후, 초기화 작업을 수행할 메서드 지정)
-     * 작성자 : 유리빛나
-     */
-    @PostConstruct
-    public void init() throws Exception {
-
-        fetchAndSaveInitDatas(); // 초기화 시 전체 데이터 페이징 처리
-
-    }
-
-    /**
-     * 2. 서울 맛집 데이터를 최초 수집하여 원본 테이블에 저장하고, 가공된 데이터를 가공 테이블에 저장하여 초기 데이터를 구축합니다.
-     * 작성자 : 유리빛나
-     */
-    public void fetchAndSaveInitDatas() throws Exception {
-
-        // 최초 맛집 데이터 수집 및 맛집 원본 DB 저장
-        fetchAndSaveCommon();
-
-        // 최초 맛집 가공 DB 저장
-        dataProcessingService.preprocessingAndSaveInitRestaurant();
-    }
-
-    /**
-     * 3. 매주 금요일 자정마다 서울 맛집 데이터 수집 및 최종수정일자가 변경된 맛집 원본을 조회하여 맛집 가공 DB의 데이터를 업데이트합니다.
-     * 작성자 : 유리빛나
-     */
-    @Transactional
-    @Scheduled(cron = "0 0 0 * * 5")
-//    @Scheduled(fixedRate = 30_000) // 30초마다 실행되는 테스트용 스케줄러
-    public void fetchAndSaveUpdatedDatas() throws Exception {
-
-        // 맛집 데이터 수집 및 업데이트된 맛집 원본 DB만 저장
-        fetchAndSaveCommon();
-
-        // 업데이트된 데이터만 맛집 가공 DB 저장
-        dataProcessingService.preprocessingAndSaveUpdatedAtNotMatchingRestaurant();
-    }
-
-    /**
      * 공공데이터 API에서 맛집 데이터를 수집하여 원본 테이블에 저장하는 공통 로직을 처리하는 메서드입니다.
      * 이 메서드는 초기 데이터 구축과 업데이트 모두에서 호출됩니다.
      * 작성자 : 유리빛나
      */
-    private void fetchAndSaveCommon() {
+    public List<RawRestaurantResponse> fetchAndSaveCommon() {
 
         int startIndex = 1;
         int endIndex = PAGE_SIZE;
         int totalCount;
 
+        List<RawRestaurantResponse> jsonRows = new ArrayList<>();
+
         do {
             // JSON 응답 데이터 파싱 및 맛집 원본 DB 저장
-            totalCount = parseAndSaveRawRestaurantData(String.valueOf(startIndex), String.valueOf(endIndex));
+            totalCount = parseAndSaveRawRestaurantData(String.valueOf(startIndex), String.valueOf(endIndex), jsonRows);
 
             // 페이지 업데이트
             startIndex += PAGE_SIZE;
@@ -113,6 +70,8 @@ public class RawDataService {
                 endIndex = totalCount;
             }
         } while (startIndex <= totalCount);
+
+        return jsonRows;
     }
 
     /**
@@ -124,7 +83,7 @@ public class RawDataService {
      * @param endIndex   요청 종료 위치
      * @return 전체 데이터 건수
      */
-    private int parseAndSaveRawRestaurantData(String startIndex, String endIndex) {
+    private int parseAndSaveRawRestaurantData(String startIndex, String endIndex, List<RawRestaurantResponse> jsonRows) {
         // 공공데이터 요청을 위한 URL 구성
         URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .pathSegment(apiKey, responseType, serviceName, startIndex, endIndex)
@@ -154,31 +113,12 @@ public class RawDataService {
             // 각 JSON 응답 처리
             for (RawRestaurantResponse raw : rows) {
 
+                // 영업상태가 폐업이 아닌 데이터만 맛집 원본 저장
                 if (!raw.getDtlstategbn().equals("02")) {
-                    String mgtno = raw.getMgtno();
-                    RawRestaurant existingRestaurant = rawRestaurantRepository.findByMgtno(mgtno);
-
-                    if (existingRestaurant != null) {
-                        // 이미 존재하는 경우 업데이트
-                        LocalDateTime existingLastmodts = parseLastmodts(existingRestaurant.getLastmodts());
-                        LocalDateTime newLastmodts = parseLastmodts(raw.getLastmodts());
-
-                        if (!existingLastmodts.equals(newLastmodts)) {
-                            // 최종수정일자가 다른 경우에만 업데이트
-                            existingRestaurant.updateWithRawRestaurant(raw);
-                            rawRestaurantRepository.save(existingRestaurant);
-                        }
-                    } else {
-                        // 신규 데이터인 경우에만 저장
-                        RawRestaurant newRestaurant = getRawRestaurantBuilder(raw);
-
-                        RawRestaurant savedRawRestaurant = rawRestaurantRepository.save(newRestaurant);
-                        counter++; // 로깅 카운터 1 증가
-                        log.info("{}번째 저장된 맛집 원본 : {}", counter, savedRawRestaurant.getBplcnm());
-                    }
+                    jsonRows.add(getJsonRowsBuilder(raw));
                 }
             }
-            log.info("JSON 응답 총 {}건 중 {}개가 원본 테이블에 저장 완료되었습니다.", totalCount, counter);
+//            log.info("JSON 응답 총 {}건 중 {}개가 원본 테이블에 저장 완료되었습니다.", totalCount, counter);
             return totalCount; // 전체 데이터 건수 반환
         } catch (JsonProcessingException e) {
             // JSON 파싱 관련 예외 처리
@@ -187,24 +127,24 @@ public class RawDataService {
     }
 
     /**
-     * 공공데이터의 맛집 응답 데이터를 맛집 원본 Entity에 저장하기 위해 Builder 패턴으로 RawRestaurant 객체를 생성하는 메서드
+     * 공공데이터의 맛집 응답 데이터를 맛집 RawRestaurantResponse에 저장하기 위해 Builder 패턴으로 RawRestaurantResponse 객체를 생성하는 메서드
      * 작성자 : 유리빛나
      *
-     * @param raw 공공데이터의 맛집 응답 데이터
-     * @return 맛집 응답 데이터가 저장된 맛집 원본 Entity 객체
+     * @param jsonRows 공공데이터의 맛집 응답 데이터
+     * @return 맛집 응답 데이터가 저장된 맛집 RawRestaurantResponse 객체
      */
-    private RawRestaurant getRawRestaurantBuilder(RawRestaurantResponse raw) {
+    private RawRestaurantResponse getJsonRowsBuilder(RawRestaurantResponse jsonRows) {
 
-        return RawRestaurant.builder()
-                .mgtno(raw.getMgtno())
-                .bplcnm(raw.getBplcnm())
-                .uptaenm(raw.getUptaenm())
-                .dtlstategbn(raw.getDtlstategbn())
-                .sitewhladdr(raw.getSitewhladdr())
-                .rdnwhladdr(raw.getRdnwhladdr())
-                .lon(raw.getLon())
-                .lat(raw.getLat())
-                .lastmodts(raw.getLastmodts())
+        return RawRestaurantResponse.builder()
+                .mgtno(jsonRows.getMgtno())
+                .bplcnm(jsonRows.getBplcnm())
+                .uptaenm(jsonRows.getUptaenm())
+                .dtlstategbn(jsonRows.getDtlstategbn())
+                .sitewhladdr(jsonRows.getSitewhladdr())
+                .rdnwhladdr(jsonRows.getRdnwhladdr())
+                .lon(jsonRows.getLon())
+                .lat(jsonRows.getLat())
+                .lastmodts(jsonRows.getLastmodts())
                 .build();
     }
 
@@ -215,11 +155,58 @@ public class RawDataService {
      * @param lastmodts 맛집 원본 객체의 최종 수정일자를 나타내는 문자열
      * @return 형식에 맞게 파싱된 LocalDateTime 객체
      */
-    private LocalDateTime parseLastmodts(String lastmodts) {
+    public LocalDateTime parseLastmodts(String lastmodts) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         return LocalDateTime.parse(lastmodts, formatter);
+    }
+
+    /**
+     * 공공데이터의 맛집 응답 데이터를 맛집 원본 Entity에 저장하기 위해 Builder 패턴으로 RawRestaurant 객체를 생성하는 메서드
+     * 작성자 : 유리빛나
+     *
+     * @param jsonRows 공공데이터의 맛집 응답 데이터
+     * @return 맛집 응답 데이터가 저장된 맛집 원본 Entity 객체
+     */
+    public RawRestaurant getRawRestaurantBuilder(RawRestaurantResponse jsonRows) {
+
+        return RawRestaurant.builder()
+                .mgtno(jsonRows.getMgtno())
+                .bplcnm(jsonRows.getBplcnm())
+                .uptaenm(jsonRows.getUptaenm())
+                .dtlstategbn(jsonRows.getDtlstategbn())
+                .sitewhladdr(jsonRows.getSitewhladdr())
+                .rdnwhladdr(jsonRows.getRdnwhladdr())
+                .lon(jsonRows.getLon())
+                .lat(jsonRows.getLat())
+                .lastmodts(jsonRows.getLastmodts())
+                .build();
+    }
+
+    /**
+     * 맛집 원본 데이터를 맛집 가공 Entity에 저장하기 위해 Builder 패턴으로 Restaurant 객체를 생성하는 메서드
+     * 작성자 : 유리빛나
+     *
+     * @param rawRestaurant 맛집 원본 데이터
+     * @return 맛집 원본 데이터가 저장된 맛집 가공 Entity 객체
+     */
+    public Restaurant getRestaurantBuilder(RawRestaurant rawRestaurant) {
+
+        Double lon = rawRestaurant.getLon() != null ? Double.valueOf(rawRestaurant.getLon()) : null;
+        Double lat = rawRestaurant.getLat() != null ? Double.valueOf(rawRestaurant.getLat()) : null;
+
+        return Restaurant.builder()
+                .code(rawRestaurant.getMgtno())
+                .name(rawRestaurant.getBplcnm())
+                .type(rawRestaurant.getUptaenm())
+                .status(rawRestaurant.getDtlstategbn())
+                .oldAddress(rawRestaurant.getSitewhladdr())
+                .newAddress(rawRestaurant.getRdnwhladdr())
+                .lon(lon)
+                .lat(lat)
+                .lastUpdatedAt(parseLastmodts(rawRestaurant.getLastmodts()))
+                .build();
     }
 
 }

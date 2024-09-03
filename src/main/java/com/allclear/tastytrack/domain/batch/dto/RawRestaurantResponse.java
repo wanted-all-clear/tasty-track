@@ -1,9 +1,11 @@
-package com.allclear.tastytrack.domain.restaurant.dto;
+package com.allclear.tastytrack.domain.batch.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class RawRestaurantResponse { // JSON 응답 데이터를 파싱할 클래스 4
 
     @JsonProperty("MGTNO")
@@ -32,5 +34,18 @@ public class RawRestaurantResponse { // JSON 응답 데이터를 파싱할 클�
 
     @JsonProperty("Y")
     private String lat;         // 공공데이터 위도
+
+    public void rawRestaurantResponse(RawRestaurantResponse jsonRows) {
+
+        this.mgtno = jsonRows.getMgtno();
+        this.dtlstategbn = jsonRows.getDtlstategbn();
+        this.bplcnm = jsonRows.getBplcnm();
+        this.uptaenm = jsonRows.getUptaenm();
+        this.sitewhladdr = jsonRows.getSitewhladdr();
+        this.rdnwhladdr = jsonRows.getRdnwhladdr();
+        this.lastmodts = jsonRows.getLastmodts();
+        this.lon = jsonRows.getLon();
+        this.lat = jsonRows.getLat();
+    }
 
 }
