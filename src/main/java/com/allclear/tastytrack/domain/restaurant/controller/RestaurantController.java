@@ -52,7 +52,7 @@ public class RestaurantController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<RestaurantDetail> getRestaurantById(@AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PathVariable int id) {
+                                                              @PathVariable int id) {
 
         userService.getUserInfo(userDetails.getUsername());
         Restaurant restaurant = restaurantService.getRestaurantById(id, 0);
@@ -86,10 +86,11 @@ public class RestaurantController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류입니다.", content = @Content)
     })
-    @PostMapping("/list")
-    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestBody RestaurantListRequest request) {
+    @GetMapping("/list")
+    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestParam(name = "lat") double lat, @RequestParam(name = "lon") double lon,
+                                                              @RequestParam(name = "range") double range, @RequestParam(name = "type") String type, @RequestParam(name = "name") String name) {
 
-        List<Restaurant> response = restaurantService.getRestaurantList(request);
+        List<Restaurant> response = restaurantService.getRestaurantList(lat, lon, range, type, name);
 
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -100,8 +101,8 @@ public class RestaurantController {
 
     @GetMapping("/region")
     public ResponseEntity<List<Restaurant>> getRestuarantSearchByRegion(@RequestParam String dosi,
-            @RequestParam String sgg,
-            @RequestParam String type) {
+                                                                        @RequestParam String sgg,
+                                                                        @RequestParam String type) {
         // 특정 지역의 맛집을 검색하여 반환
         List<Restaurant> response = restaurantService.getRestaurantSearchByRegion(dosi, sgg, type);
 

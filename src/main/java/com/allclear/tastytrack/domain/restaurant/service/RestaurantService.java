@@ -14,7 +14,7 @@ public interface RestaurantService {
 
     Restaurant updateRestaurantScore(ReviewRequest request);
 
-    List<Restaurant> getRestaurantList(RestaurantListRequest request);
+    List<Restaurant> getRestaurantList(double lat, double lon, double range, String type, String name);
 
     List<Restaurant> getRestaurantSearchByRegion(String dosi, String sgg, String type);
 
