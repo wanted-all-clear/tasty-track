@@ -157,7 +157,7 @@ public class BatchConfig {
                 String addressToUse = item.getRdnwhladdr().isEmpty() ? item.getSitewhladdr() :
                         item.getRdnwhladdr();
 
-                log.info("{}번째 저장하려는 가공 맛집 : {}", item.getId(), item.getBplcnm());
+                log.info("{}번째 저장될 가공 맛집 : {}", item.getId(), item.getBplcnm());
 
                 Coordinate coordinateByRdnwhladder = coordinateService.getCoordinate(addressToUse);
 
@@ -168,13 +168,18 @@ public class BatchConfig {
 
                     item.setLon(coordinateBySitewhladdr.getLon());
                     item.setLat(coordinateBySitewhladdr.getLat());
+
+                    // 원본 맛집에 도로명주소, 위도, 경도가 없고, 지번주소도 잘못된 경우 가공 저장 제외
+                    if (item.getLat() == null) {
+                        log.info("{} 맛집은 도로명주소, 위도, 경도가 존재하지 않고, 지번주소가 조회되지 않아 저장에서 제외되었습니다. ", item.getBplcnm());
+                        return null;
+                    }
                 } else {
                     item.setLon(coordinateByRdnwhladder.getLon());
                     item.setLat(coordinateByRdnwhladder.getLat());
                 }
 
                 log.info("{} 맛집의 도로명주소 버전 위도 : {}, 경도 : {}", item.getBplcnm(), coordinateByRdnwhladder.getLon(), coordinateByRdnwhladder.getLat());
-
 
                 // 가공 테이블에서 동일한 mgtno(code) 값을 가진 데이터를 조회
                 Restaurant existingRestaurant = restaurantRepository.findByCode(item.getMgtno());
@@ -193,7 +198,7 @@ public class BatchConfig {
 
                         existingRestaurant.updateWithNewData(rawDataService.getRestaurantBuilder(item));
 
-                        log.info("업데이트된 원본 맛집 : {}", existingRestaurant.getName());
+                        log.info("업데이트된 가공 맛집 : {}", existingRestaurant.getName());
                         return existingRestaurant; // 업데이트할 가공 맛집 반환
                     }
                 } else {
@@ -203,7 +208,7 @@ public class BatchConfig {
                     try {
                         return restaurant; // 가공된 데이터 반환
                     } catch (DataIntegrityViolationException e) {
-                        log.error("관리번호 {} 저장 실패 : ", item.getMgtno(), e);
+                        log.error("관리번호 {} 가공 맛집 저장 실패 : ", item.getMgtno(), e);
                     }
                 }
 
