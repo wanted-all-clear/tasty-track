@@ -195,6 +195,7 @@
 - **토큰 검증을 필요로하지 않는 API 호출시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D%EC%9D%84-%ED%95%84%EC%9A%94%EB%A1%9C%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-API-%ED%98%B8%EC%B6%9C%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 - **토큰 검증 테스트 시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 - **Invalid use of argument matchers!** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Invalid-use-of-argument-matchers!"> WIKI 이동 </a>
+- **원본 데이터를 가공 데이터에 저장하는 과정에서 발생한 6가지 주소 관련 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9B%90%EB%B3%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EA%B0%80%EA%B3%B5-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%97%90-%EC%A0%80%EC%9E%A5%ED%95%98%EB%8A%94-%EA%B3%BC%EC%A0%95%EC%97%90%EC%84%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-6%EA%B0%80%EC%A7%80-%EC%A3%BC%EC%86%8C-%EA%B4%80%EB%A0%A8-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 
 <br>
 
