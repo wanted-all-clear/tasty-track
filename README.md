@@ -14,7 +14,7 @@
 > 8. [프로젝트 환경](#%EF%B8%8F-프로젝트-환경)
 > 9. [기술 선택 이유](#-기술-선택-이유)
 > 10. [요구사항 정의서 정리](#-요구사항-정의서-정리)
-> 11. [서비스 아키텍처](#서비스-아키텍처)
+> 11. [서비스 아키텍처](#-서비스-아키텍처)
 > 12. [API 명세서](#-api-명세서)
 > 13. [ERD](#%EF%B8%8F-erd)
 > 14. [트러블 슈팅](#-트러블-슈팅)
@@ -155,10 +155,10 @@
 
 <br/>
 
-### 서비스 아키텍처
+### 🎨 서비스 아키텍처
 
 
-<img width="724" alt="image" src="https://github.com/user-attachments/assets/6067de34-e195-4f99-9b62-1e2fbe4527fa">
+<img width="885" alt="image" src="https://github.com/user-attachments/assets/419048b0-3a4a-42e7-897b-c92a59351b0a">
 
 <br/>
 
