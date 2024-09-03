@@ -1,6 +1,7 @@
 package com.allclear.tastytrack.domain.batch.config;
 
 import com.allclear.tastytrack.domain.batch.dto.RawRestaurantResponse;
+import com.allclear.tastytrack.domain.batch.listener.JobCompletionNotificationListener;
 import com.allclear.tastytrack.domain.batch.service.RawDataService;
 import com.allclear.tastytrack.domain.restaurant.coordinate.dto.Coordinate;
 import com.allclear.tastytrack.domain.restaurant.coordinate.service.CoordinateService;
@@ -48,6 +49,8 @@ public class BatchConfig {
     private final RawDataService rawDataService;
     private final CoordinateService coordinateService;
 
+    private final JobCompletionNotificationListener jobCompletionNotificationListener;
+
     // 1. Job 으로 하나의 배치 작업을 정의
     @Bean
     public Job fetchJob() {
@@ -56,6 +59,7 @@ public class BatchConfig {
         return new JobBuilder("fetchJob", jobRepository)
                 .start(fetchAndSaveStep()) // 이 Job 작업에서 처음 시작할 Step
                 .next(processDataStep())   // 다음 Step
+                .listener(jobCompletionNotificationListener) // Job 소요시간 측정
                 .build();
     }
 
@@ -66,7 +70,7 @@ public class BatchConfig {
         // chunck : 대량의 데이터를 끊어서 처리할 최소 단위 (1회 호출 시 응답받을 데이터 수)
         // platformTransactionManager : 청크가 진행되다가 실패했을 때, 다시 처리할 수 있도록 롤백을 진행한다든지, 다시 처리하도록 세팅해줌
         return new StepBuilder("fetchAndSaveStep", jobRepository)
-                .<RawRestaurantResponse, RawRestaurant>chunk(100, platformTransactionManager)
+                .<RawRestaurantResponse, RawRestaurant>chunk(1000, platformTransactionManager)
                 .reader(SeoulRestaurantReader())       // 읽는 메서드 자리
                 .processor(SeoulRestaurantProcessor()) // 처리 메서드 자리
                 .writer(seoulRestaurantWriter())       // 쓰기 메서드 자리
@@ -77,7 +81,7 @@ public class BatchConfig {
     public Step processDataStep() {  // 가공 맛집 Step
 
         return new StepBuilder("processDataStep", jobRepository)
-                .<RawRestaurant, Restaurant>chunk(100, platformTransactionManager)
+                .<RawRestaurant, Restaurant>chunk(1000, platformTransactionManager)
                 .reader(restaurantReader())
                 .processor(restaurantProcessor())
                 .writer(restaurantWriter())
@@ -98,7 +102,7 @@ public class BatchConfig {
 
         return new RepositoryItemReaderBuilder<RawRestaurant>()
                 .name("restaurantReader")
-                .pageSize(100)
+                .pageSize(1000)
                 .methodName("findAll") // Repository의 findAll 메서드
                 .repository(rawRestaurantRepository)
                 .sorts(Map.of("id", Sort.Direction.ASC))
