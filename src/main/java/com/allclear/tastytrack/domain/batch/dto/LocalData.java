@@ -1,4 +1,4 @@
-package com.allclear.tastytrack.domain.restaurant.dto;
+package com.allclear.tastytrack.domain.batch.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
