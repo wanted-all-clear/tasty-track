@@ -3,7 +3,7 @@ package com.allclear.tastytrack.domain.restaurant.service;
 import java.util.List;
 
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocation;
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
+import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.review.dto.ReviewRequest;
 import com.allclear.tastytrack.domain.user.dto.UserLocationInfo;
@@ -21,5 +21,9 @@ public interface RestaurantService {
     List<Restaurant> getRestaurantByUserLocation(UserLocationInfo userLocationInfo);
 
     List<RestaurantByUserLocation> createListRestaurantByUserLocation(List<Restaurant> restaurants);
+
+    RestaurantDetail checkRedisCache(int id);
+
+    void saveCache(int id, RestaurantDetail restaurantDetail1);
 
 }
