@@ -87,6 +87,7 @@
 <summary>개발일정 관리</summary>
 <div markdown="1">
     <div>
+        <img width="30%" alt="image" src="https://github.com/user-attachments/assets/c8b56429-8c3a-4a7a-a474-39ba7d759255">
         <h4>☑️ 1) Github Issues</h4>
         <img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" align="center" width="70%">
     </div><br>
@@ -94,8 +95,6 @@
         <h4>☑️ 2) Jira</h4>
         <img src="https://github.com/user-attachments/assets/cf2789be-c2aa-46da-aa16-948f6a73807e" align="center" width="70%">
     </div><br>
-    <img width="462" alt="image" src="https://github.com/user-attachments/assets/c8b56429-8c3a-4a7a-a474-39ba7d759255">
-
 </div>
 </details>
 
