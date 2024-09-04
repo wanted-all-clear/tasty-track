@@ -180,10 +180,10 @@
 | 맛집 | 맛집 상세 정보 조회    | `GET`        | /api/restaurants/{id}                | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 평가 생성        | `POST`        | /api/reviews                           | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 목록 조회        | `GET`         | /api/restaurants/list                  | X    | [배서진](https://github.com/bsjin1122)   |
-| 맛집 | 지역명 기준 맛집 추천  | `GET`         | /api/restaurants/region?dosi<br>={dosi}&sgg={sgg}&type={type}            | X    | [배서진](https://github.com/bsjin1122)   |
+| 맛집 | 지역명 기준 맛집 추천  | `GET`         | /api/restaurants/region?dosi<br>={dosi}&sgg={sgg}&type={type}<br>name={name}            | X    | [배서진](https://github.com/bsjin1122)   |
 | 맛집 | 시군구 조회           | `GET`         | /api/regions                           | X    | [배서진](https://github.com/bsjin1122)   |
 * 데이터 파이프라인은 자동화 시스템을 통해 처리됩니다.
-* 디스코드 점심추천은 스케쥴러를 통해 평일 11:20에 웹훅 알림으로 전송됩니다.
+* 디스코드 점심추천은 스케쥴러를 통해 평일 오전 11:20에 웹훅 알림으로 전송됩니다.
 
 <br>
 
