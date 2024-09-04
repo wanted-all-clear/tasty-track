@@ -9,7 +9,6 @@ import com.allclear.tastytrack.global.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -22,7 +21,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RawDataService {
@@ -42,7 +40,6 @@ public class RawDataService {
     private String serviceName;  // 서비스명
 
     private static final int PAGE_SIZE = 100; // 1회 호출 시 응답받을 데이터 수
-    private static int counter = 0;
 
     /**
      * 공공데이터 API에서 맛집 데이터를 수집하여 원본 테이블에 저장하는 공통 로직을 처리하는 메서드입니다.
@@ -118,7 +115,6 @@ public class RawDataService {
                     jsonRows.add(getJsonRowsBuilder(raw));
                 }
             }
-//            log.info("JSON 응답 총 {}건 중 {}개가 원본 테이블에 저장 완료되었습니다.", totalCount, counter);
             return totalCount; // 전체 데이터 건수 반환
         } catch (JsonProcessingException e) {
             // JSON 파싱 관련 예외 처리

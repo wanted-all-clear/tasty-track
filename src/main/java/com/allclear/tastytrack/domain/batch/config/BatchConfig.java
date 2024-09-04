@@ -1,6 +1,7 @@
 package com.allclear.tastytrack.domain.batch.config;
 
 import com.allclear.tastytrack.domain.batch.dto.RawRestaurantResponse;
+import com.allclear.tastytrack.domain.batch.listener.JobCompletionNotificationListener;
 import com.allclear.tastytrack.domain.batch.service.RawDataService;
 import com.allclear.tastytrack.domain.restaurant.coordinate.dto.Coordinate;
 import com.allclear.tastytrack.domain.restaurant.coordinate.service.CoordinateService;
@@ -48,6 +49,8 @@ public class BatchConfig {
     private final RawDataService rawDataService;
     private final CoordinateService coordinateService;
 
+    private final JobCompletionNotificationListener jobCompletionNotificationListener;
+
     // 1. Job 으로 하나의 배치 작업을 정의
     @Bean
     public Job fetchJob() {
@@ -56,6 +59,7 @@ public class BatchConfig {
         return new JobBuilder("fetchJob", jobRepository)
                 .start(fetchAndSaveStep()) // 이 Job 작업에서 처음 시작할 Step
                 .next(processDataStep())   // 다음 Step
+                .listener(jobCompletionNotificationListener) // Job 소요시간 측정
                 .build();
     }
 
@@ -66,7 +70,7 @@ public class BatchConfig {
         // chunck : 대량의 데이터를 끊어서 처리할 최소 단위 (1회 호출 시 응답받을 데이터 수)
         // platformTransactionManager : 청크가 진행되다가 실패했을 때, 다시 처리할 수 있도록 롤백을 진행한다든지, 다시 처리하도록 세팅해줌
         return new StepBuilder("fetchAndSaveStep", jobRepository)
-                .<RawRestaurantResponse, RawRestaurant>chunk(100, platformTransactionManager)
+                .<RawRestaurantResponse, RawRestaurant>chunk(1000, platformTransactionManager)
                 .reader(SeoulRestaurantReader())       // 읽는 메서드 자리
                 .processor(SeoulRestaurantProcessor()) // 처리 메서드 자리
                 .writer(seoulRestaurantWriter())       // 쓰기 메서드 자리
@@ -77,7 +81,7 @@ public class BatchConfig {
     public Step processDataStep() {  // 가공 맛집 Step
 
         return new StepBuilder("processDataStep", jobRepository)
-                .<RawRestaurant, Restaurant>chunk(100, platformTransactionManager)
+                .<RawRestaurant, Restaurant>chunk(1000, platformTransactionManager)
                 .reader(restaurantReader())
                 .processor(restaurantProcessor())
                 .writer(restaurantWriter())
@@ -98,7 +102,7 @@ public class BatchConfig {
 
         return new RepositoryItemReaderBuilder<RawRestaurant>()
                 .name("restaurantReader")
-                .pageSize(100)
+                .pageSize(1000)
                 .methodName("findAll") // Repository의 findAll 메서드
                 .repository(rawRestaurantRepository)
                 .sorts(Map.of("id", Sort.Direction.ASC))
@@ -157,7 +161,7 @@ public class BatchConfig {
                 String addressToUse = item.getRdnwhladdr().isEmpty() ? item.getSitewhladdr() :
                         item.getRdnwhladdr();
 
-                log.info("{}번째 저장하려는 가공 맛집 : {}", item.getId(), item.getBplcnm());
+                log.info("{}번째 저장될 가공 맛집 : {}", item.getId(), item.getBplcnm());
 
                 Coordinate coordinateByRdnwhladder = coordinateService.getCoordinate(addressToUse);
 
@@ -168,13 +172,18 @@ public class BatchConfig {
 
                     item.setLon(coordinateBySitewhladdr.getLon());
                     item.setLat(coordinateBySitewhladdr.getLat());
+
+                    // 원본 맛집에 도로명주소, 위도, 경도가 없고, 지번주소도 잘못된 경우 가공 저장 제외
+                    if (item.getLat() == null) {
+                        log.info("{} 맛집은 도로명주소, 위도, 경도가 존재하지 않고, 지번주소가 조회되지 않아 저장에서 제외되었습니다. ", item.getBplcnm());
+                        return null;
+                    }
                 } else {
                     item.setLon(coordinateByRdnwhladder.getLon());
                     item.setLat(coordinateByRdnwhladder.getLat());
                 }
 
                 log.info("{} 맛집의 도로명주소 버전 위도 : {}, 경도 : {}", item.getBplcnm(), coordinateByRdnwhladder.getLon(), coordinateByRdnwhladder.getLat());
-
 
                 // 가공 테이블에서 동일한 mgtno(code) 값을 가진 데이터를 조회
                 Restaurant existingRestaurant = restaurantRepository.findByCode(item.getMgtno());
@@ -193,7 +202,7 @@ public class BatchConfig {
 
                         existingRestaurant.updateWithNewData(rawDataService.getRestaurantBuilder(item));
 
-                        log.info("업데이트된 원본 맛집 : {}", existingRestaurant.getName());
+                        log.info("업데이트된 가공 맛집 : {}", existingRestaurant.getName());
                         return existingRestaurant; // 업데이트할 가공 맛집 반환
                     }
                 } else {
@@ -203,7 +212,7 @@ public class BatchConfig {
                     try {
                         return restaurant; // 가공된 데이터 반환
                     } catch (DataIntegrityViolationException e) {
-                        log.error("관리번호 {} 저장 실패 : ", item.getMgtno(), e);
+                        log.error("관리번호 {} 가공 맛집 저장 실패 : ", item.getMgtno(), e);
                     }
                 }
 
