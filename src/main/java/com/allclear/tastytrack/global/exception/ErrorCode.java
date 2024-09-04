@@ -11,9 +11,9 @@ public enum ErrorCode {
     USERNAME_DUPLICATION(HttpStatus.BAD_REQUEST, "중복된 계정명입니다."),
 
     USER_NOT_EXIST(HttpStatus.NOT_FOUND, "가입되지 않은 아이디입니다."),
-
     NOT_VALID_PROPERTY(HttpStatus.BAD_REQUEST, "입력 값을 확인해주세요."),
     UNKNOWN_USER_POSITION(HttpStatus.BAD_REQUEST, "사용자의 위치를 알 수 없습니다."),
+    USER_NOT_ELIGIBLE(HttpStatus.BAD_REQUEST, "회원정보 수정에서 점심추천 메뉴 서비스를 설정해주세요."),
 
     // Restaurant
     NOT_EXISTENT_RESTAURANT(HttpStatus.NOT_FOUND, "조회할 수 없는 음식점입니다."),
@@ -30,6 +30,7 @@ public enum ErrorCode {
 
     // DISCORD
     INVALID_DISCORD_MESSAGE(HttpStatus.BAD_REQUEST, "메시지 전송 중 오류가 발생했습니다."),
+    ENCODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "검색어 인코딩에 실패하였습니다."),
     // Data Pipeline
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "API 요청에 실패했습니다."),
     JSON_PARSING(HttpStatus.BAD_REQUEST, "JSON 파싱 중 오류가 발생했습니다.");

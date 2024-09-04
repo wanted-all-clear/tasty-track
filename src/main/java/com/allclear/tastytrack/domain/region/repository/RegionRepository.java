@@ -10,6 +10,9 @@ import java.util.Optional;
 
 public interface RegionRepository extends JpaRepository<Region, Integer> {
 
+    @Query("SELECT r.sgg FROM Region r")
+    List<String> findAllSgg();
+
     @Query(value = "SELECT * FROM region r WHERE r.dosi = :dosi AND r.sgg = :sgg LIMIT 1", nativeQuery = true)
     Region findFirstByDosiAndSgg(@Param("dosi") String dosi, @Param("sgg") String sgg);
 

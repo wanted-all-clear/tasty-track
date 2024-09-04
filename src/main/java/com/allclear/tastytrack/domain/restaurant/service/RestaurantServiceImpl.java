@@ -154,9 +154,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void saveCache(int id, RestaurantDetail restaurantDetail1) {
+    public void saveCache(int id, RestaurantDetail restaurantDetail) {
 
-        redisUtil.setCache(id, restaurantDetail1);
+        redisUtil.setCache(id, restaurantDetail);
     }
 
     /**

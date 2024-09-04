@@ -19,13 +19,13 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
             "SELECT * FROM Restaurant r WHERE " +
             "r.type = :type AND " +
             "r.status = '01' AND " +
-            "r.deleted_yn = 0 " +
-            "ORDER BY RAND() " +  // 무작위로 정렬
-            "LIMIT 5 " +  // 무작위로 5개 선택
+            "r.deleted_yn = 0 AND " +
+            "ST_Distance_Sphere(POINT(r.lon, r.lat), POINT(:lon, :lat)) <= (:distance * 1000)" +
+            "LIMIT 5 " +
             ") as temp " +
             "ORDER BY temp.last_updated_at DESC, " +
             "ST_Distance_Sphere(POINT(temp.lon, temp.lat), POINT(:lon, :lat)) <= (:distance * 1000) AND " +
-            "temp.rate_score DESC",  // 추가 정렬 조건
+            "temp.rate_score DESC",  // 정렬 조건
             nativeQuery = true)
     List<Restaurant> findTop5ByTypeAndDistance(
             @Param("type") String type,
