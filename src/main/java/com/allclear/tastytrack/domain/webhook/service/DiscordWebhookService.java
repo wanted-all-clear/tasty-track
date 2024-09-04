@@ -45,9 +45,9 @@ public class DiscordWebhookService {
     private final UserService userService;
 
     /**
-     * 사용자 검증 후, 점심 메뉴 추천한 사용자에게만
-     * 스케쥴러를 평일 오전 11시 20분에 디스코드로 알림을 보냅니다.
-     * 지역명은 랜덤으로 지정하여 발송하도록 합니다.
+     * 매주 월-금 오전 11시 20분에 실행되는 스케줄러.
+     * Redis에서 미리 저장된 각 사용자의 메시지를 가져와 디스코드로 전송하고,
+     * 성공적으로 전송된 메시지는 Redis에서 삭제합니다.
      * 작성자: 배서진
      */
     @Scheduled(cron = "0 20 11 * * MON-FRI")
@@ -59,6 +59,7 @@ public class DiscordWebhookService {
             log.info("스케줄러: Redis에 저장된 Discord 메시지가 없습니다.");
         }
 
+        // 각 키에 대해 메시지를 가져와 Discord에 전송
         for (String key : keys) {
             Object jsonBody = redisUtil.getMessageFromRedis(key);
             if (jsonBody != null) {
@@ -80,7 +81,8 @@ public class DiscordWebhookService {
     }
 
     /**
-     * UserInfo 검증 후 Discord 메시지를 Redis에 저장합니다.
+     * 매주 월-금 오전 11시에 실행되는 스케줄러.
+     * 점심 추천이 활성화된 사용자들에 한해, 디스코드 메시지를 생성하여 Redis에 저장합니다.
      * 작성자: 배서진
      */
     @Scheduled(cron = "0 00 11 * * MON-FRI")
@@ -116,6 +118,11 @@ public class DiscordWebhookService {
         }
     }
 
+    /**
+     * 특정 사용자(UserInfo)에게 Discord로 전송할 메시지를 생성합니다.
+     * 사용자 위치와 선호 음식을 기반으로 추천 맛집 목록을 생성하고, 이를 JSON 형식의 메시지로 변환합니다.
+     * 작성자: 배서진
+     */
     private String generateMessage(UserInfo userInfo) {
 
         double distance = 5.0; // 5km 범위 설정
@@ -210,8 +217,7 @@ public class DiscordWebhookService {
     }
 
     /**
-     * 디스코드 웹훅으로 전송하는 메서드입니다.
-     * 사용자 개개인이 아니라 디스코드 웹훅 URL로 전송하게 됩니다.
+     * 디스코드 웹훅URL로 전송하는 메서드입니다.
      * 작성자: 배서진
      *
      * @param jsonBody
