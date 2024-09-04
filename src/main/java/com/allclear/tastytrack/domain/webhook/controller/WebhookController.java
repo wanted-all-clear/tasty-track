@@ -15,9 +15,9 @@ public class WebhookController {
     private final DiscordWebhookService discordWebhookService;
 
     @PostMapping("/send")
-    public String sendDiscordMessage(@RequestBody String message) {
+    public String sendDiscordMessage() {
 
-        discordWebhookService.sendMessage(message);
+        discordWebhookService.sendDailyMessage();
         return "Discord로 점심 맛집 추천을 전송하였습니다.";
     }
 

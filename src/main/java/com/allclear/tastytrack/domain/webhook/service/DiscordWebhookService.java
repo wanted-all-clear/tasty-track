@@ -49,6 +49,7 @@ public class DiscordWebhookService {
         }
         Random random = new Random();
         String randomSgg = sggList.get(random.nextInt(sggList.size()));
+
         sendMessage(randomSgg);
     }
 
