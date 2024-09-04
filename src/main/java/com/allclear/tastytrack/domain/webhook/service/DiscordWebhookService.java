@@ -80,8 +80,10 @@ public class DiscordWebhookService {
                         try {
                             String restaurantName = URLEncoder.encode(restaurant.getName(), "UTF-8");
                             if (restaurant.getName().contains(content)) {
+                                // 가게명에 지역명이 포함되어 있는 경우, 지역명 없이 가게명에만 %20 적용
                                 return "[" + restaurant.getName() + "](https://map.naver.com/p/search/" + restaurantName + ")";
                             } else {
+                                // 가게명에 지역명이 포함되어 있지 않은 경우, content + 가게명
                                 return "[" + restaurant.getName() + "](https://map.naver.com/p/search/" + URLEncoder.encode(content, "UTF-8") + "%20" + restaurantName + ")";
                             }
                         } catch (UnsupportedEncodingException e) {
