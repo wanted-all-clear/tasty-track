@@ -19,7 +19,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
             "SELECT * FROM Restaurant r WHERE " +
             "r.type = :type AND " +
             "r.status = '01' AND " +
-            "r.deleted_yn = 0 " +
+            "r.deleted_yn = 0 AND " +
+            "ST_Distance_Sphere(POINT(r.lon, r.lat), POINT(:lon, :lat)) <= (:distance * 1000)" +
             "ORDER BY RAND() " +  // 무작위로 정렬
             "LIMIT 5 " +  // 무작위로 5개 선택
             ") as temp " +

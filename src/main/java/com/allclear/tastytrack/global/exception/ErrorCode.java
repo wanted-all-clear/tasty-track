@@ -11,7 +11,6 @@ public enum ErrorCode {
     USERNAME_DUPLICATION(HttpStatus.BAD_REQUEST, "중복된 계정명입니다."),
 
     USER_NOT_EXIST(HttpStatus.NOT_FOUND, "가입되지 않은 아이디입니다."),
-
     NOT_VALID_PROPERTY(HttpStatus.BAD_REQUEST, "입력 값을 확인해주세요."),
     UNKNOWN_USER_POSITION(HttpStatus.BAD_REQUEST, "사용자의 위치를 알 수 없습니다."),
 
