@@ -4,6 +4,7 @@ import com.allclear.tastytrack.domain.region.entity.Region;
 import com.allclear.tastytrack.domain.region.repository.RegionRepository;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.repository.RestaurantRepository;
+import com.allclear.tastytrack.domain.user.dto.UserInfo;
 import com.allclear.tastytrack.global.exception.CustomException;
 import com.allclear.tastytrack.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +37,13 @@ public class DiscordWebhookService {
     private final RegionRepository regionRepository;
 
     /**
+     * 사용자 검증 후, 점심 메뉴 추천한 사용자에게만
      * 스케쥴러를 평일 오전 11시 20분에 디스코드로 알림을 보냅니다.
      * 지역명은 랜덤으로 지정하여 발송하도록 합니다.
      * 작성자: 배서진
      */
     @Scheduled(cron = "0 20 11 * * MON-FRI")
-    public void sendDailyMessage() {
+    public void sendDailyMessage(UserInfo userInfo) {
 
         List<String> sggList = regionRepository.findAllSgg();
         if (sggList.isEmpty()) {
@@ -50,7 +52,10 @@ public class DiscordWebhookService {
         Random random = new Random();
         String randomSgg = sggList.get(random.nextInt(sggList.size()));
 
-        sendMessage(randomSgg);
+        // 사용자가 점심추천 서비스를 ON 했는지
+        if (userInfo.isLunchRecommendYn()) {
+            sendMessage(randomSgg);
+        }
     }
 
     /**

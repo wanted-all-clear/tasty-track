@@ -25,9 +25,7 @@ public class WebhookController {
     public String sendDiscordMessage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         UserInfo userInfo = userService.getUserInfo(userDetails.getUsername());
-        if (userInfo.isLunchRecommendYn()) {
-            discordWebhookService.sendDailyMessage();
-        }
+        discordWebhookService.sendDailyMessage(userInfo);
         return "Discord로 점심 맛집 추천을 전송하였습니다.";
     }
 
