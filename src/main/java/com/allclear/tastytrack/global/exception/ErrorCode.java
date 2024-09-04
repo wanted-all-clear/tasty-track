@@ -30,6 +30,7 @@ public enum ErrorCode {
 
     // DISCORD
     INVALID_DISCORD_MESSAGE(HttpStatus.BAD_REQUEST, "메시지 전송 중 오류가 발생했습니다."),
+    ENCODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "검색어 인코딩에 실패하였습니다."),
     // Data Pipeline
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "API 요청에 실패했습니다."),
     JSON_PARSING(HttpStatus.BAD_REQUEST, "JSON 파싱 중 오류가 발생했습니다.");
