@@ -10,10 +10,10 @@ import java.util.Optional;
 
 public interface RegionRepository extends JpaRepository<Region, Integer> {
 
-    @Query(value = "SELECT * FROM region r WHERE r.dosi = :dosi AND r.sgg = :sgg LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM REGION r WHERE r.dosi = :dosi AND r.sgg = :sgg LIMIT 1", nativeQuery = true)
     Region findFirstByDosiAndSgg(@Param("dosi") String dosi, @Param("sgg") String sgg);
 
-    @Query(value = "SELECT * FROM region r WHERE r.dosi LIKE CONCAT('%', :search, '%') " +
+    @Query(value = "SELECT * FROM REGION r WHERE r.dosi LIKE CONCAT('%', :search, '%') " +
             "OR r.sgg LIKE CONCAT('%', :search, '%')", nativeQuery = true)
     Optional<Region> findByDosiOrSggContaining(@Param("search") String search);
 

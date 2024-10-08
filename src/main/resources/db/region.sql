@@ -1,4 +1,4 @@
-INSERT INTO region (dosi, sgg, lat, lon) VALUES
+INSERT INTO REGION (dosi, sgg, lat, lon) VALUES
 ('서울특별시', '강남구', 37.514575, 127.0495556),
 ('서울특별시', '강동구', 37.52736667, 127.1258639),
 ('서울특별시', '강북구', 37.63695556, 127.0277194),

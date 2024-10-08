@@ -12,7 +12,7 @@ import io.lettuce.core.dynamic.annotation.Param;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
     @Query(value = "SELECT * FROM ( " +
-            "SELECT * FROM Restaurant r WHERE " +
+            "SELECT * FROM RESTAURANT r WHERE " +
             "r.type = :type AND " +
             "ST_Distance_Sphere(POINT(r.lon, r.lat), POINT(:lon, :lat)) <= (:distance * 1000) AND " +
             "r.status = '01' AND " +
@@ -36,7 +36,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query(nativeQuery = true,
             value = "SELECT * "
-                    + "FROM restaurant r "
+                    + "FROM RESTAURANT r "
                     + "WHERE r.deleted_yn = 0 "
                     + "AND r.lon BETWEEN :westLon AND :eastLon "
                     + "AND r.lat BETWEEN :southLat AND :northLat")
@@ -53,7 +53,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
      * [정렬]
      * - 거리 가까운 순, 평점 높은 순, 최신 수정 일자 내림차순으로 정렬합니다.
      */
-    @Query(value = "SELECT * FROM Restaurant r WHERE " +
+    @Query(value = "SELECT * FROM RESTAURANT r WHERE " +
             "(CASE WHEN r.new_address IS NOT NULL THEN r.new_address ELSE r.old_address END) LIKE CONCAT(:regionName, '%') AND " +
             "r.type LIKE CONCAT('%', :type, '%') AND " +
             "r.status = '01' AND " +
@@ -75,7 +75,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
      * [정렬] - 거리 가까운 순, 평점 높은 순, 최신 수정 일자 내림차순 으로 정렬
      * 작성자: 배서진
      */
-    @Query(value = "SELECT * FROM Restaurant r WHERE " +
+    @Query(value = "SELECT * FROM RESTAURANT r WHERE " +
             "r.status = '01' AND " +
             "r.deleted_yn = 0 AND " +
             "r.name LIKE CONCAT('%', :name, '%') AND " +
