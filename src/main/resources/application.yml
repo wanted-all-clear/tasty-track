@@ -17,21 +17,24 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    open-in-view: true
     hibernate:
+      ddl-auto: create # 로컬 개발 환경에서는 create 사용
       naming:
-        use-new-id-generator-mappings: false
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
     properties:
       hibernate:
-        ddl-auto: none
+        format_sql: true
         id:
           new_generator_mappings: true
-      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true
+
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
 # jwt Secret Key
@@ -53,17 +56,20 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true # (2.5~) Hibernate 초기화 이후 data.sql 실행
-  
+
   discord:
     name: TastyTrack 점심 추천!
     webhook-url: ${DISCORD_WEBHOOK_URL}
-
 
   sql:
     init:
       mode: always # 서버 실행 시 data.sql 파일 항상 실행
       data-locations:
         - classpath:db/region.sql
+
+  batch:
+    job:
+      enabled: false # 프로젝트 실행 시 자동으로 배치 작업이 가동되는 것을 방지
 
 # 3. 테스트 실행 전용 프로파일
 ---
@@ -85,9 +91,65 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        show-sql: true
 
   sql:
     init:
       mode: always # 테스트 실행 시 data.sql 실행하지 않음
       data-locations:
         - classpath:db/region.sql
+
+  batch:
+    job:
+      enabled: false # 프로젝트 실행 시 자동으로 배치 작업이 가동되는 것을 방지
+
+# 4. 배포용
+
+---
+jwt:
+  secretkey: ${JWT_SECRET_KEY}
+
+spring:
+  config:
+    activate:
+      on-profile: prod # 프로파일명
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create # 배포 환경에서는 update 사용
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
+  discord:
+    name: TastyTrack 점심 추천!
+    webhook-url: ${DISCORD_WEBHOOK_URL}
+
+  sql:
+    init:
+      mode: always # 배포 환경에서는 SQL 파일 자동 실행을 방지
+      data-locations:
+        - classpath:db/region.sql
+        - classpath:db/schema-mysql.sql
+
+  batch:
+    job:
+      enabled: false # 배포 환경에서 배치 작업 자동 실행 방지
