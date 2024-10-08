@@ -1,9 +1,9 @@
 package com.allclear.tastytrack.domain.restaurant.entity;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
@@ -14,13 +14,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +26,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
+@Table(name = "RESTAURANT")
 public class Restaurant {
 
     @Id
@@ -56,11 +50,11 @@ public class Restaurant {
     @Comment("상세영업상태코드")
     private String status;
 
-    @Column(nullable = false)
+    @Column(name = "old_address", nullable = false)
     @Comment("지번주소")
     private String oldAddress;
 
-    @Column(nullable = false)
+    @Column(name = "new_address", nullable = false)
     @Comment("도로명주소")
     private String newAddress;
 
@@ -72,19 +66,19 @@ public class Restaurant {
     @Comment("위도")
     private Double lat;
 
-    @Column(nullable = false)
+    @Column(name = "last_updated_at", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Comment("최종 수정일자")
     private LocalDateTime lastUpdatedAt;
 
-    @Column(nullable = false)
+    @Column(name = "rate_score", nullable = false)
     @ColumnDefault("0.0")
     @Comment("평점")
     private double rateScore;
 
-    @Column(nullable = false)
+    @Column(name = "deleted_yn", nullable = false)
     @Comment("삭제여부")
     private int deletedYn;
 
