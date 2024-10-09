@@ -67,7 +67,8 @@ public class WebSecurityConfig {
                                 "/v3/api-docs/**", // Swagger 3.0 관련 API 문서 경로
                                 "/v2/api-docs/**", // Swagger 2.0 관련 API 문서 경로
                                 "/swagger-resources/**", // Swagger 리소스 경로
-                                "/webjars/**" // 웹 자원 경로 (CSS, JS 등)
+                                "/webjars/**", // 웹 자원 경로 (CSS, JS 등)
+                                "/api/fetch/**"
                         ).permitAll()
 
                         .anyRequest().authenticated()

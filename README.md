@@ -14,11 +14,12 @@
 > 8. [프로젝트 환경](#%EF%B8%8F-프로젝트-환경)
 > 9. [기술 선택 이유](#-기술-선택-이유)
 > 10. [요구사항 정의서 정리](#-요구사항-정의서-정리)
-> 11. [API 명세서](#-api-명세서)
-> 12. [ERD](#%EF%B8%8F-erd)
-> 13. [트러블 슈팅](#-트러블-슈팅)
-> 14. [고민한 흔적](#-고민한-흔적)
-> 15. [디렉토리 구조](#%EF%B8%8F-디렉토리-구조)
+> 11. [서비스 아키텍처](#-서비스-아키텍처)
+> 12. [API 명세서](#-api-명세서)
+> 13. [ERD](#%EF%B8%8F-erd)
+> 14. [트러블 슈팅](#-트러블-슈팅)
+> 15. [고민한 흔적](#-고민한-흔적)
+> 16. [디렉토리 구조](#%EF%B8%8F-디렉토리-구조)
 
 <br/>
 
@@ -46,7 +47,7 @@
 |:-------------------------------------------:|------------------------------------------------------------------|
 | [오예령(팀장)](https://github.com/ohyeryung) | 사용자 기능 구현 (로그인, 회원가입, 회원정보 조회, 회원정보 수정)     |
 | [유리빛나](https://github.com/ryuneng)       | 데이터 파이프라인 구축 (서울시 공공데이터 수집, 전처리, 저장, 자동화) |
-| [김은정](https://github.com/fkznsha23)       | 맛집 조회 기능 구현 (상세 조회, 위치 기반 맛집 추천, 평가 생성)      |
+| [김은정](https://github.com/rladmswjd119)       | 맛집 조회 기능 구현 (상세 조회, 위치 기반 맛집 추천, 평가 생성)      |
 | [배서진](https://github.com/bsjin1122)       | 맛집 조회 기능 구현 (목록 조회, 지역명 기준 맛집 추천, 시군구 조회), 디스코드 점심메뉴 추천  |
 
 <br>
@@ -87,6 +88,7 @@
 <summary>개발일정 관리</summary>
 <div markdown="1">
     <div>
+        <img width="30%" alt="image" src="https://github.com/user-attachments/assets/c8b56429-8c3a-4a7a-a474-39ba7d759255">
         <h4>☑️ 1) Github Issues</h4>
         <img src="https://github.com/user-attachments/assets/718d4ca2-0059-4c69-a89e-b697dbdb0801" align="center" width="70%">
     </div><br>
@@ -128,7 +130,7 @@
 
 - **SpringSecurity** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/SpringSecurity-%EB%8F%84%EC%9E%85"> WIKI 이동 </a>
 - **AccessToken과 RefreshToken** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/AccessToken%EA%B3%BC-RefreshToken"> WIKI 이동 </a>
-- **ComplatableFuture** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/ComplatableFuture"> WIKI 이동 </a>
+- **Spring Batch** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Spring-Batch-%EB%8F%84%EC%9E%85"> WIKI 이동 </a>
 
 <br>
 
@@ -146,12 +148,21 @@
 | 맛집   | 맛집 목록 조회         | getRestaurantList                 | [배서진](https://github.122)            |
 | 맛집   | 지역명 기준 맛집 추천   | getRestuarantSearchByRegion       | [배서진](https://github.122)            |
 | 맛집   | 시군구 조회            | getRegionList                     | [배서진](https://github.122)            |
+| 맛집   | 디스코드 점심 맛집 전송  | sendScheduledMessage (Service)   | [배서진](https://github.122) |
 | 데이터 | 맛집 데이터 수집       | fetchAndSaveInitDatas              |  [유리빛나](https://github.com/ryuneng) |
 | 데이터 | 맛집 데이터 전처리     | preprocessingAndSaveInitRestaurant | [유리빛나](https://github.com/ryuneng)  |
 | 데이터 | 맛집 데이터 저장       | saveRestaurantsFromRawRestaurants  | [유리빛나](https://github.com/ryuneng)  |
 | 데이터 | 맛집 데이터 자동화     | fetchAndSaveUpdatedDatas           | [유리빛나](https://github.com/ryuneng)  |
 
 <br/>
+
+### 🎨 서비스 아키텍처
+
+
+<img width="885" alt="image" src="https://github.com/user-attachments/assets/419048b0-3a4a-42e7-897b-c92a59351b0a">
+
+<br/>
+
 
 ### 🧾 API 명세서
 
@@ -168,9 +179,10 @@
 | 맛집 | 맛집 상세 정보 조회    | `GET`        | /api/restaurants/{id}                | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 평가 생성        | `POST`        | /api/reviews                           | O    | [김은정](https://github.com/fkznsha23)   |
 | 맛집 | 맛집 목록 조회        | `GET`         | /api/restaurants/list                  | X    | [배서진](https://github.com/bsjin1122)   |
-| 맛집 | 지역명 기준 맛집 추천  | `GET`         | /api/restaurants/region?dosi<br>={dosi}&sgg={sgg}&type={type}            | X    | [배서진](https://github.com/bsjin1122)   |
+| 맛집 | 지역명 기준 맛집 추천  | `GET`         | /api/restaurants/region?dosi<br>={dosi}&sgg={sgg}&type={type}<br>name={name}            | X    | [배서진](https://github.com/bsjin1122)   |
 | 맛집 | 시군구 조회           | `GET`         | /api/regions                           | X    | [배서진](https://github.com/bsjin1122)   |
 * 데이터 파이프라인은 자동화 시스템을 통해 처리됩니다.
+* 디스코드 점심추천은 스케쥴러를 통해 평일 오전 11:20에 웹훅 알림으로 전송됩니다.
 
 <br>
 
@@ -185,6 +197,7 @@
 - **토큰 검증을 필요로하지 않는 API 호출시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D%EC%9D%84-%ED%95%84%EC%9A%94%EB%A1%9C%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-API-%ED%98%B8%EC%B6%9C%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 - **토큰 검증 테스트 시 발생한 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%ED%86%A0%ED%81%B0-%EA%B2%80%EC%A6%9D-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%8B%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 - **Invalid use of argument matchers!** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Invalid-use-of-argument-matchers!"> WIKI 이동 </a>
+- **원본 데이터를 가공 데이터에 저장하는 과정에서 발생한 6가지 주소 관련 문제** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9B%90%EB%B3%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EA%B0%80%EA%B3%B5-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%97%90-%EC%A0%80%EC%9E%A5%ED%95%98%EB%8A%94-%EA%B3%BC%EC%A0%95%EC%97%90%EC%84%9C-%EB%B0%9C%EC%83%9D%ED%95%9C-6%EA%B0%80%EC%A7%80-%EC%A3%BC%EC%86%8C-%EA%B4%80%EB%A0%A8-%EB%AC%B8%EC%A0%9C"> WIKI 이동 </a>
 
 <br>
 
@@ -193,6 +206,7 @@
 - **Entity 클래스의 PK 필드 타입 (Long vs int)** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/Entity-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%9D%98-PK-%ED%95%84%EB%93%9C-%ED%83%80%EC%9E%85-(Long-vs-int)"> WIKI 이동 </a>
 - **위도, 경도의 데이터 타입 (Double vs Decimal)** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EC%9C%84%EB%8F%84,-%EA%B2%BD%EB%8F%84%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-(Double-vs-Decimal)"> WIKI 이동 </a>
 - **디스코드 점심 메뉴 추천 알림 구현하기** <a href="https://github.com/wanted-all-clear/tasty-track/wiki/%EB%94%94%EC%8A%A4%EC%BD%94%EB%93%9C-%EC%A0%90%EC%8B%AC-%EB%A9%94%EB%89%B4-%EC%B6%94%EC%B2%9C-%EC%95%8C%EB%A6%BC-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0"> WIKI 이동</a>
+- **ComplatableFuture** - <a href="https://github.com/wanted-all-clear/tasty-track/wiki/ComplatableFuture"> WIKI 이동 </a>
  
 <br>
 

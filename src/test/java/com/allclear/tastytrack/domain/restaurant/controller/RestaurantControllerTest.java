@@ -17,7 +17,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.allclear.tastytrack.domain.auth.token.JwtTokenUtils;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantByUserLocation;
@@ -28,7 +27,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+// @ActiveProfiles("test")
 public class RestaurantControllerTest {
 
     @Autowired
@@ -49,7 +48,7 @@ public class RestaurantControllerTest {
                 .lat(14128052.4047183)
                 .lon(4526216.5022505).build();
         HttpEntity<UserCreateRequest> entity = new HttpEntity<>(userCreateRequest);
-        testRestTemplate.exchange("/api/users", HttpMethod.POST, entity, String.class);
+        // testRestTemplate.exchange("/api/users", HttpMethod.POST, entity, String.class);
 
         String token = jwtTokenUtils.generateJwtToken(userCreateRequest.getUsername());
         httpHeaders = new HttpHeaders();

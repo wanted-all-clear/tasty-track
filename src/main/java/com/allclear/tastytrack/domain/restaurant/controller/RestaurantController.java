@@ -7,15 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allclear.tastytrack.domain.auth.UserDetailsImpl;
 import com.allclear.tastytrack.domain.restaurant.dto.RestaurantDetail;
-import com.allclear.tastytrack.domain.restaurant.dto.RestaurantListRequest;
 import com.allclear.tastytrack.domain.restaurant.entity.Restaurant;
 import com.allclear.tastytrack.domain.restaurant.service.RestaurantService;
 import com.allclear.tastytrack.domain.review.dto.ReviewResponse;
@@ -55,6 +52,12 @@ public class RestaurantController {
             @PathVariable int id) {
 
         userService.getUserInfo(userDetails.getUsername());
+
+        RestaurantDetail restaurantDetailInCache = restaurantService.checkRedisCache(id);
+        if (restaurantDetailInCache != null) {
+            return ResponseEntity.ok(restaurantDetailInCache);
+        }
+
         Restaurant restaurant = restaurantService.getRestaurantById(id, 0);
         List<Review> reviews = reviewService.getAllReviewsByRestaurantId(id);
 
@@ -75,6 +78,7 @@ public class RestaurantController {
                 .reviewResponses(reviewResponses)
                 .build();
 
+        restaurantService.saveCache(id, restaurantDetail);
 
         return ResponseEntity.ok(restaurantDetail);
     }
@@ -86,10 +90,13 @@ public class RestaurantController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류입니다.", content = @Content)
     })
-    @PostMapping("/list")
-    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestBody RestaurantListRequest request) {
+    @GetMapping("/list")
+    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestParam(name = "lat") double lat,
+            @RequestParam(name = "lon") double lon,
+            @RequestParam(name = "range") double range, @RequestParam(name = "type") String type,
+            @RequestParam(name = "name") String name) {
 
-        List<Restaurant> response = restaurantService.getRestaurantList(request);
+        List<Restaurant> response = restaurantService.getRestaurantList(lat, lon, range, type, name);
 
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();

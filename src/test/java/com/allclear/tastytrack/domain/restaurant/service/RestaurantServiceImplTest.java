@@ -149,7 +149,7 @@ public class RestaurantServiceImplTest {
                 .thenReturn(List.of(mockRestaurant));
 
         // when
-        List<Restaurant> result = restaurantServiceImpl.getRestaurantList(request);
+        List<Restaurant> result = restaurantServiceImpl.getRestaurantList(request.getLat(), request.getLon(), request.getRange(), request.getType(), request.getName());
 
         // then
         assertThat(result).isNotNull();
@@ -165,7 +165,7 @@ public class RestaurantServiceImplTest {
 
         // when & then
         CustomException exception = assertThrows(CustomException.class,
-                () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
+                () -> restaurantServiceImpl.getRestaurantList(invalidRequest.getLat(), invalidRequest.getLon(), invalidRequest.getRange(), invalidRequest.getType(), invalidRequest.getName()));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_REQUEST);
     }
 
@@ -181,23 +181,14 @@ public class RestaurantServiceImplTest {
                 .thenReturn(Collections.emptyList());
 
         // when
-        List<Restaurant> result = restaurantServiceImpl.getRestaurantList(request);
+        List<Restaurant> result = restaurantServiceImpl.getRestaurantList(request.getLat(), request.getLon(), request.getRange(), request.getType(), request.getName());
 
         // then
         assertThat(result).isNotNull();
         verify(restaurantRepository, times(1)).findUserRequestRestaurantList(
                 request.getLat(), request.getLon(), request.getRange(), request.getType(), request.getName());
     }
-
-    @Test
-    @DisplayName("유효성 검사에서 null 요청이 들어오면 예외를 발생시킵니다.")
-    void testValidateRequestWithNullRequest() {
-        // when & then
-        CustomException exception = assertThrows(CustomException.class,
-                () -> restaurantServiceImpl.getRestaurantList(null));
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NULL_REQUEST_DATA);
-    }
-
+    
     @Test
     @DisplayName("유효성 검사에서 범위가 0 이하일 때 예외를 발생시킵니다.")
     void testValidateRequestWithInvalidRange() {
@@ -206,7 +197,7 @@ public class RestaurantServiceImplTest {
 
         // when & then
         CustomException exception = assertThrows(CustomException.class,
-                () -> restaurantServiceImpl.getRestaurantList(invalidRequest));
+                () -> restaurantServiceImpl.getRestaurantList(invalidRequest.getLat(), invalidRequest.getLon(), invalidRequest.getRange(), invalidRequest.getType(), invalidRequest.getName()));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_VALID_REQUEST);
     }
 

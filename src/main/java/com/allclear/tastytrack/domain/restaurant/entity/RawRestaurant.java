@@ -1,6 +1,6 @@
 package com.allclear.tastytrack.domain.restaurant.entity;
 
-import com.allclear.tastytrack.domain.restaurant.dto.RawRestaurantResponse;
+import com.allclear.tastytrack.domain.batch.dto.RawRestaurantResponse;
 import jakarta.persistence.*;
 import lombok.*;
 

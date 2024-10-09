@@ -11,16 +11,21 @@ import io.lettuce.core.dynamic.annotation.Param;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
+    /**
+     * 디스코드 점심메뉴 추천 시,
+     * 해당 지역의 맛집 무작위로 5개 추천 후 최신수정일자/거리/평점 순으로 반영
+     */
     @Query(value = "SELECT * FROM ( " +
             "SELECT * FROM RESTAURANT r WHERE " +
             "r.type = :type AND " +
-            "ST_Distance_Sphere(POINT(r.lon, r.lat), POINT(:lon, :lat)) <= (:distance * 1000) AND " +
             "r.status = '01' AND " +
-            "r.deleted_yn = 0 " +
-            "ORDER BY RAND() " +  // 무작위로 정렬
-            "LIMIT 5 " +  // 무작위로 5개 선택
+            "r.deleted_yn = 0 AND " +
+            "ST_Distance_Sphere(POINT(r.lon, r.lat), POINT(:lon, :lat)) <= (:distance * 1000)" +
+            "LIMIT 5 " +
             ") as temp " +
-            "ORDER BY temp.last_updated_at DESC, temp.rate_score DESC",  // 추가 정렬 조건
+            "ORDER BY temp.last_updated_at DESC, " +
+            "ST_Distance_Sphere(POINT(temp.lon, temp.lat), POINT(:lon, :lat)) <= (:distance * 1000) AND " +
+            "temp.rate_score DESC",  // 정렬 조건
             nativeQuery = true)
     List<Restaurant> findTop5ByTypeAndDistance(
             @Param("type") String type,
@@ -41,7 +46,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
                     + "AND r.lon BETWEEN :westLon AND :eastLon "
                     + "AND r.lat BETWEEN :southLat AND :northLat")
     List<Restaurant> findBaseUserLocationByDeletedYn(@Param("westLon") double westLon, @Param("eastLon") double eastLon,
-            @Param("southLat") double southLat, @Param("northLat") double northLat);
+                                                     @Param("southLat") double southLat, @Param("northLat") double northLat);
 
 
     /**
