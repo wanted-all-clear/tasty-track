@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@Table(name = "REVIEW")
 public class Review extends Timestamped {
 
     @Id
