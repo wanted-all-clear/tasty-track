@@ -13,6 +13,12 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
+    @Value("${REDIS_HOST}")
+    private String redisHost;
+
+    @Value("${REDIS_PORT}")
+    private int redisPort;
+
     @Value(("${REDIS_PASSWORD}"))
     private String password;
 
@@ -20,6 +26,8 @@ public class RedisConfig {
     public RedisConnectionFactory connectionFactory() {
 
         RedisStandaloneConfiguration redisConfiguration = new RedisStandaloneConfiguration();
+        redisConfiguration.setHostName(redisHost);
+        redisConfiguration.setPort(redisPort);
         redisConfiguration.setPassword(password);
         return new LettuceConnectionFactory(redisConfiguration);
     }

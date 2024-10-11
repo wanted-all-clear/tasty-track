@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "region")
 @Builder
 @Getter
 @NoArgsConstructor
