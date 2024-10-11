@@ -26,7 +26,6 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@Table(name = "RESTAURANT")
 public class Restaurant {
 
     @Id

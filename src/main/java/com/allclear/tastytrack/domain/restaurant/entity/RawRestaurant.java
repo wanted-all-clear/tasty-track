@@ -10,7 +10,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "RAW_RESTAURANT")
 public class RawRestaurant {
 
     @Id
