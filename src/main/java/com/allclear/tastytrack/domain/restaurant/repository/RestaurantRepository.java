@@ -16,7 +16,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
      * 해당 지역의 맛집 무작위로 5개 추천 후 최신수정일자/거리/평점 순으로 반영
      */
     @Query(value = "SELECT * FROM ( " +
-            "SELECT * FROM RESTAURANT r WHERE " +
+            "SELECT * FROM restaurant r WHERE " +
             "r.type = :type AND " +
             "r.status = '01' AND " +
             "r.deleted_yn = 0 AND " +
@@ -41,7 +41,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query(nativeQuery = true,
             value = "SELECT * "
-                    + "FROM RESTAURANT r "
+                    + "FROM restaurant r "
                     + "WHERE r.deleted_yn = 0 "
                     + "AND r.lon BETWEEN :westLon AND :eastLon "
                     + "AND r.lat BETWEEN :southLat AND :northLat")
@@ -58,7 +58,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
      * [정렬]
      * - 거리 가까운 순, 평점 높은 순, 최신 수정 일자 내림차순으로 정렬합니다.
      */
-    @Query(value = "SELECT * FROM RESTAURANT r WHERE " +
+    @Query(value = "SELECT * FROM restaurant r WHERE " +
             "(CASE WHEN r.new_address IS NOT NULL THEN r.new_address ELSE r.old_address END) LIKE CONCAT(:regionName, '%') AND " +
             "r.type LIKE CONCAT('%', :type, '%') AND " +
             "r.status = '01' AND " +
@@ -80,7 +80,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
      * [정렬] - 거리 가까운 순, 평점 높은 순, 최신 수정 일자 내림차순 으로 정렬
      * 작성자: 배서진
      */
-    @Query(value = "SELECT * FROM RESTAURANT r WHERE " +
+    @Query(value = "SELECT * FROM restaurant r WHERE " +
             "r.status = '01' AND " +
             "r.deleted_yn = 0 AND " +
             "r.name LIKE CONCAT('%', :name, '%') AND " +

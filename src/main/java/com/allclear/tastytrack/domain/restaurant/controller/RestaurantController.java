@@ -92,9 +92,9 @@ public class RestaurantController {
     })
     @GetMapping("/list")
     public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestParam(name = "lat") double lat,
-            @RequestParam(name = "lon") double lon,
-            @RequestParam(name = "range") double range, @RequestParam(name = "type") String type,
-            @RequestParam(name = "name") String name) {
+                                                              @RequestParam(name = "lon") double lon,
+                                                              @RequestParam(name = "range") double range, @RequestParam(name = "type") String type,
+                                                              @RequestParam(name = "name") String name) {
 
         List<Restaurant> response = restaurantService.getRestaurantList(lat, lon, range, type, name);
 
